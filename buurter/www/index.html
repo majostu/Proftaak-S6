@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="buurter">
+<head>
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+<link rel="stylesheet" type="text/css" href="components/onsenui/css/onsenui.css">  
+<link rel="stylesheet" type="text/css" href="components/onsenui/css/onsen-css-components.css">
+<link rel="stylesheet" type="text/css" href="components/onsenui/onsen-css-components-dark-theme.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<title>Buurter</title>
+</head>
+<body ng-controller="AppController">
+	
+	<ons-sliding-menu var="menu" menu-page="menu.html" main-page="main.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
+    <!--========================================================================== 
+	MAIN
+    ==========================================================================--->
+    <ons-template id="main.html">
+			<ons-page>			
+				<ons-tabbar>
+				    <ons-tab page="main_pagina.html" active="true">
+				    	<ons-icon icon="ion-compass" class="tab-icon"></ons-icon>
+					</ons-tab>
+					<ons-tab page="">
+				    	<ons-icon icon="ion-star" class="tab-icon"></ons-icon>
+					</ons-tab>
+					<ons-tab page="">
+				    	<ons-icon icon="ion-settings" class="tab-icon"></ons-icon>
+					</ons-tab>
+				</ons-tabbar>				
+			</ons-page>
+    </ons-template>
+    <!--========================================================================== 
+	MAIN PAGE
+    ==========================================================================--->
+    <ons-template id="main_pagina.html">
+    	<ons-navigator var="myNavigator">
+	    	<ons-page>
+	    	
+	    		<ons-toolbar>
+	    			<div class="left">
+						<ons-toolbar-button ng-click="menu.toggle()">
+							<ons-icon icon="bars"></ons-icon>
+						</ons-toolbar-button>
+					</div>
+					<div class="center">Main pagina</div>
+				</ons-toolbar>
+					    			    		
+	    	</ons-page>
+    	</ons-navigator>
+    </ons-template>
+	<!--===================================
+	SUB PAGINA
+	===================================--->
+	<ons-template id="sub_pagina.html">
+		<ons-page>
+		
+			<ons-toolbar>
+				<div class="left">
+					<ons-back-button>Back</ons-back-button>
+				</div>
+				<div class="center">Sub pagina</div>
+			</ons-toolbar>
+									
+		</ons-page>
+	</ons-template>
+    <!--========================================================================== 
+	MENU
+    ==========================================================================--->
+	<ons-template id="menu.html">
+		<ons-page modifier="menu-page">
+			<ons-list class="menu-list">	   
+				<ons-list-item class="menu-item" ng-click="myNavigator.pushPage('sub_pagina.html', { animation : 'slide' }, menu.close())">
+					<ons-icon icon="fa-plus"></ons-icon>
+					Menu item
+				</ons-list-item>
+	    	</ons-list>
+		</ons-page>
+    </ons-template>
+	
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="components/angular/angular.js"></script>    
+	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<!--<script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
+	<script type="text/javascript" src="components/angular-google-maps/dist/angular-google-maps.min.js"></script>-->
+	<script type="text/javascript" src="js/index.js"></script>
+	
+</body>
+</html>
