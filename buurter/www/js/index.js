@@ -35,7 +35,8 @@ module.controller('DetailController', function($scope, $data) {
         
         
     });
-
+    
+   
 module.controller('OverzichtController', function($scope, $data) {
         $scope.item = $data.selectedItem;
     });    
@@ -48,6 +49,18 @@ module.controller('OverzichtController', function($scope, $data) {
             $data.selectedItem = selectedItem;
             $scope.myNavigator.pushPage('details.html', selectedItem);
         };
+    });
+    
+     module.controller('MemorieCtrl', function($scope, $data) {
+        $scope.items = $data.items;
+        
+
+        $scope.showDetail = function(index) {
+            var selectedItem = $data.items[index];
+            $data.selectedItem = selectedItem;
+            $scope.nav.pushPage('memorieOverzicht.html', selectedItem);
+        };
+        
     });
     
     

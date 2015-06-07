@@ -122,3 +122,18 @@ max-height: 300px;
 {
 margin: 0 auto;
 }
+.button1
+{
+margin-top:20px;
+margin-bottom: 20px;
+}
+.switch
+{
+float: right;
+margin-bottom: 10px;
+}
+.img-circle img {
+    margin-top: 10px;
+    border-radius: 50%;
+    
+}
