@@ -17,12 +17,11 @@
     .menu-item {
       background-color: transparent;
       background-image: none !important;
-      border-color: transparent;
-      color: #fff;
+      border-color: #fff;
+      color: #fff !important;
     }
 
     .menu-item {
-      padding: 0 0 0 20px;
       line-height: 52px;
       height: 52px;
       text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 0px;
@@ -59,6 +58,40 @@
     .bottom-menu-item:active {
       background-color: rgba(255, 255, 255, 0.1);
     }
+
+
+.button-bar {
+	width: 75%;
+    margin:10px auto;
+}
+
+.button-bar__button {
+	border: 1px solid #000;
+	border-top: 1px solid #000;
+  color: #000;
+}
+.button-bar__item:first-child > .button-bar__button {
+	-webkit-border-top-left-radius: 0; 
+	border-top-left-radius: 0; 
+	-webkit-border-bottom-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-right: 1px solid #000;
+	border-left: 1px solid #000;
+}
+
+.button-bar__item:last-child > .button-bar__button {
+	-webkit-border-top-right-radius: 0;
+	border-top-right-radius: 0;
+	-webkit-border-bottom-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-right: 1px solid #000;
+	border-left: 0px solid #000;
+}
+
+.button-bar__item.active > .button-bar__button, :checked + .button-bar__button {
+	background-color: #000;
+	color: #fff;
+}
     
     .item {
       padding: 10px;

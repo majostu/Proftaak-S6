@@ -22,6 +22,31 @@ module.controller('AppController', function($scope) {
 	});
 });
 
+module.controller('GegevensController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+module.controller('InteressesController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+module.controller('ContactenController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+module.controller('NieuweActiviteitController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+
 (function(){
  
 module.controller('DetailController', function($scope, $data) {
