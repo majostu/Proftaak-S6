@@ -6,19 +6,31 @@
 <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsenui.css">  
 <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsen-css-components.css">
-<link rel="stylesheet" type="text/css" href="components/onsenui/onsen-css-components-dark-theme.css">
 <link rel="stylesheet" type="text/css" href="css/index.css">
 <link rel="stylesheet" type="text/css" href="css/buurter.css">
 	
+  <script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="components/angular/angular.js"></script>    
+	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<!--<script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
+	<script type="text/javascript" src="components/angular-google-maps/dist/angular-google-maps.min.js"></script>-->
+	<script type="text/javascript" src="js/index.js"></script>
 <title>Buurter</title>
 </head>
 <body ng-controller="AppController">
- 
-  <div ons-loading-placeholder="main-pagina.html">
-     Loading My Application...
-  </div>
   
- 	<ons-sliding-menu var="menu" menu-page="menu.html" main-page="main_pagina.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
+    <ons-modal var="lodal" style="background:url(img/splash.jpg)no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;">
+      <br><br><br><br><br><br><br><br><br><br>
+      <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+      
+    </ons-modal>
+  
+  <ons-sliding-menu var="menu" menu-page="menu.html" main-page="main_pagina.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
   
   
     
@@ -134,7 +146,7 @@
             <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                       <img src="images/amy_jones.jpg" class="item-thum">
+                       <img src="images/amy_jones.jpg" class="img-circle item-thum">
                     </ons-col>
                   <ons-col >
                       <div class="">
@@ -469,11 +481,12 @@
         <ons-list modifier="chevron">
             <ons-list-item class="item">
                 <ons-row>
-                    <ons-col width="60px">
-                       <img src="{{item.picture}}" class="item-thum">
+                    <ons-col width="170px">
+                       <img src="{{item.picture}}" class="item-big">
                     </ons-col>
                       <ons-col>
                         <header>
+                          <br><br>
                             <span class="item-title">{{item.act}}</span>
                             <span class="item-label">{{item.date}}</span>
                         </header>
@@ -489,7 +502,7 @@
               <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
+                          <img src="images/eugene_lee.jpg" class="item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -502,7 +515,7 @@
                 <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
+                          <img src="images/amy_jones.jpg" class="item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -515,7 +528,7 @@
                 <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
+                          <img src="images/paul_jones.jpg" class="item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -552,8 +565,8 @@
         <ons-list modifier="chevron">
             <ons-list-item class="item">
                 <ons-row>
-                    <ons-col width="60px">
-                       <img src="{{item.picture}}" class="item-thum">
+                    <ons-col width="170px">
+                       <img src="{{item.picture}}" class=" item-big">
                     </ons-col>
                       <ons-col>
                         <header>
@@ -578,7 +591,7 @@
               <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
+                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -591,7 +604,7 @@
                 <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
+                          <img src="images/amy_jones.jpg" class="item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -604,7 +617,7 @@
                 <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
+                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -623,7 +636,7 @@
               <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
+                          <img src="images/eugene_lee.jpg" class="item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -636,7 +649,7 @@
                 <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
+                          <img src="images/amy_jones.jpg" class="img-circle item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -649,7 +662,7 @@
                 <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
+                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -842,24 +855,10 @@
             
        </ons-page>
 </ons-template>
-
-
-
-
-    
-    
-    
-    
-    
-    
+  
+ 
 	
-	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="components/angular/angular.js"></script>    
-	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-	<!--<script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
-	<script type="text/javascript" src="components/angular-google-maps/dist/angular-google-maps.min.js"></script>-->
-	<script type="text/javascript" src="js/index.js"></script>
+	
 		
 	
 </body>
