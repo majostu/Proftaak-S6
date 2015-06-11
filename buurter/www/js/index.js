@@ -1,3 +1,4 @@
+// Preloader activate //
 ons.ready(function() {
 	lodal.show();
 });
@@ -83,13 +84,13 @@ module.controller('OverzichtController', function($scope, $data) {
         };
     });
     
-     module.controller('MemorieCtrl', function($scope, $data) {
-        $scope.items = $data.items;
+     module.controller('MemorieCtrl', function($scope, $data2) {
+        $scope.items = $data2.items;
         
 
         $scope.showDetail = function(index) {
-            var selectedItem = $data.items[index];
-            $data.selectedItem = selectedItem;
+            var selectedItem = $data2.items[index];
+            $data2.selectedItem = selectedItem;
             $scope.nav.pushPage('memorieOverzicht.html', selectedItem);
         };
         
@@ -106,56 +107,56 @@ module.factory('$data', function() {
             {
                 name: 'Amy Jones',
                 act: 'Lekker shoppen in Tilburg',
-                date: '4h',
+                date: '13:45',
                 cat: 'Shoppen',
                 picture: 'images/amy_jones.jpg'
             },
             {
                 name: 'Eugene Lee',
                 act: 'World of warcraft spelen',
-                date: '6h',
+                date: '16:00',
                 cat: 'Video games',
                 picture: 'images/eugene_lee.jpg'
             },
             {
                 name: 'Gary Donovan',
                 act: 'Lunchen bij de Febo',
-                date: '1day ago',
+                date: '16:00',
                 cat: 'Eten',
                 picture: 'images/gary_donovan.jpg'
             },
             {
                 name: 'James King',
                 act: 'Barbequen',
-                date: '1day ago',
+                date: '17:30',
                 cat: 'Eten',
                 picture: 'images/james_king.jpg'
             },
             {
                 name: 'john_williams',
                 act: 'Lekker shoppen in Tilburg',
-                date: '4h',
+                date: '20:00',
                 cat: 'Shoppen',
                 picture: 'images/john_williams.jpg'
             },
             {
                 name: 'julie_taylor',
                 act: 'World of warcraft spelen',
-                date: '6h',
+                date: '20:00',
                 cat: 'Video games',
                 picture: 'images/julie_taylor.jpg'
             },
             {
                 name: 'kathleen_byrne',
                 act: 'Lunchen bij de Febo',
-                date: '1day ago',
+                date: '20:00',
                 cat: 'Eten',
                 picture: 'images/kathleen_byrne.jpg'
             },
             {
                 name: 'lisa_wong',
                 act: 'Barbequen',
-                date: '1day ago',
+                date: '20:00',
                 cat: 'Eten',
                 picture: 'images/lisa_wong.jpg'
             },
@@ -173,17 +174,43 @@ module.factory('$data', function() {
                 cat: 'Video games',
                 picture: 'images/paula_gates.jpg'
             },
+
+            
+
+        ];
+
+        return data;
+    });
+  
+  module.factory('$data2', function() {
+        var data2 = {};
+
+        data2.items = [
+            {
+                name: 'Gary Donovan',
+                act: 'Lunchen bij de Febo',
+                date: '1 day ago',
+                cat: 'Eten',
+                picture: 'images/gary_donovan.jpg'
+            },
+            {
+                name: 'julie_taylor',
+                act: 'Keiharde apenporno kijken',
+                date: '1 day ago',
+                cat: 'Video games',
+                picture: 'images/julie_taylor.jpg'
+            },
             {
                 name: 'ray_moore',
                 act: 'Lunchen bij de Febo',
-                date: '1day ago',
+                date: '1 day ago',
                 cat: 'Eten',
                 picture: 'images/ray_moore.jpg'
             },
             {
                 name: 'steven_wells',
                 act: 'Barbequen',
-                date: '1day ago',
+                date: '1 week ago',
                 cat: 'Eten',
                 picture: 'images/steven_wells.jpg'
             },
@@ -192,9 +219,39 @@ module.factory('$data', function() {
 
         ];
 
-        return data;
+        return data2;
     });
     
     
 
     })();
+
+
+// home page 
+module.controller('FavoritesController', function($scope, localStorageService) {
+	ons.ready(function() {
+
+		$scope.fav_bar = {
+			name: "indebuurt"	
+		};
+		
+	});
+});
+
+// Google maps crap //
+
+var yourApp = angular.module('myApp', ['onsen.directives']);
+
+
+yourApp.controller("AppController", function($scope, $timeout) {
+
+    $timeout(function(){
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var myOptions = {
+            zoom: 8,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);  
+    },200);
+});
