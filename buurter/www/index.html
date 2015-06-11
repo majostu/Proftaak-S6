@@ -8,45 +8,17 @@
 <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsen-css-components.css">
 <link rel="stylesheet" type="text/css" href="components/onsenui/onsen-css-components-dark-theme.css">
 <link rel="stylesheet" type="text/css" href="css/index.css">
-<link rel="stylesheet" type="text/css" href="css/buurter.css">
-	
 <title>Buurter</title>
 </head>
-<body ng-controller="AppController">
- 
- 	<ons-sliding-menu var="menu" menu-page="menu.html" main-page="main.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
-    <!--========================================================================== 
-	MAIN 
-    ==========================================================================--->
-    <ons-template id="main.html">
-			<ons-page>			
-				<ons-tabbar>
-				    <ons-tab page="main_pagina.html" class"tabBar" active="true">
-				    	<i class="fa fa-location-arrow"></i>
-				    	 <p class="tabBarText">In de buurt</p>
-					</ons-tab>
-					<ons-tab page="categorie.html">
-				    	<i class="fa fa-bars"></i>
-				    	<p class="tabBarText">Categorieen</p>
-					</ons-tab>
-					<ons-tab page="memories.html">
-				    	<i class="fa fa-book"></i>
-				    	<p class="tabBarText">Memories</p>
-					</ons-tab>
-					<ons-tab page="contacten.html">
-				    	<i class="fa fa-users"></i>
-				    	<p class="tabBarText">Contacten</p>
-					</ons-tab>
-				</ons-tabbar>				
-			</ons-page>
-    </ons-template>
-    
+<body>
+	
+	<ons-sliding-menu var="menu" menu-page="menu.html" main-page="main_page.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
     <!--========================================================================== 
 	MAIN PAGE
     ==========================================================================--->
-    <ons-template id="main_pagina.html">
+    <ons-template id="main_page.html">
     	<ons-navigator var="myNavigator">
-	    	<ons-page>
+	    	<ons-page ng-controller="MainController">
 	    	
 	    		<ons-toolbar>
 	    			<div class="left">
@@ -54,645 +26,60 @@
 							<ons-icon icon="bars"></ons-icon>
 						</ons-toolbar-button>
 					</div>
-					<div class="center">In de buurt</div>
+					<div class="center">Main pagina</div>
 				</ons-toolbar>
-				<ons-list ng-controller="MainCtrl">
 				
-              <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
-
-					    			    		
+				<div>
+					<div class="alert alert-info" data-ng-show="salutation">Hello, {{user.name}}</div>
+					<div class="alert alert-warning" data-ng-show="byebye">Bye bye :'(</div>
+          		</div>
+          
+		  		<button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
+		  		<button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
+          
+		  		<div>
+		  			<debug val="user"></debug>
+          		</div>
+									    			    		
 	    	</ons-page>
     	</ons-navigator>
     </ons-template>
-	    <!--========================================================================== 
+	<!--===================================
+	SUB PAGINA
+	===================================--->
+	<ons-template id="sub_page.html">
+		<ons-page>
+		
+			<ons-toolbar>
+				<div class="left">
+					<ons-back-button>Back</ons-back-button>
+				</div>
+				<div class="center">Sub pagina</div>
+			</ons-toolbar>
+									
+		</ons-page>
+	</ons-template>
+    <!--========================================================================== 
 	MENU
     ==========================================================================--->
 	<ons-template id="menu.html">
 		<ons-page modifier="menu-page">
-		<div class="img-circle center"><img src="images/amy_jones.jpg"/></div>
-		<p class="center">Amy Jones</p>
-			<ons-list class="menu-list">
-        <ons-list-item class="menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
-          <ons-icon icon="fa-user" fixed-width="true"></ons-icon>
-          Mijn gegevens
-        </ons-list-item>
-                
-        <ons-list-item class="menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
-          <ons-icon icon="fa-search" fixed-width="true"></ons-icon>
-         Instellingen
-        </ons-list-item>
-
-        <ons-list-item class="menu-item" ng-click="menu.setMainPage('page3.html', {closeMenu: true})">
-          <ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
-          Pony Matches
-        </ons-list-item>
-      </ons-list>
-      <br>
-      <ons-list class="bottom-menu-list">
-        <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
-         Over ons
-        </ons-list-item>
-      </ons-list>
-
+			<ons-list class="menu-list">	   
+				<ons-list-item class="menu-item" ng-click="myNavigator.pushPage('sub_page.html', { animation : 'slide' }, menu.close())">
+					<ons-icon icon="fa-plus"></ons-icon>
+					Menu item
+				</ons-list-item>
+	    	</ons-list>
 		</ons-page>
     </ons-template>
-    
-    <!--========================================================================== 
-	Categorieen
-    ==========================================================================--->    
-      <ons-template id="categorie.html">
-    	<ons-navigator var="myNavigator">
-	    	<ons-page>
-	    	
-	    		<ons-toolbar>
-	    			<div class="left">
-						<ons-toolbar-button ng-click="menu.toggle()">
-							<ons-icon icon="bars"></ons-icon>
-						</ons-toolbar-button>
-					</div>
-					<div class="center">Categorieen</div>
-				</ons-toolbar>
-				<ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-futbol-o fa-lg"></i>
-                    Sport
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-glass fa-lg"></i>
-                    Eten en drinken
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-shopping-cart fa-lg"></i>
-                    Shoppen
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-music fa-lg"></i>
-                    Muziek
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                 <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa fa-film fa-lg"></i>
-                    Film
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-puzzle-piece fa-lg"></i>
-                    Spel
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-gamepad fa-lg"></i>
-                    Video games
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-camera-retro fa-lg"></i>
-                    Fotografie
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-pagelines fa-lg"></i>
-                    Relaxen
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-train fa-lg"></i>
-                    Reizen
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-                <ons-list>
-                    <ons-list-item class="item">
-                    <i style="margin-top: 7px;" class="fa fa-asterisk fa-lg"></i>
-                    Overige
-                        <label class="switch">
-                             <input type="checkbox" class="switch__input" checked>
-                              <div class="switch__toggle"></div>
-                        </label>
-                    </ons-list-item>
-                </ons-list>
-
-
-
-
-
-
-
-
-
-
-				   									    			    		
-	    	</ons-page>
-    	</ons-navigator>
-    </ons-template>
-    
- <!--========================================================================== 
-	MEMORIES
-    ==========================================================================--->    
-      <ons-template id="memories.html">
-    	<ons-navigator var="nav">
-	    	<ons-page>
-	    	
-	    		<ons-toolbar>
-	    			<div class="left">
-						<ons-toolbar-button ng-click="menu.toggle()">
-							<ons-icon icon="bars"></ons-icon>
-						</ons-toolbar-button>
-					</div>
-					<div class="center">Memories</div>
-				</ons-toolbar>
-				<ons-list ng-controller="MemorieCtrl">
-				
-              <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
-
-					    			    		
-	    	</ons-page>
-    	</ons-navigator>
-    </ons-template>
-    
-<!--========================================================================== 
-	Contacten
-    ==========================================================================--->    
-      <ons-template id="contacten.html">
-    	<ons-navigator var="myNavigator">
-	    	<ons-page>
-	    	
-	    		<ons-toolbar>
-	    			<div class="left">
-						<ons-toolbar-button ng-click="menu.toggle()">
-							<ons-icon icon="bars"></ons-icon>
-						</ons-toolbar-button>
-					</div>
-					<div class="center">Contacten</div>
-				</ons-toolbar>
-				<ons-list ng-controller="MainCtrl">
-				
-              <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
-
-					    			    		
-	    	</ons-page>
-    	</ons-navigator>
-    </ons-template>
-    
-    <!--========================================================================== 
-	Activiteit details
-    ==========================================================================--->    
-    
-    <ons-template id="details.html">
-    <ons-page ng-controller="DetailController">
-
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">Actviteit</div>
-        </ons-toolbar>
-
-        <ons-list modifier="chevron">
-            <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                       <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                      <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-            <div id="map-canvas">
-	        <img src="images/maps.jpg" class="">
-            </div>
-            <ons-list>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span>
-                        </header>
-                        <p class="item-desc">Het is super leuk hier</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span>
-                        </header>
-                        <p class="item-desc">Super gezellig!</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span>
-                        </header>
-                        <p class="item-desc">Het bier is bijna op!! kom snel!</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
-        
-        
-        <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-               Doe mee!        
-            </ons-button>
-        </p>   
-
-</ons-page>
-</ons-template>
-
-<!--========================================================================== 
-	Activiteit overzicht
-    ==========================================================================--->    
-    
-    <ons-template id="overzicht.html">
-    <ons-page ng-controller="OverzichtController">
- <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">Actviteit Overzicht</div>
-        </ons-toolbar>
-
-
-        <ons-list modifier="chevron">
-            <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                       <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                      <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-             <p style="margin-left:10px;">Foto's en video's</p>
-            <ons-carousel swipeable style="margin-top: 5px; margin-left:6px; height: 120px;" overscrollable auto-scroll item-width="120px">
-          
-            <ons-carousel-item ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]">
-            <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;"></div>
-            </ons-carousel-item>
-            </ons-carousel>
-            
-            <ons-list>
-             <ons-list-header>Deelnemers</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span>
-                        </header>
-                        <p class="item-desc">Het is super leuk hier</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span>
-                        </header>
-                        <p class="item-desc">Super gezellig!</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span>
-                        </header>
-                        <p class="item-desc">Het bier is bijna op!! kom snel!</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-            <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-            Nodig uit        
-            </ons-button>
-            </p>   
-            <ons-list-header>Reacties</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span>
-                        </header>
-                        <p class="item-desc">Het is super leuk hier</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span>
-                        </header>
-                        <p class="item-desc">Super gezellig!</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span>
-                        </header>
-                        <p class="item-desc">Het bier is bijna op!! kom snel!</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-            <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-             Plaats reactie        
-            </ons-button>
-            </p>   
-        </ons-list>
-       </ons-page>
-</ons-template>
-
-<!--========================================================================== 
-	Memorie overzicht
-    ==========================================================================--->    
-    
-    <ons-template id="memorieOverzicht.html">
-    <ons-page ng-controller="OverzichtController">
- <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">Memorie Overzicht</div>
-        </ons-toolbar>
-
-
-        <ons-list modifier="chevron">
-            <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                       <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                      <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-             <p style="margin-left:10px;">Foto's en video's</p>
-            <ons-carousel swipeable style="margin-top: 5px; margin-left:6px; height: 120px;" overscrollable auto-scroll item-width="120px">
-          
-            <ons-carousel-item ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]">
-            <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;"></div>
-            </ons-carousel-item>
-            </ons-carousel>
-            
-            <ons-list>
-             <ons-list-header>Deelnemers</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span>
-                        </header>
-                        <p class="item-desc">Het is super leuk hier</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span>
-                        </header>
-                        <p class="item-desc">Super gezellig!</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span>
-                        </header>
-                        <p class="item-desc">Het bier is bijna op!! kom snel!</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-            <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-            Nodig uit        
-            </ons-button>
-            </p>   
-            <ons-list-header>Reacties</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/eugene_lee.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span>
-                        </header>
-                        <p class="item-desc">Het is super leuk hier</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/amy_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span>
-                        </header>
-                        <p class="item-desc">Super gezellig!</p>
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="images/paul_jones.jpg" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span>
-                        </header>
-                        <p class="item-desc">Het bier is bijna op!! kom snel!</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-            <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-             Plaats reactie        
-            </ons-button>
-            </p>   
-        </ons-list>
-       </ons-page>
-</ons-template>
-
-
-
-
-    
-    
-    
-    
-    
-    
 	
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="components/angular/angular.js"></script>    
 	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-	<!--<script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
-	<script type="text/javascript" src="components/angular-google-maps/dist/angular-google-maps.min.js"></script>-->
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="js/angular-facebook.js"></script>
+	<script type="text/javascript" src="js/angular-facebook-phonegap.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
-		
 	
 </body>
 </html>
