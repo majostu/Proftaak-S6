@@ -1,3 +1,10 @@
+// Preloader activate //
+ons.ready(function() {
+	lodal.show();
+});
+
+
+
 var app = {
     initialize: function() {
         this.bindEvents();
@@ -6,168 +13,245 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function() {
-	    
+      
     }
 };
 
+
 app.initialize();
 
-angular.module('buurter', ['onsen','facebook'])
+var module = angular.module('buurter', ['onsen']);
 
-  .config([
-    'FacebookProvider',
-    function(FacebookProvider) {
-     var myAppId = '1045808375436857';
-     
-     // You can set appId with setApp method
-     // FacebookProvider.setAppId('myAppId');
-     
-     /**
-      * After setting appId you need to initialize the module.
-      * You can pass the appId on the init method as a shortcut too.
-      */
-     FacebookProvider.init(myAppId);
-     
-    }
-  ])
-  
-  .controller('MainController', [
-    '$scope',
-    '$timeout',
-    'Facebook',
-    function($scope, $timeout, Facebook) {
-      
-      // Define user empty data :/
-      $scope.user = {};
-      
-      // Defining user logged status
-      $scope.logged = false;
-      
-      // And some fancy flags to display messages upon user status change
-      $scope.byebye = false;
-      $scope.salutation = false;
-      
-      /**
-       * Watch for Facebook to be ready.
-       * There's also the event that could be used
-       */
-      $scope.$watch(
-        function() {
-          return Facebook.isReady();
-        },
-        function(newVal) {
-          if (newVal)
-            $scope.facebookReady = true;
-        }
-      );
-      
-      var userIsConnected = false;
-      
-      Facebook.getLoginStatus(function(response) {
-        if (response.status == 'connected') {
-          userIsConnected = true;
-        }
-      });
-      
-      /**
-       * IntentLogin
-       */
-      $scope.IntentLogin = function() {
-        if(!userIsConnected) {
-          $scope.login();
-        }
-      };
-      
-      /**
-       * Login
-       */
-       $scope.login = function() {
-         Facebook.login(function(response) {
-          if (response.status == 'connected') {
-            $scope.logged = true;
-            $scope.me();
-          }
+module.controller('AppController', function($scope) { 
+	ons.ready(function() {
+		setTimeout(function(){
+          lodal.hide();
+        }, 500);
+	});
+});
+
+module.controller('GegevensController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+module.controller('InteressesController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+module.controller('ContactenController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+module.controller('NieuweActiviteitController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
+
+(function(){
+ 
+module.controller('DetailController', function($scope, $data) {
+        $scope.item = $data.selectedItem;
         
-        });
-       };
-       
-       /**
-        * me 
-        */
-        $scope.me = function() {
-          Facebook.api('/me', function(response) {
-            /**
-             * Using $scope.$apply since this happens outside angular framework.
-             */
-            $scope.$apply(function() {
-              $scope.user = response;
-            });
-            
-          });
+            $scope.showDetail = function(index) {
+            var selectedItem = $data.items[index];
+            $data.selectedItem = selectedItem;
+            $scope.myNavigator.pushPage('overzicht.html', selectedItem);
         };
-      
-      /**
-       * Logout
-       */
-      $scope.logout = function() {
-        Facebook.logout(function() {
-          $scope.$apply(function() {
-            $scope.user   = {};
-            $scope.logged = false;  
-          });
-        });
-      }
-      
-      /**
-       * Taking approach of Events :D
-       */
-      $scope.$on('Facebook:statusChange', function(ev, data) {
-        console.log('Status: ', data);
-        if (data.status == 'connected') {
-          $scope.$apply(function() {
-            $scope.salutation = true;
-            $scope.byebye     = false;    
-          });
-        } else {
-          $scope.$apply(function() {
-            $scope.salutation = false;
-            $scope.byebye     = true;
+        
+        
+    });
+    
+   
+module.controller('OverzichtController', function($scope, $data) {
+        $scope.item = $data.selectedItem;
+    });    
+
+    module.controller('MainCtrl', function($scope, $data) {
+        $scope.items = $data.items;
+
+        $scope.showDetail = function(index) {
+            var selectedItem = $data.items[index];
+            $data.selectedItem = selectedItem;
+            $scope.myNavigator.pushPage('details.html', selectedItem);
+        };
+    });
+    
+     module.controller('MemorieCtrl', function($scope, $data2) {
+        $scope.items = $data2.items;
+        
+
+        $scope.showDetail = function(index) {
+            var selectedItem = $data2.items[index];
+            $data2.selectedItem = selectedItem;
+            $scope.nav.pushPage('memorieOverzicht.html', selectedItem);
+        };
+        
+    });
+    
+    
+
+
+
+module.factory('$data', function() {
+        var data = {};
+
+        data.items = [
+            {
+                name: 'Amy Jones',
+                act: 'Lekker shoppen in Tilburg',
+                date: '13:45',
+                cat: 'Shoppen',
+                picture: 'images/amy_jones.jpg'
+            },
+            {
+                name: 'Eugene Lee',
+                act: 'World of warcraft spelen',
+                date: '16:00',
+                cat: 'Video games',
+                picture: 'images/eugene_lee.jpg'
+            },
+            {
+                name: 'Gary Donovan',
+                act: 'Lunchen bij de Febo',
+                date: '16:00',
+                cat: 'Eten',
+                picture: 'images/gary_donovan.jpg'
+            },
+            {
+                name: 'James King',
+                act: 'Barbequen',
+                date: '17:30',
+                cat: 'Eten',
+                picture: 'images/james_king.jpg'
+            },
+            {
+                name: 'john_williams',
+                act: 'Lekker shoppen in Tilburg',
+                date: '20:00',
+                cat: 'Shoppen',
+                picture: 'images/john_williams.jpg'
+            },
+            {
+                name: 'julie_taylor',
+                act: 'World of warcraft spelen',
+                date: '20:00',
+                cat: 'Video games',
+                picture: 'images/julie_taylor.jpg'
+            },
+            {
+                name: 'kathleen_byrne',
+                act: 'Lunchen bij de Febo',
+                date: '20:00',
+                cat: 'Eten',
+                picture: 'images/kathleen_byrne.jpg'
+            },
+            {
+                name: 'lisa_wong',
+                act: 'Barbequen',
+                date: '20:00',
+                cat: 'Eten',
+                picture: 'images/lisa_wong.jpg'
+            },
+            {
+                name: 'paul_jones',
+                act: 'Lekker shoppen in Tilburg',
+                date: '4h',
+                cat: 'Shoppen',
+                picture: 'images/paul_jones.jpg'
+            },
+            {
+                name: 'paula_gates',
+                act: 'World of warcraft spelen',
+                date: '6h',
+                cat: 'Video games',
+                picture: 'images/paula_gates.jpg'
+            },
+
             
-            // Dismiss byebye message after two seconds
-            $timeout(function() {
-              $scope.byebye = false;
-            }, 2000)
-          });
-        }
-        
-        
-      });
-      
-      
-    }
-  ])
+
+        ];
+
+        return data;
+    });
   
-  /**
-   * Just for debugging purposes.
-   * Shows objects in a pretty way
-   */
-  .directive('debug', function() {
-		return {
-			restrict:	'E',
-			scope: {
-				expression: '=val'
-			},
-			template:	'<pre>{{debug(expression)}}</pre>',
-			link:	function(scope) {
-				// pretty-prints
-				scope.debug = function(exp) {
-					return angular.toJson(exp, true);
-				};
-			}
-		}
-	})
-  
-  ;
+  module.factory('$data2', function() {
+        var data2 = {};
+
+        data2.items = [
+            {
+                name: 'Gary Donovan',
+                act: 'Lunchen bij de Febo',
+                date: '1 day ago',
+                cat: 'Eten',
+                picture: 'images/gary_donovan.jpg'
+            },
+            {
+                name: 'julie_taylor',
+                act: 'Keiharde apenporno kijken',
+                date: '1 day ago',
+                cat: 'Video games',
+                picture: 'images/julie_taylor.jpg'
+            },
+            {
+                name: 'ray_moore',
+                act: 'Lunchen bij de Febo',
+                date: '1 day ago',
+                cat: 'Eten',
+                picture: 'images/ray_moore.jpg'
+            },
+            {
+                name: 'steven_wells',
+                act: 'Barbequen',
+                date: '1 week ago',
+                cat: 'Eten',
+                picture: 'images/steven_wells.jpg'
+            },
+
+            
+
+        ];
+
+        return data2;
+    });
+    
+    
+
+    })();
 
 
+// home page 
+module.controller('FavoritesController', function($scope, localStorageService) {
+	ons.ready(function() {
 
+		$scope.fav_bar = {
+			name: "indebuurt"	
+		};
+		
+	});
+});
+
+// Google maps crap //
+
+var yourApp = angular.module('myApp', ['onsen.directives']);
+
+
+yourApp.controller("AppController", function($scope, $timeout) {
+
+    $timeout(function(){
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var myOptions = {
+            zoom: 8,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);  
+    },200);
+});
