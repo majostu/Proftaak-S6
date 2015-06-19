@@ -106,6 +106,13 @@
       width: 20px;
       height: 20px;
     }
+
+.contact-image {
+      background-color: #ccc;
+      width: 20px;
+      height: 20px;
+  margin: 10px 10px 0 0;
+    }
     .item-title {
       font-size: 15px;
       font-weight: 500;
@@ -177,4 +184,7 @@ margin-bottom: 10px;
     margin-top: 10px;
     border-radius: 50%;
     
+}
+.checkbox__checkmark{
+  float: right;
 }

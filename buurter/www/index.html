@@ -48,7 +48,7 @@
 						</ons-toolbar-button>
 					</div>
 					<div class="center">BUURTER&copy;</div>
-                    <div class="right"><ons-toolbar-button modifier="chevron" ng-click="myNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())"><ons-icon icon="fa-plus-circle"></ons-icon></ons-toolbar-button></div>
+                    <div class="right"><ons-toolbar-button modifier="chevron" ng-click="myNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">Nieuw <ons-icon icon="fa-plus-circle"></ons-icon></ons-toolbar-button></div>
                   
 				</ons-toolbar>
               
@@ -434,21 +434,20 @@
             <div class="left"><ons-back-button>Back</ons-back-button></div>
             <div class="center">{{item.cat}}</div>
         </ons-toolbar>
-
+      
+  
+      
         <ons-list modifier="chevron">
             <ons-list-item class="item">
                 <ons-row>
-                    <ons-col width="150px">
-                       <img src="{{item.picture}}" class="item-big">
+                    <ons-col width="60px">
+                          <img src="{{item.picture}}" class="item-thum">
                     </ons-col>
-                      <ons-col>
+                    <ons-col>
                         <header>
-                            
+                            <span class="item-title">{{item.act}}</span>
                             <span class="item-label">{{item.date}}</span>
                         </header>
-                        
-                          <br><br>
-                        <p class="item-desc">{{item.act}}</p>
                         <p class="item-desc">{{item.name}}</p>
                     </ons-col>
                 </ons-row>
@@ -523,17 +522,14 @@
         <ons-list modifier="chevron">
             <ons-list-item class="item">
                 <ons-row>
-                    <ons-col width="170px">
-                       <img src="{{item.picture}}" class=" item-big">
+                    <ons-col width="60px">
+                          <img src="{{item.picture}}" class="item-thum">
                     </ons-col>
-                      <ons-col>
+                    <ons-col>
                         <header>
-                            
+                            <span class="item-title">{{item.act}}</span>
                             <span class="item-label">{{item.date}}</span>
                         </header>
-                        
-                          <br><br>
-                        <p class="item-desc">{{item.act}}</p>
                         <p class="item-desc">{{item.name}}</p>
                     </ons-col>
                 </ons-row>
@@ -588,9 +584,9 @@
                 </ons-row>
             </ons-list-item>
             <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-            Nodig uit        
-            </ons-button>
+            
+              
+              <span id="" ng-click="myNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Nodig uit</span>
             </p>   
             <ons-list-header>Reacties</ons-list-header>
               <ons-list-item class="item">
@@ -632,18 +628,239 @@
                     </ons-col>
                 </ons-row>
             </ons-list-item>
-            <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-             Plaats reactie        
-            </ons-button>
-            </p>   
+              
+              <section style="padding: 0 8px 8px">
+                <textarea class="textarea" ng-model="text2" placeholder="Schrijf een bericht..." style="width: 100%; height: 100px; margin-top:10px;"></textarea>
+              </section>
+              <section style="padding: 0 8px 8px">
+                <span id="" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Verstuur</span>
+                <ons-button modifier="quiet">Upload foto/ video</ons-button>
+              </section>
+
+            
         </ons-list>
        </ons-page>
 </ons-template>
-  
+      
+      
+      <!--========================================================================== 
+	Memorie details
+    ==========================================================================--->    
     
-    
+    <ons-template id="memorieDetails.html">
+    <ons-page ng-controller="MemorieCtrl">
 
+        <ons-toolbar>
+            <div class="left"><ons-back-button>Back</ons-back-button></div>
+            <div class="center">{{item.cat}}</div>
+        </ons-toolbar>
+      
+  
+      
+        <ons-list modifier="chevron">
+            <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="60px">
+                          <img src="{{item.picture}}" class="item-thum">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">{{item.act}}</span>
+                            <span class="item-label">{{item.date}}</span>
+                        </header>
+                        <p class="item-desc">{{item.name}}</p>
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+            <div id="map_canvas">
+	        
+            </div>
+            <ons-list>
+              <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+                </ons-list-item>
+                <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/amy_jones.jpg" class="item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+                </ons-list-item>
+                <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+        </ons-list>
+        
+        
+        <p class="center button1">
+            <ons-button ng-click="myNavigator.pushPage('memorieOverzicht.html', { animation : 'slide' }, menu.close())">
+               Doe mee!        
+            </ons-button>
+        </p>   
+
+</ons-page>
+</ons-template>
+
+<!--========================================================================== 
+	Memorie overzicht
+    ==========================================================================--->    
+    
+    <ons-template id="memorieOverzicht.html">
+    <ons-page ng-controller="MemorieOverzichtController">
+ <ons-toolbar>
+            <div class="left"><ons-back-button>Back</ons-back-button></div>
+            <div class="center">{{item.cat}}</div>
+        </ons-toolbar>
+
+
+        <ons-list modifier="chevron">
+            <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="60px">
+                          <img src="{{item.picture}}" class="item-thum">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">{{item.act}}</span>
+                            <span class="item-label">{{item.date}}</span>
+                        </header>
+                        <p class="item-desc">{{item.name}}</p>
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+             <p style="margin-left:10px;">Foto's en video's</p>
+            <ons-carousel swipeable style="margin-top: 5px; margin-left:6px; height: 120px;" overscrollable auto-scroll item-width="120px">
+          
+            <ons-carousel-item ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]">
+            <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;"></div>
+            </ons-carousel-item>
+            </ons-carousel>
+            
+            <ons-list>
+             <ons-list-header>Deelnemers</ons-list-header>
+              <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+                </ons-list-item>
+                <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/amy_jones.jpg" class="item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+                </ons-list-item>
+                <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+            <p class="center button1">
+            
+              
+              <span id="" ng-click="myNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Nodig uit</span>
+            </p>   
+            <ons-list-header>Reacties</ons-list-header>
+              <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+                </ons-list-item>
+                <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/amy_jones.jpg" class="item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+                </ons-list-item>
+                <ons-list-item class="item">
+                <ons-row>
+                    <ons-col width="40px">
+                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
+                        </header>
+                        
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+              
+              <section style="padding: 0 8px 8px">
+                <textarea class="textarea" ng-model="text2" placeholder="Schrijf een bericht..." style="width: 100%; height: 100px; margin-top:10px;"></textarea>
+              </section>
+              <section style="padding: 0 8px 8px">
+                <span id="" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Verstuur</span>
+                <ons-button modifier="quiet">Upload foto/ video</ons-button>
+              </section>
+
+            
+        </ons-list>
+       </ons-page>
+</ons-template>
 
 <!--========================================================================== 
 	Nieuwe activiteit
@@ -684,11 +901,87 @@
         </ons-col>
 
       </ons-row>
-            <span id="" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Maak Activiteit</span>
-            
+      
+        <span id="" ng-click="myNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Kies vrienden</span>
+      
+        <ons-button id="">Maak activiteit</ons-button>
+      
             
        </ons-page>
 </ons-template>
+      
+<!--========================================================================== 
+	Nodig contacten uit
+    ==========================================================================--->    
+    
+    <ons-template id="invite.html">
+    <ons-page ng-controller="InviteController">
+      <ons-modal var="modal">
+        <ons-icon icon="ion-load-c" spin="true"></ons-icon>
+        <br><br>
+        Oke!<br>Je vrienden zijn uitgenodigd.
+      </ons-modal>
+      
+      <ons-toolbar>
+            <div class="left"><ons-back-button>Back</ons-back-button></div>
+            <div class="center">Nodig vrienden uit</div>
+        </ons-toolbar>
+
+
+  <ul class="list" style="border-top: none;">
+    <li class="list__header">Favouriten</li>
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox" checked="checked">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Rolando Bagallio
+      </label>
+    </li>
+
+    
+
+    <li class="list__header">Vrienden</li>
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Miechiel de Ruijker
+      </label>
+    </li>
+    
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Freek de Gaapert
+      </label>
+    </li>
+    
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Kelly von Shrauberhas
+      </label>
+    </li>
+
+    
+  </ul>
+          
+      
+      <p style="text-align: center">
+            <ons-button id="show-modal">Verstuur uitnodiging</ons-button>
+          </p>
+      <ons-list-item ng-click="alert()" modifier="tappable">ALEERT</ons-list-item>
+
+
+</ons-template>
+      
+
   
 <!--========================================================================== 
 	Contacten
@@ -705,24 +998,49 @@
 					</div>
 					<div class="center">Contacten</div>
 				</ons-toolbar>
-				<ons-list ng-controller="MainCtrl">
-				
-              <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
+				<ul class="list" style="border-top: none;">
+    <li class="list__header">Favouriten</li>
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox" checked="checked">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Rolando Bagallio
+      </label>
+    </li>
+
+    
+
+    <li class="list__header">Vrienden</li>
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Miechiel de Ruijker
+      </label>
+    </li>
+    
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Freek de Gaapert
+      </label>
+    </li>
+    
+    <li class="list__item list__item--tappable">
+      <label class="checkbox checkbox--list-item">
+        <input type="checkbox">
+        <div class="checkbox__checkmark
+          checkbox--list-item__checkmark"></div>
+        <img src="images/eugene_lee.jpg" class="contact-image">Kelly von Shrauberhas
+      </label>
+    </li>
+
+    
+  </ul>
 
 					    			    		
 	    	</ons-page>

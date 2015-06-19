@@ -54,6 +54,12 @@ module.controller('NieuweActiviteitController', function($scope) {
 	});
 });
 
+module.controller('InviteController', function($scope) { 
+	ons.ready(function() {
+		
+	});
+});
+
 
 (function(){
  
@@ -195,7 +201,7 @@ module.factory('$data', function() {
             },
             {
                 name: 'julie_taylor',
-                act: 'Keiharde apenporno kijken',
+                act: 'Keiharde apenmuziek luisteren',
                 date: '1 day ago',
                 cat: 'Video games',
                 picture: 'images/julie_taylor.jpg'
