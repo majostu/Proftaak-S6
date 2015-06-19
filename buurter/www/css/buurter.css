@@ -1,4 +1,13 @@
-    .page--menu-page__background {
+.navlogo{
+  height: 20px;
+  position: relative;
+  top: 5px;
+  left: -5px;
+}
+.logotitle{
+  vertical-align: baseline;
+}
+.page--menu-page__background {
       background-color: #333;
     }
     
