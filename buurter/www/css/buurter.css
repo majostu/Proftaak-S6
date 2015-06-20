@@ -197,3 +197,112 @@ margin-bottom: 10px;
 .checkbox__checkmark{
   float: right;
 }
+
+
+
+
+/* OPMAAK! */
+
+.navigation-bar
+{
+	background-color: #29ace4;
+	color: #fff;
+}
+.ons-icon
+{
+	color: #fff
+}
+.logotitle
+{
+	color: #fff
+}
+.navigation-bar__title
+{
+	color:#fff;
+}
+.toolbar-button
+{
+	color: #fff;
+}
+.page--menu-page__background
+{
+	background-color: #29ace4; 
+}
+.range
+{
+	margin-left: 12px;
+	margin-top: 12px;
+}
+.navigation-bar__left
+{
+	color: #fff;
+}
+.back-button__label
+{
+	color: #fff;
+}
+.navigation-bar i
+{
+	color: #fff;
+}
+.button
+{
+	background-color: #7AD7FF;
+}
+.toolbar-button--outline
+{
+	border: 1px solid #7AD7FF;
+	color: #7AD7FF;
+}
+.button--quiet
+{
+	color: #fff;
+}
+.red
+{
+	color: red;
+}
+.button-bar__item.active > .button-bar__button, :checked + .button-bar__button {
+	background-color: #7AD7FF;
+	color: #fff;
+}
+.button-bar__button {
+	border: 1px solid #7AD7FF;
+	border-top: 1px solid #7AD7FF;
+  color: #7AD7FF;
+}
+.button-bar__item:first-child > .button-bar__button {
+	border-right: 1px solid #7AD7FF;
+	border-left: 1px solid #7AD7FF;
+}
+
+.button-bar__item:last-child > .button-bar__button {
+	border-right: 1px solid #7AD7FF;
+	border-left: 0px solid #7AD7FF;
+}
+#selectCat
+{
+    margin-left: 5%;	
+    margin-bottom: 10px;
+}
+
+#createActivity
+{
+	margin-left: 5%;
+}
+
+#createActivity .toolbar-button--outline {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px; 
+}
+#date
+{
+	margin-left: 5%;	
+
+}
+.date
+{
+    margin-bottom: 10px;
+}

@@ -140,7 +140,7 @@
 
 		<p class="center">Sherry Turkle</p>
           <br>
-			<ons-list class="menu-list">
+		
               <ons-list-item class=" menu-item" modifier="chevron" ng-click="myNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
           Mijn gegevens</ons-list-item>
               <ons-list-item class=" menu-item" modifier="chevron" ng-click="myNavigator.pushPage('interesses.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-search" fixed-width="true"></ons-icon>
@@ -150,7 +150,7 @@
               
               </ons-list-item>
               <input type="range" class="range"><br/><br/>
-          <ons-list-item class=" menu-item" modifier="chevron" ng-click="myNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
+          <ons-list-item class=" menu-item" modifier="chevron"ng-click="myNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
           <ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
           Contacten
         </ons-list-item>
@@ -244,7 +244,7 @@
       </div>
       <ons-list modifier="inset" class="settings-list">
         <ons-list-item modifier="tappable">
-          <ons-icon icon="ion-log-out" style="opacity: 0.8"></ons-icon>
+          <ons-icon class='red' icon="ion-log-out" style="opacity: 0.8"></ons-icon>
           Uitloggen
         </ons-list-item>
       </ons-list>
@@ -648,7 +648,7 @@
     ==========================================================================--->    
     
     <ons-template id="memorieDetails.html">
-    <ons-page ng-controller="MemorieCtrl">
+    <ons-page ng-controller="MemorieDetailsCtrl">
 
         <ons-toolbar>
             <div class="left"><ons-back-button>Back</ons-back-button></div>
@@ -720,7 +720,7 @@
         
         <p class="center button1">
             <ons-button ng-click="myNavigator.pushPage('memorieOverzicht.html', { animation : 'slide' }, menu.close())">
-               Doe mee!        
+               Bekijk Memorie        
             </ons-button>
         </p>   
 
@@ -895,20 +895,32 @@
       <ons-row class="profile-wrapper">
         <ons-col>
           <br>
-          <input type="text" class="text-input" style="width: 90%; margin: 0px 5% 10px 5%;" placeholder="Naam Evenement" value=""><br>
-      <input type="text" class="text-input" style="width: 90%; margin: 0px 5% 10px 5%;" placeholder="Categorie" value=""><br>
+           <input type="text" class="text-input" style="width: 90%; margin: 0px 5% 10px 5%;" placeholder="Naam Evenement" value=""><br>
+           <div id="selectCat">
+    Kies een categorie: <select ng-model="model_selected.id" ng-options="model.id as model.name for model in list"></select>
+           </div>
+        <div id="date">
+	        Datum: <input type="date" class="text-input date" ng-model="inputDate"/mklo><br>
+            Van: <input type="time" class="text-input date"  ng-model="inputTime"/> Tot: <input type="time" class="text-input" ng-model="inputTime"/>
+	        
+	        
+        </div>
+                         
           <textarea style="width: 90%; margin: 0px 5% 10px 5%;" class="textarea" rows="3" placeholder="Extra info; bv. Neem bier mee G!"></textarea>
         </ons-col>
 
       </ons-row>
-      
+      <div id='createActivity'>
         <span id="" ng-click="myNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Kies vrienden</span>
-      
         <ons-button id="">Maak activiteit</ons-button>
+      </div>
       
             
        </ons-page>
 </ons-template>
+
+
+
       
 <!--========================================================================== 
 	Nodig contacten uit
@@ -987,19 +999,17 @@
 	Contacten
     ==========================================================================--->    
       <ons-template id="contacten.html">
-    	<ons-navigator var="myNavigator">
 	    	<ons-page>
 	    	
 	    		<ons-toolbar>
 	    			<div class="left">
-						<ons-toolbar-button ng-click="menu.toggle()">
-							<ons-icon icon="bars"></ons-icon>
+						<div class="left"><ons-back-button>Back</ons-back-button></div>
 						</ons-toolbar-button>
 					</div>
 					<div class="center">Contacten</div>
 				</ons-toolbar>
 				<ul class="list" style="border-top: none;">
-    <li class="list__header">Favouriten</li>
+    <li class="list__header">Favorieten</li>
     <li class="list__item list__item--tappable">
       <label class="checkbox checkbox--list-item">
         <input type="checkbox" checked="checked">
@@ -1041,10 +1051,13 @@
 
     
   </ul>
+   <ons-button modifier="large"
+                    onclick="">
+          Voeg toe aan Activiteit
+        </ons-button>
 
 					    			    		
 	    	</ons-page>
-    	</ons-navigator>
     </ons-template>
 	
 </body>

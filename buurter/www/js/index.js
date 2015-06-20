@@ -51,6 +51,9 @@ module.controller('ContactenController', function($scope) {
 module.controller('NieuweActiviteitController', function($scope) { 
 	ons.ready(function() {
 		
+	 $scope.list = [ { "id" : "1" , "name" : "Sport" } , { "id" : "2" , "name" : "Eten en drinken" } , { "id" : "3" , "name" : "Shoppen"} , { "id" : "4" , "name" : "Muziek"}, { "id" : "5" , "name" : "Film"}, { "id" : "6" , "name" : "Spel"}, { "id" : "7" , "name" : "Video Games"}, { "id" : "8" , "name" : "Fotografie"}, { "id" : "9" , "name" : "Relaxen"} , { "id" : "10" , "name" : "Reizen"}, { "id" : "11" , "Overige" : "Shoppen"}        ];
+    
+		
 	});
 });
 
@@ -97,11 +100,27 @@ module.controller('OverzichtController', function($scope, $data) {
         $scope.showDetail = function(index) {
             var selectedItem = $data2.items[index];
             $data2.selectedItem = selectedItem;
-            $scope.nav.pushPage('memorieOverzicht.html', selectedItem);
+            $scope.myNavigator.pushPage('memorieDetails.html', selectedItem);
         };
         
     });
     
+    module.controller('MemorieDetailsCtrl', function($scope, $data2) {
+        $scope.item = $data2.selectedItem;
+        
+         $scope.showDetail = function(index) {
+            var selectedItem = $data2.items[index];
+            $data2.selectedItem = selectedItem;
+            $scope.myNavigator.pushPage('memorieOverzicht.html.html', selectedItem);
+        };
+
+        
+    }); 
+    
+      module.controller('MemorieOverzichtController', function($scope, $data2) {
+        $scope.item = $data2.selectedItem;
+    });    
+
     
 
 
