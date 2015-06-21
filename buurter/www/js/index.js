@@ -1,9 +1,6 @@
 // Preloader activate //
-ons.ready(function() {
-	lodal.show();
-});
 
-
+var loggedin;
 
 var app = {
     initialize: function() {
@@ -20,14 +17,100 @@ var app = {
 
 app.initialize();
 
-var module = angular.module('buurter', ['onsen']);
+var module = angular.module('buurter', ['onsen', 'ngOpenFB']);
 
-module.controller('AppController', function($scope) { 
-	ons.ready(function() {
-		setTimeout(function(){
-          lodal.hide();
-        }, 500);
-	});
+module.controller('AppController', function($rootScope, $scope, ngFB) { 
+
+	
+		ngFB.api({path: '/me'}).then(
+				function(user) {
+					console.log(JSON.stringify(user));
+					$scope.user = user;
+					loggedin = true;
+					console.log(loggedin);	
+					
+					
+							if(loggedin == true){ //Check the var and load hide/show data...tum tum
+								console.log("loggedin"); 
+								$scope.data = {
+									show: true,
+									hide: false
+								};
+							}
+					
+					
+				},
+				errorHandler);
+		// Defaults to sessionStorage for storing the Facebook token
+		ngFB.init({appId: '1408768302786339'});
+
+		//  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
+		//openFB.init({appId: '1408768302786339', tokenStore: window.localStorage});
+
+		$scope.login = function() {
+			ngFB.login({scope: 'email,read_stream,publish_actions'}).then(
+				function(response) {
+					alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
+					loggedin = true;
+				},
+				function(error) {
+					alert('Facebook login failed: ' + error);
+				});
+		}
+
+		$scope.getInfo = function() {
+			ngFB.api({path: '/me'}).then(
+				function(user) {
+					console.log(JSON.stringify(user));
+					$scope.user = user;
+				},
+				errorHandler);
+		}
+
+		$scope.share = function() {
+			ngFB.api({
+				method: 'POST',
+				path: '/me/feed',
+				params: {message: document.getElementById('Message').value || 'Testing Facebook APIs'}
+			}).then(
+				function() {
+					alert('the item was posted on Facebook');
+				},
+				errorHandler);
+		}
+
+		$scope.readPermissions = function() {
+			ngFB.api({
+				method: 'GET',
+				path: '/me/permissions'
+			}).then(
+				function(result) {
+					alert(JSON.stringify(result.data));
+				},
+				errorHandler
+			);
+		}
+
+		$scope.revoke = function() {
+			ngFB.revokePermissions().then(
+				function() {
+					alert('Permissions revoked');
+				},
+				errorHandler);
+		}
+
+		$scope.logout = function() {
+			ngFB.logout().then(
+				function() {
+					alert('Logout successful');
+				},
+				errorHandler);
+		}
+
+		function errorHandler(error) {
+			alert(error.message);
+		}
+		
 });
 
 module.controller('GegevensController', function($scope) { 
@@ -84,13 +167,13 @@ module.controller('OverzichtController', function($scope, $data) {
     });    
 
     module.controller('MainCtrl', function($scope, $data) {
-        $scope.items = $data.items;
+			$scope.items = $data.items;
 
-        $scope.showDetail = function(index) {
-            var selectedItem = $data.items[index];
-            $data.selectedItem = selectedItem;
-            $scope.myNavigator.pushPage('details.html', selectedItem);
-        };
+			$scope.showDetail = function(index) {
+				var selectedItem = $data.items[index];
+				$data.selectedItem = selectedItem;
+				$scope.myNavigator.pushPage('details.html', selectedItem);
+			};
     });
     
      module.controller('MemorieCtrl', function($scope, $data2) {

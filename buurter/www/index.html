@@ -10,30 +10,23 @@
 <link rel="stylesheet" type="text/css" href="css/buurter.css">
 	
   <script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="components/angular/angular.js"></script>    
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<script type="text/javascript" src="js/openfb.js"></script>
+	<script type="text/javascript" src="js/ngopenfb.js"></script>
 	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
 	<!--<script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
 	<script type="text/javascript" src="components/angular-google-maps/dist/angular-google-maps.min.js"></script>-->
 	<script type="text/javascript" src="js/index.js"></script>
 <title>Buurter</title>
 </head>
 <body ng-controller="AppController">
-  
-    <ons-modal var="lodal" style="background:url(img/splash.jpg)no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;">
-      <br><br><br><br><br><br><br><br><br><br>
-      <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
-      
-    </ons-modal>
-  
+   
   <ons-sliding-menu var="menu" menu-page="menu.html" main-page="main_pagina.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
   
   
-    
+
     <!--========================================================================== 
 	MAIN PAGE
     ==========================================================================--->
@@ -43,16 +36,16 @@
 	    	
 	    		<ons-toolbar>
 	    			<div class="left">
-						<ons-toolbar-button ng-click="menu.toggle()">
+						<ons-toolbar-button ng-click="menu.toggle()" ng-show="data.show">
 							<ons-icon icon="bars"></ons-icon>
 						</ons-toolbar-button>
 					</div>
 					<div class="center logotitle"><img class="navlogo" src="img/logo.png">BUURTER&copy;</div>
-                    <div class="right"><ons-toolbar-button modifier="chevron" ng-click="myNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">Nieuw <ons-icon icon="fa-plus-circle"></ons-icon></ons-toolbar-button></div>
+                    <div class="right"><ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="myNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">Nieuw <ons-icon icon="fa-plus-circle"></ons-icon></ons-toolbar-button></div>
                   
 				</ons-toolbar>
-              
-                <div class="button-bar" style="width:280px;">
+               
+                <div class="button-bar" style="width:280px;" ng-show="data.show">
 					<div class="button-bar__item">
 				    	<input type="radio" name="fav_bar" checked ng-model="fav_bar.name" value="indebuurt" >
 				    	<button class="button-bar__button">In de buurt</button>
@@ -62,11 +55,8 @@
 				    	<button class="button-bar__button">Memories</button>
 				  	</div>
 				</div>
-<<<<<<< HEAD
-              <img style="margin:0 10%; width:80%;" src="img/info1.png">
-=======
->>>>>>> origin/design
-              
+              <button class="btn btn-block" ng-click="login()">Login with Facebook</button>
+			  <button class="btn btn-block" ng-click="logout()">Logout</button>
 				<!--===================================
 				In de buurt
 				===================================--->
