@@ -14,13 +14,46 @@ var app = {
     }
 };
 
+var options = {
+  animation: 'slide', // What animation to use
+  onTransitionEnd: function() {} // Called when finishing transition animation
+};
+
 
 app.initialize();
 
 var module = angular.module('buurter', ['onsen', 'ngOpenFB']);
 
+
+
+//Set config and prefixes
+module.config(function ($compileProvider, $locationProvider, $httpProvider) {
+
+	//This is need because of the x-wmapp bug...
+	$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|file|ghttps?|ms-appx|x-wmapp0):/);
+	// Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
+	$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|http|ms-appx|x-wmapp0):|data:image\//);
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $httpProvider.defaults.headers.post['Accept'] = 'application/json, text/javascript';
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+    $httpProvider.defaults.headers.post['Access-Control-Max-Age'] = '1728000';
+    $httpProvider.defaults.headers.common['Access-Control-Max-Age'] = '1728000';
+    $httpProvider.defaults.headers.common['Accept'] = 'application/json, text/javascript';
+    $httpProvider.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
+    $httpProvider.defaults.useXDomain = true;
+
+	    if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.common = {};
+        }
+        $httpProvider.defaults.headers.common["Cache-Control"] = "no-cache";
+        $httpProvider.defaults.headers.common.Pragma = "no-cache";
+        $httpProvider.defaults.headers.common["If-Modified-Since"] = "0";
+	
+});
+
 module.controller('AppController', function($rootScope, $scope, ngFB) { 
 
+		//Need to watch on the session storage (FB AUTH KEY)
 	
 		ngFB.api({path: '/me'}).then(
 				function(user) {
@@ -52,6 +85,7 @@ module.controller('AppController', function($rootScope, $scope, ngFB) {
 				function(response) {
 					alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
 					loggedin = true;
+					myNavigator.pushPage("main_pagina.html", options);
 				},
 				function(error) {
 					alert('Facebook login failed: ' + error);
@@ -105,9 +139,15 @@ module.controller('AppController', function($rootScope, $scope, ngFB) {
 					alert('Logout successful');
 				},
 				errorHandler);
+				sessionStorage.removeItem('fbAccessToken');
+				menu.setMainPage('main_pagina.html', {closeMenu: true});
 		}
 
-		function errorHandler(error) {
+		function errorHandler(error) { 
+			$scope.data = {
+				show: false,
+				hide: true
+			};
 			alert(error.message);
 		}
 		

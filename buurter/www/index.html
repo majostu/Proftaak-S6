@@ -23,15 +23,17 @@
 </head>
 <body ng-controller="AppController">
    
-  <ons-sliding-menu var="menu" menu-page="menu.html" main-page="main_pagina.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
+  <ons-sliding-menu var="menu" menu-page="menu.html" main-page="home.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
   
-  
+    <ons-template id="home.html">
+    	<ons-navigator var="myNavigator" page="main_pagina.html">
+    	</ons-navigator>
+    </ons-template>		
 
     <!--========================================================================== 
 	MAIN PAGE
     ==========================================================================--->
     <ons-template id="main_pagina.html">
-    	<ons-navigator var="myNavigator">
 	    	<ons-page>
 	    	
 	    		<ons-toolbar>
@@ -55,8 +57,15 @@
 				    	<button class="button-bar__button">Memories</button>
 				  	</div>
 				</div>
-              <button class="btn btn-block" ng-click="login()">Login with Facebook</button>
-			  <button class="btn btn-block" ng-click="logout()">Logout</button>
+				
+				
+				<div ng-show="!data.show">
+				 <button class="btn btn-block" ng-click="login()">Login with Facebook</button>
+				</div>
+
+				<div ng-show="data.show">
+				  <button class="btn btn-block" ng-click="logout()">Logout</button>
+				</div>
 				<!--===================================
 				In de buurt
 				===================================--->
@@ -106,19 +115,8 @@
             </ons-list-item>
          
             </ons-list>
-              
-              
-              
-              
-              
-              
-              
-              
-				
-
-					    			    		
+              		    		
 	    	</ons-page>
-    	</ons-navigator>
     </ons-template>
 	    <!--========================================================================== 
 	MENU
