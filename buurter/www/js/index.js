@@ -22,7 +22,7 @@ var options = {
 
 app.initialize();
 
-var module = angular.module('buurter', ['onsen', 'ngOpenFB']);
+var module = angular.module('buurter', ['onsen', 'ngOpenFB', 'ui.router']);
 
 
 
@@ -51,9 +51,11 @@ module.config(function ($compileProvider, $locationProvider, $httpProvider) {
 	
 });
 
-module.controller('AppController', function($rootScope, $scope, ngFB) { 
+module.controller('AppController', function($rootScope, $scope, ngFB, $state, $window) { 
 
 		//Need to watch on the session storage (FB AUTH KEY)
+	
+		ngFB.getLoginStatus;
 	
 		ngFB.api({path: '/me'}).then(
 				function(user) {
@@ -85,7 +87,7 @@ module.controller('AppController', function($rootScope, $scope, ngFB) {
 				function(response) {
 					alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
 					loggedin = true;
-					myNavigator.pushPage("main_pagina.html", options);
+					$window.location.reload();
 				},
 				function(error) {
 					alert('Facebook login failed: ' + error);
@@ -140,7 +142,7 @@ module.controller('AppController', function($rootScope, $scope, ngFB) {
 				},
 				errorHandler);
 				sessionStorage.removeItem('fbAccessToken');
-				menu.setMainPage('main_pagina.html', {closeMenu: true});
+				$window.location.reload();
 		}
 
 		function errorHandler(error) { 
