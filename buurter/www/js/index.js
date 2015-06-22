@@ -190,20 +190,13 @@ module.controller('ContactenController', function($scope) {
 	});
 });
 
-module.controller('NieuweActiviteitController', function($scope, transformRequestAsFormPost, $http) { 
+module.controller('NieuweActiviteitController', function($scope, transformRequestAsFormPost, $http, $filter) { 
 	ons.ready(function() {
 		
 	 $scope.list = [ { "id" : "1" , "name" : "Sport" } , { "id" : "2" , "name" : "Eten en drinken" } , { "id" : "3" , "name" : "Shoppen"} , { "id" : "4" , "name" : "Muziek"}, { "id" : "5" , "name" : "Film"}, { "id" : "6" , "name" : "Spel"}, { "id" : "7" , "name" : "Video Games"}, { "id" : "8" , "name" : "Fotografie"}, { "id" : "9" , "name" : "Relaxen"} , { "id" : "10" , "name" : "Reizen"}, { "id" : "11" , "Overige" : "Shoppen"}        ];
 	
-	Date.prototype.toDateInputValue = (function() {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0,10);
-	});
-	
-	document.getElementById('date').value = new Date().toDateInputValue();
-	
-	
+	$scope.inputDate = $filter('date')(new Date(),'MM/dd/yyyy');
+
 		$scope.submit = function (){
 			
 		$http({
@@ -220,8 +213,9 @@ module.controller('NieuweActiviteitController', function($scope, transformReques
 			imgsrc : ""+$scope.imgsrc+"", 
 			title : ""+$scope.title+"",
 			description : ""+$scope.description+"",
-			from_time: ""+$scope.inputDate+$scope.inputTime1+"",
-			to_time: ""+$scope.inputDate+$scope.inputTime2+"",
+			date : ""+$scope.inputDate+"",
+			from_time: ""+$scope.inputTime1+"",
+			to_time: ""+$scope.inputTime2+"",
 			lat: ""+lat+"",
 			lon: ""+lon+""
 			}),  // pass in data as strings
