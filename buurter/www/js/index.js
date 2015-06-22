@@ -194,7 +194,16 @@ module.controller('NieuweActiviteitController', function($scope, transformReques
 	ons.ready(function() {
 		
 	 $scope.list = [ { "id" : "1" , "name" : "Sport" } , { "id" : "2" , "name" : "Eten en drinken" } , { "id" : "3" , "name" : "Shoppen"} , { "id" : "4" , "name" : "Muziek"}, { "id" : "5" , "name" : "Film"}, { "id" : "6" , "name" : "Spel"}, { "id" : "7" , "name" : "Video Games"}, { "id" : "8" , "name" : "Fotografie"}, { "id" : "9" , "name" : "Relaxen"} , { "id" : "10" , "name" : "Reizen"}, { "id" : "11" , "Overige" : "Shoppen"}        ];
-    
+	
+	Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+	});
+	
+	document.getElementById('date').value = new Date().toDateInputValue();
+	
+	
 		$scope.submit = function (){
 			
 		$http({
@@ -207,7 +216,7 @@ module.controller('NieuweActiviteitController', function($scope, transformReques
 		   transformRequest: transformRequestAsFormPost,
 			data    : eval({ 
 			'slug' : "activities", 
-			acitivity_id : ""+$scope.model_selected.id+"", 
+			activity_id : ""+$scope.model_selected.id+"", 
 			imgsrc : ""+$scope.imgsrc+"", 
 			title : ""+$scope.title+"",
 			description : ""+$scope.description+"",

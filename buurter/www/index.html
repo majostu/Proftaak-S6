@@ -889,8 +889,8 @@
     Kies een categorie: <select ng-model="model_selected.id" ng-options="model.id as model.name for model in list"></select>
            </div>
         <div id="date">
-	        Datum: <input type="date" class="text-input date" ng-model="inputDate"/mklo><br>
-            Van: <input type="time" class="text-input date"  ng-model="inputTime1"/> Tot: <input type="time" class="text-input" ng-model="inputTime2"/>
+	        Datum: <input type="date" id="date" class="text-input date" ng-model="inputDate"/><br>
+            Van: <input type="time" class="text-input time"  value="00:00" ng-model="inputTime1"/> Tot: <input value="00:00" type="time" class="text-input" ng-model="inputTime2"/>
 	        
 	        
         </div>
