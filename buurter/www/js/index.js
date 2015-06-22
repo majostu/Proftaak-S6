@@ -1,6 +1,8 @@
 // Preloader activate //
 
 var loggedin;
+var lat = 0; //set location vars
+var lon = 0;
 
 var app = {
     initialize: function() {
@@ -10,9 +12,24 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function() {
-      
+      navigator.geolocation.getCurrentPosition(onSuccess, onError);
     }
 };
+
+var onSuccess = function(position) {
+	lat = ''+ position.coords.latitude+ '';
+	lon = ''+position.coords.longitude+'';
+};
+
+// onError Callback receives a PositionError object
+//
+var onError = function(error) {
+	alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+};
+
+onOffline = function() { //Offline function
+	offline = true;
+}
 
 var options = {
   animation: 'slide', // What animation to use
@@ -173,11 +190,60 @@ module.controller('ContactenController', function($scope) {
 	});
 });
 
-module.controller('NieuweActiviteitController', function($scope) { 
+module.controller('NieuweActiviteitController', function($scope, transformRequestAsFormPost, $http) { 
 	ons.ready(function() {
 		
 	 $scope.list = [ { "id" : "1" , "name" : "Sport" } , { "id" : "2" , "name" : "Eten en drinken" } , { "id" : "3" , "name" : "Shoppen"} , { "id" : "4" , "name" : "Muziek"}, { "id" : "5" , "name" : "Film"}, { "id" : "6" , "name" : "Spel"}, { "id" : "7" , "name" : "Video Games"}, { "id" : "8" , "name" : "Fotografie"}, { "id" : "9" , "name" : "Relaxen"} , { "id" : "10" , "name" : "Reizen"}, { "id" : "11" , "Overige" : "Shoppen"}        ];
     
+		$scope.submit = function (){
+			
+		$http({
+		   url:'http://broekhuizenautomaterialen.nl/directa/data.php',
+		   method:"POST",
+		   headers: {
+			'X-Requested-With': 'XMLHttpRequest',
+			'Content-Type': 'application/x-www-form-urlencoded'
+		   },
+		   transformRequest: transformRequestAsFormPost,
+			data    : eval({ 
+			'slug' : "activities", 
+			acitivity_id : ""+$scope.model_selected.id+"", 
+			imgsrc : ""+$scope.imgsrc+"", 
+			title : ""+$scope.title+"",
+			description : ""+$scope.description+"",
+			from_time: ""+$scope.inputDate+$scope.inputTime1+"",
+			to_time: ""+$scope.inputDate+$scope.inputTime2+"",
+			lat: ""+lat+"",
+			lon: ""+lon+""
+			}),  // pass in data as strings
+			
+			isArray: true,
+			callback: ''
+		}).success(function(data) {
+			
+			if (!data) {
+			  // if not successful, bind errors to error variables
+			  console.log('error');
+			} else {
+			  // if successful, bind success message to message
+						
+						ons.notification.alert({
+							messageHTML: '<div>Activititeit toegevoegd!</div>',
+							// or messageHTML: '<div>Message in HTML</div>',
+							title: data.title,
+							buttonLabel: 'OK',
+							cancelable: true,
+							animation: 'default', // or 'none'
+							// modifier: 'optional-modifier'
+							callback: function() {
+								menu.setMainPage('home.html', {closeMenu: true})
+							}
+						});
+			}
+			
+		  });
+			
+		}
 		
 	});
 });
@@ -405,3 +471,65 @@ yourApp.controller("AppController", function($scope, $timeout) {
         var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);  
     },200);
 });
+
+
+module.factory("transformRequestAsFormPost",  function() {
+
+	// I prepare the request data for the form post.
+	function transformRequest( data, getHeaders ) {
+
+		var headers = getHeaders();
+
+		headers[ "Content-type" ] = "application/x-www-form-urlencoded; charset=utf-8";
+
+		return( serializeData( data ) );
+
+	}
+
+
+	// Return the factory value.
+	return( transformRequest );
+
+
+	function serializeData( data ) {
+
+			// If this is not an object, defer to native stringification.
+			if ( ! angular.isObject( data ) ) {
+
+				return( ( data == null ) ? "" : data.toString() );
+
+			}
+
+			var buffer = [];
+
+			// Serialize each key in the object.
+			for ( var name in data ) {
+
+				if ( ! data.hasOwnProperty( name ) ) {
+
+					continue;
+
+				}
+
+				var value = data[ name ];
+
+				buffer.push(
+					encodeURIComponent( name ) +
+					"=" +
+					encodeURIComponent( ( value == null ) ? "" : value )
+				);
+
+			}
+
+			// Serialize the buffer and clean it up for transportation.
+			var source = buffer
+				.join( "&" )
+				.replace( /%20/g, "+" )
+			;
+
+			return( source );
+
+		}
+
+	}
+);

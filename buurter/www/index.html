@@ -862,16 +862,16 @@
             <div class="center">Nieuwe activiteit</div>
         </ons-toolbar>
 
-
+	<form id="activity_form" ng-submit="submit()">
         <ons-list modifier="chevron">
             <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                       <img src="{{item.picture}}" class="item-thum">
+                       <img src="{{item.picture}}" ng-model="imgsrc" class="item-thum">
                     </ons-col>
                   <ons-col >
-                      <div class="">
-      <span id="top-right" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Upload foto</span>
+                    <div class="">
+						<span id="top-right" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Upload foto</span>
                     </div>
                   </ons-col>
                       
@@ -884,27 +884,27 @@
       <ons-row class="profile-wrapper">
         <ons-col>
           <br>
-           <input type="text" class="text-input" style="width: 90%; margin: 0px 5% 10px 5%;" placeholder="Naam Evenement" value=""><br>
+           <input type="text" class="text-input" style="width: 90%; margin: 0px 5% 10px 5%;" ng-model="title" placeholder="Naam Evenement" value=""><br>
            <div id="selectCat">
     Kies een categorie: <select ng-model="model_selected.id" ng-options="model.id as model.name for model in list"></select>
            </div>
         <div id="date">
 	        Datum: <input type="date" class="text-input date" ng-model="inputDate"/mklo><br>
-            Van: <input type="time" class="text-input date"  ng-model="inputTime"/> Tot: <input type="time" class="text-input" ng-model="inputTime"/>
+            Van: <input type="time" class="text-input date"  ng-model="inputTime1"/> Tot: <input type="time" class="text-input" ng-model="inputTime2"/>
 	        
 	        
         </div>
                          
-          <textarea style="width: 90%; margin: 0px 5% 10px 5%;" class="textarea" rows="3" placeholder="Extra info; bv. Neem bier mee G!"></textarea>
+          <textarea style="width: 90%; margin: 0px 5% 10px 5%;" ng-model="description" class="textarea" rows="3" placeholder="Extra info; bv. Neem bier mee G!"></textarea>
         </ons-col>
 
       </ons-row>
       <div id='createActivity'>
         <span id="" ng-click="myNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Kies vrienden</span>
-        <ons-button id="">Maak activiteit</ons-button>
+        <ons-button type="submit" id="" ng-click="submit()">Maak activiteit</ons-button>
       </div>
       
-            
+     </form>       
        </ons-page>
 </ons-template>
 
