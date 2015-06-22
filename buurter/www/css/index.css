@@ -16,18 +16,6 @@ body {
 /*========================================================================== 
 INTRO
 ==========================================================================*/
-ons-carousel-item {
-	display: table;
-	text-align: center;
-}
-
-.item-label {
-  	display: table-cell;
-  	vertical-align: middle;
-  	color: white;
-  	line-height: 1;
-  	font-weight: bold;
-}
 
 .cover-label {
   	text-align: center;
@@ -67,7 +55,31 @@ REGISTRATIE
 
 .formarea {
   	width: 90%;
-  	margin: 50px auto 0px auto;
+  	margin: 10px auto 0px auto;
+  color: #fff;
+}
+.text-input--underbar{
+  color: #fff !important;
+  font-weight: 300;
+}
+#login::-webkit-input-placeholder {
+   color: white;
+  opacity:0.6;
+}
+
+#login:-moz-placeholder { /* Firefox 18- */
+   color: white;
+  opacity:0.6;  
+}
+
+#login::-moz-placeholder {  /* Firefox 19+ */
+   color: white;
+  opacity:0.6;  
+}
+
+#login:-ms-input-placeholder {  
+   color: white;
+  opacity:0.6;  
 }
 
 input[type=text],

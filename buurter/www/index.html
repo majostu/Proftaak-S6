@@ -27,26 +27,45 @@
 	    <ons-navigator var="introNavigator">
 			<ons-page ng-controller="IntroController">
 				<ons-carousel swipeable overscrollable auto-scroll fullscreen var="carousel">
-					<ons-carousel-item style="background-color: gray;">
-						<div class="item-label">GRAY</div>
+					<ons-carousel-item style="background: url(img/intro-back.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;color:white !important;">
+						<div class="">
+                          <br><br><br>
+                          <img style="width:40%;" src="img/logo.png">
+                          <h2 style="font-style:italic;">BUURTER<sup style="font-size:0.7em;" >&trade;</sup></h2><br>
+                          Kom in contact met mensen in de buurt!
+                      </div>
 					</ons-carousel-item>
-					<ons-carousel-item style="background-color: #085078;">
-						<div class="item-label">BLUE</div>
+					<ons-carousel-item style="background-color: #5CBD77;color:white !important;">
+						<div class="">
+                          <br>
+                          <br>
+                          <img src="img/ding_1.png">
+                          Kijk opdeze knop wat er te doen is in de buurt<br>
+                          of kijk met deze knop wat je gedaann hebt
+                      </div>
 					</ons-carousel-item>
-					<ons-carousel-item style="background-color: #373B44;">
-						<div class="item-label">DARK</div>
+					<ons-carousel-item style="background-color: #5CBD77 ;color:white !important;">
+						<div class="">
+                          <br>
+                          <br>
+                          Klik op deze knop op om een activiteit toe te voegen, en hier kun je een kaartje zien wat er allemaal te doen is.
+                      </div>
 					</ons-carousel-item>
-					<ons-carousel-item style="background-color: #D38312;">
-						<div class="item-label">
-							
-							<h1>Welkom bij Buurter</h1>
-							
+					<ons-carousel-item style="background-color: rgba(235,94,47,0.84);color:white !important;">
+						<div class="">
+							<br><br>
+							<button class="button" ng-click="login()">Login met Facebook</button>		
+                            <p>of</p>
 							<form class="formarea" ng-submit="LoginSubmit()">
 								<div class="form-row">
-									<input type="text" class="text-input--underbar width-full" placeholder="Email" value="" name="email" ng-model="email" required>
+									<input id="login" type="text" class="text-input--underbar width-full" placeholder="Email" value="" name="email" ng-model="email" required>
 				        		</div>
 								<div class="form-row">
-									<input type="password" class="text-input--underbar width-full" placeholder="Wachtwoord" value="" name="password" ng-model="password" required>
+									<input id="login" type="password" class="text-input--underbar width-full" placeholder="Wachtwoord" value="" name="password" ng-model="password" required>
 				        		</div>
 								<!--<div class="lucent">
 									<p class="note">Password - 6 characters or more</p>
@@ -55,14 +74,14 @@
 									<button class="button button--large" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Inloggen</button>
 				        		</div>
 				      		</form>
-							<p>of</p>						
-							<button class="button" ng-click="login()">Login met Facebook</button>					
+													
+										
 							<p>Geen Facebook of account?</p>
-							<button class="button button--outline" ng-click="introNavigator.pushPage('registreer.html', { animation : 'lift' })">Registreer een nieuw account</button>
+							<p style="text-decoration:underline;" ng-click="introNavigator.pushPage('registreer.html', { animation : 'lift' })">Registreer een nieuw account</p>
 						</div>
 					</ons-carousel-item>
 					<ons-carousel-cover>
-						<div class="cover-label">Swipe links of rechts</div>
+						<div class="cover-label"><i class="fa fa-circle"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i></div>
 					</ons-carousel-cover>
 				</ons-carousel>		
 			</ons-page>
@@ -78,7 +97,7 @@
 					<ons-back-button>Back</ons-back-button>
 				</div>
 				<div class="center">
-					Buurter&copy;
+					Buurter&trade;
 				</div>
 			</ons-toolbar>
 			<form class="formarea" ng-submit="RegisterSubmit()">
