@@ -1,56 +1,11 @@
-// Preloader activate //
-
 var loggedin;
-var lat = 0; //set location vars
-var lon = 0;
 
-var app = {
-    initialize: function() {
-        this.bindEvents();
-    },
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    onDeviceReady: function() {
-      navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    }
-};
+var module = angular.module('buurter', ['onsen', 'LocalStorageModule', 'ngOpenFB', 'ui.router']);
 
-var onSuccess = function(position) {
-	lat = ''+ position.coords.latitude+ '';
-	lon = ''+position.coords.longitude+'';
-};
-
-// onError Callback receives a PositionError object
-//
-var onError = function(error) {
-	alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-};
-
-onOffline = function() { //Offline function
-	offline = true;
-}
-
-var options = {
-  animation: 'slide', // What animation to use
-  onTransitionEnd: function() {} // Called when finishing transition animation
-};
-
-
-app.initialize();
-
-var module = angular.module('buurter', ['onsen', 'ngOpenFB', 'ui.router']);
-
-
-
-//Set config and prefixes
-module.config(function ($compileProvider, $locationProvider, $httpProvider) {
-
-	//This is need because of the x-wmapp bug...
-	$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|file|ghttps?|ms-appx|x-wmapp0):/);
-	// Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
-	$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|http|ms-appx|x-wmapp0):|data:image\//);
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+module.config(function (localStorageServiceProvider, $httpProvider) {
+  	localStorageServiceProvider
+    .setPrefix('buurter');
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $httpProvider.defaults.headers.post['Accept'] = 'application/json, text/javascript';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
     $httpProvider.defaults.headers.post['Access-Control-Max-Age'] = '1728000';
@@ -58,41 +13,45 @@ module.config(function ($compileProvider, $locationProvider, $httpProvider) {
     $httpProvider.defaults.headers.common['Accept'] = 'application/json, text/javascript';
     $httpProvider.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
     $httpProvider.defaults.useXDomain = true;
-
-	    if (!$httpProvider.defaults.headers.get) {
-            $httpProvider.defaults.headers.common = {};
-        }
-        $httpProvider.defaults.headers.common["Cache-Control"] = "no-cache";
-        $httpProvider.defaults.headers.common.Pragma = "no-cache";
-        $httpProvider.defaults.headers.common["If-Modified-Since"] = "0";
-	
 });
 
-module.controller('AppController', function($rootScope, $scope, ngFB, $state, $window) { 
-
+module.controller('AppController', function($rootScope, $scope, $compile, $http, localStorageService, ngFB, $state, $window) { 
+	ons.ready(function() {
+		
+		if(localStorageService.isSupported) {
+			console.log('storage supported: yes; type: local storage');
+		}
+		
+		if (sessionStorage.loggedin == 'true') {
+			$scope.data = {
+				show: true,
+				hide: false
+			};
+			introNavigator.pushPage('home.html', { animation : 'slide' });
+		}
+		
 		//Need to watch on the session storage (FB AUTH KEY)
 	
 		ngFB.getLoginStatus;
 	
 		ngFB.api({path: '/me'}).then(
-				function(user) {
-					console.log(JSON.stringify(user));
-					$scope.user = user;
-					loggedin = true;
-					console.log(loggedin);	
-					
-					
-							if(loggedin == true){ //Check the var and load hide/show data...tum tum
-								console.log("loggedin"); 
-								$scope.data = {
-									show: true,
-									hide: false
-								};
-							}
-					
-					
-				},
-				errorHandler);
+		function(user) {
+			console.log(JSON.stringify(user));
+			$scope.user = user;
+			loggedin = true;
+			console.log(loggedin);	
+						
+			if(loggedin == true){ //Check the var and load hide/show data...tum tum
+				console.log("loggedin"); 
+				$scope.data = {
+					show: true,
+					hide: false
+				};
+				introNavigator.pushPage('home.html', { animation : 'slide' });
+			}
+						
+		},
+		errorHandler);
 		// Defaults to sessionStorage for storing the Facebook token
 		ngFB.init({appId: '1408768302786339'});
 
@@ -102,12 +61,13 @@ module.controller('AppController', function($rootScope, $scope, ngFB, $state, $w
 		$scope.login = function() {
 			ngFB.login({scope: 'email,read_stream,publish_actions'}).then(
 				function(response) {
-					alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
+					//alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
 					loggedin = true;
-					$window.location.reload();
+					//$window.location.reload();
+					introNavigator.pushPage('home.html', { animation : 'slide' });
 				},
 				function(error) {
-					alert('Facebook login failed: ' + error);
+					//alert('Facebook login failed: ' + error);
 				});
 		}
 
@@ -127,7 +87,7 @@ module.controller('AppController', function($rootScope, $scope, ngFB, $state, $w
 				params: {message: document.getElementById('Message').value || 'Testing Facebook APIs'}
 			}).then(
 				function() {
-					alert('the item was posted on Facebook');
+					//alert('the item was posted on Facebook');
 				},
 				errorHandler);
 		}
@@ -138,7 +98,7 @@ module.controller('AppController', function($rootScope, $scope, ngFB, $state, $w
 				path: '/me/permissions'
 			}).then(
 				function(result) {
-					alert(JSON.stringify(result.data));
+					//alert(JSON.stringify(result.data));
 				},
 				errorHandler
 			);
@@ -147,7 +107,7 @@ module.controller('AppController', function($rootScope, $scope, ngFB, $state, $w
 		$scope.revoke = function() {
 			ngFB.revokePermissions().then(
 				function() {
-					alert('Permissions revoked');
+					//alert('Permissions revoked');
 				},
 				errorHandler);
 		}
@@ -155,11 +115,12 @@ module.controller('AppController', function($rootScope, $scope, ngFB, $state, $w
 		$scope.logout = function() {
 			ngFB.logout().then(
 				function() {
-					alert('Logout successful');
+					//alert('Logout successful');
 				},
 				errorHandler);
 				sessionStorage.removeItem('fbAccessToken');
-				$window.location.reload();
+				sessionStorage.removeItem('loggedin');
+				$window.location.reload();			
 		}
 
 		function errorHandler(error) { 
@@ -167,10 +128,151 @@ module.controller('AppController', function($rootScope, $scope, ngFB, $state, $w
 				show: false,
 				hide: true
 			};
-			alert(error.message);
+			//alert(error.message);
 		}
-		
+				
+	});
 });
+
+module.controller('IntroController', function($rootScope, $scope, $compile, $http, localStorageService, transformRequestAsFormPost) { 
+	ons.ready(function() {
+				
+		$scope.LoginSubmit = function() {
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php',
+			   method:"POST",
+			   headers: {
+				'X-Requested-With': 'XMLHttpRequest',
+				'Content-Type': 'application/x-www-form-urlencoded'
+			   },
+			   transformRequest: transformRequestAsFormPost,
+				data    : eval({ 
+				'slug' : "login", 
+				fb_email: ""+$scope.email+"", 
+				password: ""+$scope.password+""
+				}),  // pass in data as strings
+				
+				isArray: true,
+				callback: ''
+			}).success(function(data) {
+						
+				if (!data) {
+					// if not successful, bind errors to error variables
+					console.log(data);
+					console.log('error');
+					
+					ons.notification.alert({
+                        messageHTML: '<div><ons-icon icon="fa-ban" style="color:#9d0d38; font-size: 28px;"></ons-icon></div>',
+						title: 'Oeps... er is iets fout gegaan',
+						buttonLabel: 'OK',
+						callback: function() {
+															
+						}
+                    });
+					
+				} else {
+				  	// if successful, bind success message to message
+				  	console.log(data);
+				  	console.log('success');
+				  	
+				  	if (data == 'true') {
+					 	ons.notification.alert({
+	                    	messageHTML: '<div><ons-icon icon="fa-check" style="color:#61b76b; font-size: 28px;"></ons-icon></div>',
+							title: 'Je bent succesvol ingelogd',
+							buttonLabel: 'OK',
+							callback: function() {
+								introNavigator.pushPage('home.html', { animation : 'slide' });
+								
+								
+								sessionStorage.loggedin = true;					
+							}
+	                	});		
+				  	} else {
+					  	ons.notification.alert({
+	                    	messageHTML: '<div><ons-icon icon="fa-check" style="color:#61b76b; font-size: 28px;"></ons-icon></div>',
+							title: 'Combinatie email en wachtwoord incorrect',
+							buttonLabel: 'OK',
+							callback: function() {
+																	
+							}
+	                	});	
+				  	}
+				  
+				  			                              	                                	
+				}
+			});
+		};		
+		
+	});
+});
+
+module.controller('RegisterController', function($rootScope, $scope, $compile, $http, localStorageService, transformRequestAsFormPost) { 
+	ons.ready(function() {
+				
+		$scope.RegisterSubmit = function() {
+									
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php',
+			   method:"POST",
+			   headers: {
+				'X-Requested-With': 'XMLHttpRequest',
+				'Content-Type': 'application/x-www-form-urlencoded'
+			   },
+			   transformRequest: transformRequestAsFormPost,
+				data    : eval({ 
+				'slug' : "users", 
+				fb_email: ""+$scope.email+"", 
+				password: ""+$scope.password+""
+				}),  // pass in data as strings
+				
+				isArray: true,
+				callback: ''
+			}).success(function(data) {
+				if (!data) {
+					// if not successful, bind errors to error variables
+					console.log(data);
+					console.log('error');
+					
+					ons.notification.alert({
+                        messageHTML: '<div><ons-icon icon="fa-ban" style="color:#9d0d38; font-size: 28px;"></ons-icon></div>',
+						title: 'Oeps... er is iets fout gegaan',
+						buttonLabel: 'OK',
+						callback: function() {
+															
+						}
+                    });
+					
+				} else {
+				  	// if successful, bind success message to message
+				  	console.log(data);
+				  	console.log('success');
+				  
+				  	ons.notification.alert({
+                    	messageHTML: '<div><ons-icon icon="fa-check" style="color:#61b76b; font-size: 28px;"></ons-icon></div>',
+						title: 'Je bent succesvol geregistreerd',
+						buttonLabel: 'OK',
+						callback: function() {
+							introNavigator.pushPage('home.html', { animation : 'slide' });										
+						}
+                	});			                              	                                	
+				}
+			});
+		
+		};
+			
+	});
+});
+
+module.controller('HomeController', function($rootScope, $scope, $compile, $http, localStorageService) { 
+	ons.ready(function() {
+				
+	});
+});
+
+
+
+
+
 
 module.controller('GegevensController', function($scope) { 
 	ons.ready(function() {
@@ -190,13 +292,11 @@ module.controller('ContactenController', function($scope) {
 	});
 });
 
-module.controller('NieuweActiviteitController', function($scope, transformRequestAsFormPost, $http, $filter) { 
+module.controller('NieuweActiviteitController', function($scope, transformRequestAsFormPost, $http) { 
 	ons.ready(function() {
 		
 	 $scope.list = [ { "id" : "1" , "name" : "Sport" } , { "id" : "2" , "name" : "Eten en drinken" } , { "id" : "3" , "name" : "Shoppen"} , { "id" : "4" , "name" : "Muziek"}, { "id" : "5" , "name" : "Film"}, { "id" : "6" , "name" : "Spel"}, { "id" : "7" , "name" : "Video Games"}, { "id" : "8" , "name" : "Fotografie"}, { "id" : "9" , "name" : "Relaxen"} , { "id" : "10" , "name" : "Reizen"}, { "id" : "11" , "Overige" : "Shoppen"}        ];
-	
-	$scope.inputDate = $filter('date')(new Date(),'MM/dd/yyyy');
-
+    
 		$scope.submit = function (){
 			
 		$http({
@@ -209,13 +309,12 @@ module.controller('NieuweActiviteitController', function($scope, transformReques
 		   transformRequest: transformRequestAsFormPost,
 			data    : eval({ 
 			'slug' : "activities", 
-			activity_id : ""+$scope.model_selected.id+"", 
+			acitivity_id : ""+$scope.model_selected.id+"", 
 			imgsrc : ""+$scope.imgsrc+"", 
 			title : ""+$scope.title+"",
 			description : ""+$scope.description+"",
-			date : ""+$scope.inputDate+"",
-			from_time: ""+$scope.inputTime1+"",
-			to_time: ""+$scope.inputTime2+"",
+			from_time: ""+$scope.inputDate+$scope.inputTime1+"",
+			to_time: ""+$scope.inputDate+$scope.inputTime2+"",
 			lat: ""+lat+"",
 			lon: ""+lon+""
 			}),  // pass in data as strings
@@ -266,7 +365,7 @@ module.controller('DetailController', function($scope, $data) {
             $scope.showDetail = function(index) {
             var selectedItem = $data.items[index];
             $data.selectedItem = selectedItem;
-            $scope.myNavigator.pushPage('overzicht.html', selectedItem);
+            $scope.introNavigator.pushPage('overzicht.html', selectedItem);
         };
         
         
@@ -283,7 +382,7 @@ module.controller('OverzichtController', function($scope, $data) {
 			$scope.showDetail = function(index) {
 				var selectedItem = $data.items[index];
 				$data.selectedItem = selectedItem;
-				$scope.myNavigator.pushPage('details.html', selectedItem);
+				$scope.introNavigator.pushPage('details.html', selectedItem);
 			};
     });
     
@@ -294,7 +393,7 @@ module.controller('OverzichtController', function($scope, $data) {
         $scope.showDetail = function(index) {
             var selectedItem = $data2.items[index];
             $data2.selectedItem = selectedItem;
-            $scope.myNavigator.pushPage('memorieDetails.html', selectedItem);
+            $scope.introNavigator.pushPage('memorieOverzicht.html', selectedItem);
         };
         
     });
@@ -305,7 +404,7 @@ module.controller('OverzichtController', function($scope, $data) {
          $scope.showDetail = function(index) {
             var selectedItem = $data2.items[index];
             $data2.selectedItem = selectedItem;
-            $scope.myNavigator.pushPage('memorieOverzicht.html.html', selectedItem);
+            $scope.introNavigator.pushPage('memorieOverzicht.html.html', selectedItem);
         };
 
         
@@ -440,40 +539,25 @@ module.factory('$data', function() {
 
         return data2;
     });
-    
-    
+
 
     })();
 
 
-// home page 
-module.controller('FavoritesController', function($scope, localStorageService) {
-	ons.ready(function() {
-
-		$scope.fav_bar = {
-			name: "indebuurt"	
-		};
-		
-	});
-});
-
-// Google maps crap //
-
-var yourApp = angular.module('myApp', ['onsen.directives']);
 
 
-yourApp.controller("AppController", function($scope, $timeout) {
 
-    $timeout(function(){
-        var latlng = new google.maps.LatLng(-34.397, 150.644);
-        var myOptions = {
-            zoom: 8,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);  
-    },200);
-});
+
+
+
+
+
+
+
+
+
+
+
 
 
 module.factory("transformRequestAsFormPost",  function() {

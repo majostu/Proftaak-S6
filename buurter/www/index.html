@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="buurter">
+<html ng-app="buurter"> 
 <head>
 <meta name="format-detection" content="telephone=no">
 <meta name="msapplication-tap-highlight" content="no">
@@ -7,119 +7,208 @@
 <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsenui.css">  
 <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsen-css-components.css">
 <link rel="stylesheet" type="text/css" href="css/index.css">
-<link rel="stylesheet" type="text/css" href="css/buurter.css">
-	
-  <script type="text/javascript" src="cordova.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
-	<script type="text/javascript" src="js/openfb.js"></script>
-	<script type="text/javascript" src="js/ngopenfb.js"></script>
-	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-	<!--<script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
-	<script type="text/javascript" src="components/angular-google-maps/dist/angular-google-maps.min.js"></script>-->
-	<script type="text/javascript" src="js/index.js"></script>
 <title>Buurter</title>
 </head>
 <body ng-controller="AppController">
-   
-  <ons-sliding-menu var="menu" menu-page="menu.html" main-page="home.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
+	
+	
+	
+	
+	<ons-sliding-menu var="menu" menu-page="menu.html" main-page="intro.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
   
-    <ons-template id="home.html">
-    	<ons-navigator var="myNavigator" page="main_pagina.html">
-    	</ons-navigator>
-    </ons-template>		
-
-    <!--========================================================================== 
-	MAIN PAGE
+ 
+	
+	
+	
+	<!--========================================================================== 
+	INTRO
     ==========================================================================--->
-    <ons-template id="main_pagina.html">
-	    	<ons-page>
-	    	
-	    		<ons-toolbar>
-	    			<div class="left">
-						<ons-toolbar-button ng-click="menu.toggle()" ng-show="data.show">
-							<ons-icon icon="bars"></ons-icon>
-						</ons-toolbar-button>
-					</div>
-					<div class="center logotitle"><img class="navlogo" src="img/logo.png">BUURTER&copy;</div>
-                    <div class="right"><ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="myNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">Nieuw <ons-icon icon="fa-plus-circle"></ons-icon></ons-toolbar-button></div>
-                  
-				</ons-toolbar>
-               
-                <div class="button-bar" style="width:280px;" ng-show="data.show">
-					<div class="button-bar__item">
-				    	<input type="radio" name="fav_bar" checked ng-model="fav_bar.name" value="indebuurt" >
-				    	<button class="button-bar__button">In de buurt</button>
-				  	</div>
-				  	<div class="button-bar__item">
-				    	<input type="radio" name="fav_bar" ng-model="fav_bar.name" value="memories">
-				    	<button class="button-bar__button">Memories</button>
-				  	</div>
+    <ons-template id="intro.html">
+	    <ons-navigator var="introNavigator">
+			<ons-page ng-controller="IntroController">
+				<ons-carousel swipeable overscrollable auto-scroll fullscreen var="carousel">
+					<ons-carousel-item style="background-color: gray;">
+						<div class="item-label">GRAY</div>
+					</ons-carousel-item>
+					<ons-carousel-item style="background-color: #085078;">
+						<div class="item-label">BLUE</div>
+					</ons-carousel-item>
+					<ons-carousel-item style="background-color: #373B44;">
+						<div class="item-label">DARK</div>
+					</ons-carousel-item>
+					<ons-carousel-item style="background-color: #D38312;">
+						<div class="item-label">
+							
+							<h1>Welkom bij Buurter</h1>
+							
+							<form class="formarea" ng-submit="LoginSubmit()">
+								<div class="form-row">
+									<input type="text" class="text-input--underbar width-full" placeholder="Email" value="" name="email" ng-model="email" required>
+				        		</div>
+								<div class="form-row">
+									<input type="password" class="text-input--underbar width-full" placeholder="Wachtwoord" value="" name="password" ng-model="password" required>
+				        		</div>
+								<!--<div class="lucent">
+									<p class="note">Password - 6 characters or more</p>
+				        		</div>-->
+								<div class="vspc form-row">
+									<button class="button button--large" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Inloggen</button>
+				        		</div>
+				      		</form>
+							<p>of</p>						
+							<button class="button" ng-click="login()">Login met Facebook</button>					
+							<p>Geen Facebook of account?</p>
+							<button class="button button--outline" ng-click="introNavigator.pushPage('registreer.html', { animation : 'lift' })">Registreer een nieuw account</button>
+						</div>
+					</ons-carousel-item>
+					<ons-carousel-cover>
+						<div class="cover-label">Swipe links of rechts</div>
+					</ons-carousel-cover>
+				</ons-carousel>		
+			</ons-page>
+	    </ons-navigator>
+    </ons-template>
+    <!--========================================================================== 
+	REGISTRATIE
+    ==========================================================================--->
+	<ons-template id="registreer.html">
+		<ons-page ng-controller="RegisterController">
+			<ons-toolbar>
+				<div class="left">
+					<ons-back-button>Back</ons-back-button>
 				</div>
-				
-				
-				<div ng-show="!data.show">
-				 <button class="btn btn-block" ng-click="login()">Login with Facebook</button>
+				<div class="center">
+					Buurter&copy;
 				</div>
+			</ons-toolbar>
+			<form class="formarea" ng-submit="RegisterSubmit()">
+				<div class="form-row">
+					<input type="text" class="text-input--underbar width-full" placeholder="Email" value="" name="email" ng-model="email" required>
+        		</div>
+				<div class="form-row">
+					<input type="password" class="text-input--underbar width-full" placeholder="Wachtwoord" value="" name="password" ng-model="password" required>
+        		</div>
+				<!--<div class="lucent">
+					<p class="note">Password - 6 characters or more</p>
+        		</div>-->
+				<div class="vspc form-row">
+					<button class="button button--large" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Registreer</button>
+        		</div>
+      		</form>
+		</ons-page>
+    </ons-template>
+    
+    
 
-				<div ng-show="data.show">
-				  <button class="btn btn-block" ng-click="logout()">Logout</button>
+
+
+
+    
+    
+     <!--========================================================================== 
+	HOME
+    ==========================================================================--->
+	<ons-template id="home.html">
+		<ons-page ng-controller="HomeController">
+						
+			<ons-toolbar>
+	    		<div class="left">
+					<ons-toolbar-button ng-click="menu.toggle()" ng-show="data.show">
+						<ons-icon icon="bars"></ons-icon>
+					</ons-toolbar-button>
 				</div>
-				<!--===================================
-				In de buurt
-				===================================--->
-				<ons-list ng-controller="MainCtrl" ng-show="fav_bar.name == 'indebuurt'">
-				    
-				
-              <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
-                
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-         
+				<div class="center logotitle"><img class="navlogo" src="img/logo.png">BUURTER&trade;</div>
+                <div class="right"><ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="introNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">
+                	<span class="fa-stack nav-plus">
+                    <i style=" position: relative;
+  top: -1px;" class="fa fa-circle-thin fa-stack-2x"></i>
+                    <i class="fa fa-plus fa-stack-1x"></i>
+                    </span>
+                </div>      
+			</ons-toolbar>               
+            <div class="button-bar" style="width:280px;" ng-show="data.show">
+				<div class="button-bar__item">
+					<input type="radio" name="fav_bar" checked ng-model="fav_bar.name" value="indebuurt">
+					<button class="button-bar__button">In de buurt</button>
+				</div>
+				<div class="button-bar__item">
+				   	<input type="radio" name="fav_bar" ng-model="fav_bar.name" value="memories">
+				    <button class="button-bar__button">Memories</button>
+				</div>
+			</div>
+			<!--===================================
+			IN DE BUURT
+			===================================--->
+			<ons-list ng-controller="MainCtrl" ng-show="fav_bar.name == 'indebuurt'">				    	
+            	<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
+                	<ons-row>
+                    	<ons-col width="60px">
+                        	<img src="{{item.picture}}" class="item-thum">
+						</ons-col>
+						<ons-col>
+                        	<header>
+                            	<span class="item-title">{{item.act}}</span>
+								<span class="item-label">{{item.date}}</span>
+                        	</header>
+							<p class="item-desc">{{item.cat}}</p>
+							<p class="item-desc">{{item.name}}</p>
+							<span class="toolbar-button--outline navigation-bar__line-height list-button">Doe mee <i class="fa fa-hand-o-right"></i></span>
+						</ons-col>
+					</ons-row>
+				</ons-list-item>
             </ons-list>
             <!--===================================
-            memories
+            MEMORIES
             ===================================--->
- 
-              <ons-list ng-controller="MemorieCtrl" ng-show="fav_bar.name == 'memories'">
-				    
-				
-              <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
-                
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.cat}}</p>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-         
+			<ons-list ng-controller="MemorieCtrl" ng-show="fav_bar.name == 'memories'">
+				<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
+                	<ons-row>
+                    	<ons-col width="60px">
+							<img src="{{item.picture}}" class="item-thum">
+						</ons-col>
+						<ons-col>
+                        	<header>
+                           		<span class="item-title">{{item.act}}</span>
+						   		<span class="item-label">{{item.date}}</span>
+                        	</header>
+							<p class="item-desc">{{item.cat}}</p>
+							<p class="item-desc">{{item.name}}</p>
+							<span class="toolbar-button--outline navigation-bar__line-height list-button">Bekijk <i class="fa fa-hand-o-right"></i></span>
+						</ons-col>
+					</ons-row>
+				</ons-list-item>        
             </ons-list>
-              		    		
-	    	</ons-page>
+				
+		</ons-page>
     </ons-template>
-	    <!--========================================================================== 
+    
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!--========================================================================== 
 	MENU
     ==========================================================================--->
 	<ons-template id="menu.html">
@@ -130,16 +219,16 @@
 		<p class="center">Sherry Turkle</p>
           <br>
 		
-              <ons-list-item class=" menu-item" modifier="chevron" ng-click="myNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
+              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
           Mijn gegevens</ons-list-item>
-              <ons-list-item class=" menu-item" modifier="chevron" ng-click="myNavigator.pushPage('interesses.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-search" fixed-width="true"></ons-icon>
+              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('interesses.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-search" fixed-width="true"></ons-icon>
           Mijn interesses</ons-list-item>
               <ons-list-item class="menu-item"  ng-click="menu.setMainPage('page4.html', {closeMenu: true})"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
           Zoek binnen: 3km
               
               </ons-list-item>
               <input type="range" class="range"><br/><br/>
-          <ons-list-item class=" menu-item" modifier="chevron"ng-click="myNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
+          <ons-list-item class=" menu-item" modifier="chevron"ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
           <ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
           Contacten
         </ons-list-item>
@@ -232,10 +321,11 @@
         </ons-button>
       </div>
       <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="tappable">
-          <ons-icon class='red' icon="ion-log-out" style="opacity: 0.8"></ons-icon>
+        <ons-list-item  ng-show="data.show" modifier="tappable">
+          <ons-icon class='red' ng-click="logout()" icon="ion-log-out" style="opacity: 0.8"></ons-icon>
           Uitloggen
         </ons-list-item>
+        
       </ons-list>
 
       </ons-page>
@@ -488,8 +578,8 @@
         
         
         <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-               Doe mee!        
+            <ons-button ng-click="introNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
+               Ik kom eraan! (alert)       
             </ons-button>
         </p>   
 
@@ -572,10 +662,8 @@
                     </ons-col>
                 </ons-row>
             </ons-list-item>
-            <p class="center button1">
-            
-              
-              <span id="" ng-click="myNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Nodig uit</span>
+            <p class="center">
+              <span id="" ng-click="introNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Nodig vrienden uit</span>
             </p>   
             <ons-list-header>Reacties</ons-list-header>
               <ons-list-item class="item">
@@ -708,7 +796,7 @@
         
         
         <p class="center button1">
-            <ons-button ng-click="myNavigator.pushPage('memorieOverzicht.html', { animation : 'slide' }, menu.close())">
+            <ons-button ng-click="introNavigator.pushPage('memorieOverzicht.html', { animation : 'slide' }, menu.close())">
                Bekijk Memorie        
             </ons-button>
         </p>   
@@ -792,10 +880,8 @@
                     </ons-col>
                 </ons-row>
             </ons-list-item>
-            <p class="center button1">
-            
-              
-              <span id="" ng-click="myNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Nodig uit</span>
+            <p class="center">
+              <span id="" ng-click="introNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height"><i class="fa fa-history"></i> Redo activiteit</span>
             </p>   
             <ons-list-header>Reacties</ons-list-header>
               <ons-list-item class="item">
@@ -889,8 +975,8 @@
     Kies een categorie: <select ng-model="model_selected.id" ng-options="model.id as model.name for model in list"></select>
            </div>
         <div id="date">
-	        Datum: <input type="text" min="2015-01-01" max="2015-12-31" class="text-input date" ng-model="inputDate"/><br>
-            Van: <input type="text" class="text-input time"  min="00:00" max="24:00" value="00:00" ng-model="inputTime1"/> Tot: <input min="00:00" max="24:00" value="02:00" type="text" class="text-input" ng-model="inputTime2"/>
+	        Datum: <input type="date" class="text-input date" ng-model="inputDate"/mklo><br>
+            Van: <input type="time" class="text-input date"  ng-model="inputTime1"/> Tot: <input type="time" class="text-input" ng-model="inputTime2"/>
 	        
 	        
         </div>
@@ -900,7 +986,7 @@
 
       </ons-row>
       <div id='createActivity'>
-        <span id="" ng-click="myNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Kies vrienden</span>
+        <span id="" ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Kies vrienden</span>
         <ons-button type="submit" id="" ng-click="submit()">Maak activiteit</ons-button>
       </div>
       
@@ -1048,6 +1134,44 @@
 					    			    		
 	    	</ons-page>
     </ons-template>
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	<!--========================================================================== 
+	SCRIPTS
+    ==========================================================================--->
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="components/angular/angular.js"></script> 
+	<script type="text/javascript" src="components/angular/angular-local-storage.min.js"></script>    
+	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="js/is.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+	<script type="text/javascript" src="js/openfb.js"></script>
+	<script type="text/javascript" src="js/ngopenfb.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>
