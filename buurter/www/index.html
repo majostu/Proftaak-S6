@@ -41,6 +41,30 @@
 	    <ons-navigator var="introNavigator">
 			<ons-page ng-controller="IntroController">
 				<ons-carousel swipeable overscrollable auto-scroll fullscreen var="carousel">
+				<ons-carousel-item style="background: url(img/intro01.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; color:white !important;">
+						<div class="">
+                          <br>
+                          <br>
+                         <img style="width:40%;"  margin-top: 40px; src="img/logo.png">
+                          <h2 style="font-style:italic;">BUURTER<sup style="font-size:0.7em;" >&trade;</sup></h2><br>
+                          Kom in contact met mensen in de buurt!
+                      </div>
+					</ons-carousel-item>
+					<ons-carousel-item class="background-intro" style="background-color: rgba(235,94,47,0.84);color:white !important;">          
+		
+					<img class="stretch"  src="img/intro02.jpg">  					                      
+					                  <p style="margin-top: -150px;"> Doe mee of maak activiteiten bij jou in de buurt en leer nieuwe mensen kennen</p>  
+                      
+					</ons-carousel-item>
+					<ons-carousel-item style="background-color: rgba(235,94,47,0.84);color:white !important;">
+						<img class="stretch"  src="img/intro03.jpg">
+						        <p style="margin-top: -150px;"> Bekijk je oude activiteiten terug voor leuke herinneringen of nodig dezelfde mensen uit om deze "memorie" her te beleven</p>  
+                                             
+					</ons-carousel-item>
 					<ons-carousel-item style="background-color: rgba(235,94,47,0.84); color: white !important;">						
                         <form class="login-form" ng-submit="LoginSubmit()">
                             Welkom bij
@@ -74,10 +98,9 @@
 							Registreer een nieuw account
 						</p>
 					</ons-carousel-item>
+
 					<ons-carousel-cover>
-						<div class="cover-label">
-							Swipe naar links en rechts
-						</div>
+						<div class="cover-label"><i class="fa fa-circle"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i></div>
 					</ons-carousel-cover>
 				</ons-carousel>		
 			</ons-page>
