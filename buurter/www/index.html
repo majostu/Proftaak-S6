@@ -1,13 +1,34 @@
 <!DOCTYPE html>
 <html ng-app="buurter"> 
 <head>
-<meta name="format-detection" content="telephone=no">
-<meta name="msapplication-tap-highlight" content="no">
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-<link rel="stylesheet" type="text/css" href="components/onsenui/css/onsenui.css">  
-<link rel="stylesheet" type="text/css" href="components/onsenui/css/onsen-css-components.css">
-<link rel="stylesheet" type="text/css" href="css/index.css">
-<title>Buurter</title>
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+  <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsenui.css">  
+  <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <title>Buurter</title>
+  <link rel="apple-touch-icon" sizes="57x57" href="/img/faffie/apple-touch-icon-57x57.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="60x60" href="/img/faffie/apple-touch-icon-60x60.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="72x72" href="/img/faffie/apple-touch-icon-72x72.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/faffie/apple-touch-icon-76x76.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="114x114" href="/img/faffie/apple-touch-icon-114x114.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="120x120" href="/img/faffie/apple-touch-icon-120x120.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="144x144" href="/img/faffie/apple-touch-icon-144x144.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="152x152" href="/img/faffie/apple-touch-icon-152x152.png?v=gUnit">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/faffie/apple-touch-icon-180x180.png?v=gUnit">
+  <link rel="icon" type="image/png" href="/img/faffie/favicon-32x32.png?v=gUnit" sizes="32x32">
+  <link rel="icon" type="image/png" href="/img/faffie/android-chrome-192x192.png?v=gUnit" sizes="192x192">
+  <link rel="icon" type="image/png" href="/img/faffie/favicon-96x96.png?v=gUnit" sizes="96x96">
+  <link rel="icon" type="image/png" href="/img/faffie/favicon-16x16.png?v=gUnit" sizes="16x16">
+  <link rel="manifest" href="/img/faffie/manifest.json?v=gUnit">
+  <link rel="shortcut icon" href="/img/faffie/favicon.ico?v=gUnit">
+  <meta name="apple-mobile-web-app-title" content="Buurter">
+  <meta name="application-name" content="Buurter">
+  <meta name="msapplication-TileColor" content="#5cbd77">
+  <meta name="msapplication-TileImage" content="/img/faffie/mstile-144x144.png?v=gUnit">
+  <meta name="msapplication-config" content="/img/faffie/browserconfig.xml?v=gUnit">
+  <meta name="theme-color" content="#5cbd77">
 </head>
 <body ng-controller="AppController">
 		
@@ -119,7 +140,7 @@
 			</ons-toolbar>               
             <div class="button-bar" style="width:280px;" ng-show="data.show">
 				<div class="button-bar__item">
-					<input type="radio" name="fav_bar" checked ng-model="fav_bar.name" value="indebuurt">
+					<input type="radio" name="fav_bar" ng-model="fav_bar.name" checked value="indebuurt">
 					<button class="button-bar__button">In de buurt</button>
 				</div>
 				<div class="button-bar__item">
@@ -147,6 +168,7 @@
 						</ons-col>
 					</ons-row>
 				</ons-list-item>
+				
             </ons-list>
             <!--===================================
             MEMORIES
@@ -204,6 +226,7 @@
     ==========================================================================--->
 	<ons-template id="menu.html">
 		<ons-page modifier="menu-page">
+<<<<<<< HEAD
 			<div class="img-circle center"><img src="images/amy_jones.jpg"/></div>
 			<p class="center">Sherry Turkle</p>
 			<br>			
@@ -224,6 +247,30 @@
 				<ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
 				Contacten
 			</ons-list-item>
+=======
+		<div class="img-circle center"><img ng-src="{{imgurl}}" /></div>
+          
+
+		<p class="center" ng-model="name">{{name}}</p>
+          <br>
+		
+              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
+          Mijn gegevens</ons-list-item>
+              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('interesses.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-search" fixed-width="true"></ons-icon>
+          Mijn interesses</ons-list-item>
+              <ons-list-item class="menu-item"  ng-click="menu.setMainPage('page4.html', {closeMenu: true})"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
+          Zoek binnen: 3km
+              
+              </ons-list-item>
+              <input type="range" class="range" style="width:100%; margin-top: 15px;"><br/><br/>
+          <ons-list-item class=" menu-item" modifier="chevron"ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
+          <ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
+          Contacten
+        </ons-list-item>
+      </ons-list>
+      
+
+>>>>>>> origin/design
 		</ons-page>
     </ons-template>
 	<!--========================================================================== 
@@ -240,7 +287,7 @@
             <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                       <img src="images/amy_jones.jpg" class="item-thum">
+                       <img ng-src="{{imgurl}}" class="item-thum">
                     </ons-col>
                     <ons-col>
                         <div style="min-width:400px;">
@@ -256,15 +303,15 @@
       
       <ons-list>
         <ons-list-item>
-          <input type="text" placeholder="Naam" class="text-input text-input--transparent" style="margin-top:8px; width: 100%;">
+          <input type="text" placeholder="Naam" ng-model="name" class="text-input text-input--transparent" style="margin-top:8px; width: 100%;">
         </ons-list-item>
         
         <ons-list-item>
-          <input type="number" placeholder="Leeftijd" class="text-input text-input--transparent" style="margin-top:8px; width: 100%;">
+          <input type="number" placeholder="Leeftijd" ng-model="age" class="text-input text-input--transparent" style="margin-top:8px; width: 100%;">
         </ons-list-item>
 
         <ons-list-item>
-          <input type="email" placeholder="Emailadres" class="text-input text-input--transparent" style="margin-top:8px; width: 100%;">
+          <input type="email" placeholder="Emailadres" ng-model="mail" class="text-input text-input--transparent" style="margin-top:8px; width: 100%;">
         </ons-list-item>
 
         <ons-list-item>
@@ -275,13 +322,13 @@
 
               <div style="float: right; padding-right: 16px;">
                 <label class="radio-button">
-                  <input type="radio" name="level" ng-model="selectedLevel">
+                  <input type="radio" name="level" ng-model="selectedLevel.name" value="male">
                   <div class="radio-button__checkmark"></div>
                   Man
                 </label>
 
                 <label class="radio-button">
-                  <input type="radio" name="level" ng-model="selectedLevel">
+                  <input type="radio" name="level" ng-model="selectedLevel.name" value="female">
                   <div class="radio-button__checkmark"></div>
                   Vrouw
                 </label>

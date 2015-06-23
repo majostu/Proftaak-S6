@@ -1,4 +1,5 @@
 var loggedin;
+var imgurl;
 
 var module = angular.module('buurter', ['onsen', 'LocalStorageModule', 'ngOpenFB', 'ui.router']);
 
@@ -35,6 +36,27 @@ module.controller('AppController', function($rootScope, $scope, $compile, $http,
 		}
 		
 
+					//Need to watch on the session storage (FB AUTH KEY)
+		if(is.set(sessionStorage.fbAccessToken)){
+			ngFB.api({path: '/me'}).then(
+			function(user) {
+				//console.log(JSON.stringify(user));
+				$scope.user = user;
+				$scope.imgurl = "http://graph.facebook.com/"+user.id+"/picture?type=large";
+				$scope.name = user.name;
+				loggedin = true;
+				console.log(loggedin);			
+			},
+			errorHandler);
+		}
+		function errorHandler(error) { 
+			$scope.data = {
+				show: false,
+				hide: true
+			};
+			//alert(error.message);
+		}
+		
 		// Defaults to sessionStorage for storing the Facebook token
 		ngFB.init({appId: '1408768302786339'});
 
@@ -253,6 +275,7 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 		};
 		
 	});
+<<<<<<< HEAD
 		
 	//Need to watch on the session storage (FB AUTH KEY)
 	if(is.set(sessionStorage.fbAccessToken)){
@@ -272,6 +295,15 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 		};
 		//alert(error.message);
 	}
+=======
+	
+	$scope.fav_bar = {
+	   name: "indebuurt" 
+	};
+  
+
+
+>>>>>>> origin/design
 	
 });
 
@@ -280,10 +312,38 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 
 
 
+<<<<<<< HEAD
 module.controller('GegevensController', function($scope) { 
 	ons.ready(function() {
 		
 	});
+=======
+module.controller('GegevensController', function($scope, ngFB) { 
+		if(is.set(sessionStorage.fbAccessToken)){
+			ngFB.api({path: '/me'}).then(
+			function(user) {
+				
+				$scope.name = user.name;
+				$scope.mail = user.email;
+				$scope.age = user.age;
+				$scope.imgurl = "http://graph.facebook.com/"+user.id+"/picture";
+					$scope.selectedLevel = {
+					   name: user.gender 
+					};
+				
+				loggedin = true;
+				console.log(loggedin);			
+			},
+			errorHandler);
+		}
+		function errorHandler(error) { 
+			$scope.data = {
+				show: false,
+				hide: true
+			};
+			//alert(error.message);
+		}
+>>>>>>> origin/design
 });
 
 module.controller('InteressesController', function($scope) { 
