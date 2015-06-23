@@ -293,10 +293,17 @@ margin-bottom: 20px;
 float: right;
 margin-bottom: 10px;
 }
+.img-circle {
+    overflow: hidden;
+	  width: 200px;
+	  height: 175px;
+	 border-radius: 50%;
+}
 .img-circle img {
     margin-top: 10px;
     border-radius: 50%;
-    
+	  width: 200px;
+	  height: 175px;
 }
 .checkbox__checkmark{
   float: right;
