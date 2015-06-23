@@ -226,8 +226,8 @@
     ==========================================================================--->
 	<ons-template id="menu.html">
 		<ons-page modifier="menu-page">
-<<<<<<< HEAD
-			<div class="img-circle center"><img src="images/amy_jones.jpg"/></div>
+
+			<div class="img-circle center"><img src="{{imgurl}}"/></div>
 			<p class="center">Sherry Turkle</p>
 			<br>			
 			<ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())">
@@ -247,30 +247,7 @@
 				<ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
 				Contacten
 			</ons-list-item>
-=======
-		<div class="img-circle center"><img ng-src="{{imgurl}}" /></div>
-          
 
-		<p class="center" ng-model="name">{{name}}</p>
-          <br>
-		
-              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
-          Mijn gegevens</ons-list-item>
-              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('interesses.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-search" fixed-width="true"></ons-icon>
-          Mijn interesses</ons-list-item>
-              <ons-list-item class="menu-item"  ng-click="menu.setMainPage('page4.html', {closeMenu: true})"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
-          Zoek binnen: 3km
-              
-              </ons-list-item>
-              <input type="range" class="range" style="width:100%; margin-top: 15px;"><br/><br/>
-          <ons-list-item class=" menu-item" modifier="chevron"ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
-          <ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
-          Contacten
-        </ons-list-item>
-      </ons-list>
-      
-
->>>>>>> origin/design
 		</ons-page>
     </ons-template>
 	<!--========================================================================== 

@@ -275,7 +275,7 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 		};
 		
 	});
-<<<<<<< HEAD
+
 		
 	//Need to watch on the session storage (FB AUTH KEY)
 	if(is.set(sessionStorage.fbAccessToken)){
@@ -295,16 +295,12 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 		};
 		//alert(error.message);
 	}
-=======
+
 	
 	$scope.fav_bar = {
 	   name: "indebuurt" 
 	};
-  
-
-
->>>>>>> origin/design
-	
+ 	
 });
 
 
@@ -312,12 +308,13 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 
 
 
-<<<<<<< HEAD
+
 module.controller('GegevensController', function($scope) { 
 	ons.ready(function() {
 		
 	});
-=======
+});
+
 module.controller('GegevensController', function($scope, ngFB) { 
 		if(is.set(sessionStorage.fbAccessToken)){
 			ngFB.api({path: '/me'}).then(
@@ -343,7 +340,7 @@ module.controller('GegevensController', function($scope, ngFB) {
 			};
 			//alert(error.message);
 		}
->>>>>>> origin/design
+
 });
 
 module.controller('InteressesController', function($scope) { 
