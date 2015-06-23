@@ -16,7 +16,6 @@ body {
 /*========================================================================== 
 INTRO
 ==========================================================================*/
-
 .cover-label {
   	text-align: center;
   	position: absolute;
@@ -24,6 +23,61 @@ INTRO
   	width: 100%;
   	bottom: 20px;
   	color: white;
+}
+
+.intro-logo {
+  	width: 22px;
+  	position: relative;
+  	top: 5px;
+  	left: -5px;
+}
+
+.intro-title {
+	padding-bottom: 30px;
+  	vertical-align: baseline;
+  	font-size: 22px;
+}
+
+.login-form {
+  	text-align: center;
+  	width: 80%;
+  	margin: 60px auto 0;
+}
+
+input[type=text], input[type=password] {
+  	display: block;
+  	width: 100%;
+  	margin: 0 auto;
+  	outline: none;
+  	padding-top: 24px;
+  	padding-bottom: 24px;
+}
+
+.login-form ::-webkit-input-placeholder {
+   color: white;
+}
+
+.login-form :-moz-placeholder { /* Firefox 18- */
+   color: white;  
+}
+
+.login-form ::-moz-placeholder {  /* Firefox 19+ */
+   color: white;  
+}
+
+.login-form :-ms-input-placeholder {  
+   color: white;  
+}
+
+.login-button {
+  	width: 100%;
+  	margin: 0 auto;
+}
+
+.forgot-password {
+  	display: block;
+  	margin: 8px auto 0 auto;
+  	font-size: 14px;
 }
 /*========================================================================== 
 REGISTRATIE
@@ -40,10 +94,6 @@ REGISTRATIE
  	width: 48%;
 }
 
-/*.lucent {
-  	opacity: 0.4;
-}*/
-
 .note {
   	margin: 12px 8px;
   	font-size: 13px;
@@ -56,30 +106,32 @@ REGISTRATIE
 .formarea {
   	width: 90%;
   	margin: 10px auto 0px auto;
-  color: #fff;
+  	color: #fff;
 }
+
 .text-input--underbar{
-  color: #fff !important;
-  font-weight: 300;
+  	color: #fff !important;
+  	font-weight: 300;
 }
+
 #login::-webkit-input-placeholder {
-   color: white;
-  opacity:0.6;
+   	color: white;
+   	opacity:0.6;
 }
 
 #login:-moz-placeholder { /* Firefox 18- */
-   color: white;
-  opacity:0.6;  
+   	color: white;
+   	opacity:0.6;  
 }
 
 #login::-moz-placeholder {  /* Firefox 19+ */
-   color: white;
-  opacity:0.6;  
+   	color: white;
+   	opacity:0.6;  
 }
 
 #login:-ms-input-placeholder {  
    color: white;
-  opacity:0.6;  
+   	opacity:0.6;  
 }
 
 input[type=text],
@@ -88,6 +140,79 @@ input[type=password] {
   	padding-top: 10px;
   	padding-bottom: 10px;
 }
+/*========================================================================== 
+NIEUWE ACTIVITEIT
+==========================================================================*/
+#map_add_activity {
+	position: absolute;
+    width:100%; 
+    height: 100%; 
+    margin: 0; 
+    padding: 0;
+    z-index: -1; 
+}
+
+.angular-google-map-container {
+	position: absolute;
+    width:100%; 
+    height: 100%; 
+    margin: 0; 
+    padding: 0;  
+}
+
+.adp-warnbox {
+	display: none;
+}
+
+.adp-legal {
+	display: none;
+}
+
+#panel {
+	background: #FFF;
+	margin; 0;
+	padding: 0;
+	display: none;
+	
+}
+
+.adp {
+	margin-top: -10px;
+	padding: 12px;
+}
+
+#warnings_panel {
+	position: absolute; 
+	width:100%;
+	height: auto;
+	text-align:center;
+	background: rgba(0, 0, 0, 0.5);
+	color: #FFF;
+}
+
+#warnings_panel p {
+	padding: 12px;
+	margin: 0;
+}
+
+.range-wrapper .range {
+  	margin-top: 7px;
+  	width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

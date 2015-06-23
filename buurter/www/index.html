@@ -10,16 +10,9 @@
 <title>Buurter</title>
 </head>
 <body ng-controller="AppController">
-	
-	
-	
-	
+		
 	<ons-sliding-menu var="menu" menu-page="menu.html" main-page="intro.html" max-slide-distance="250px" type="reveal" side="left" swipeable="false"></ons-sliding-menu>  
   
- 
-	
-	
-	
 	<!--========================================================================== 
 	INTRO
     ==========================================================================--->
@@ -27,61 +20,43 @@
 	    <ons-navigator var="introNavigator">
 			<ons-page ng-controller="IntroController">
 				<ons-carousel swipeable overscrollable auto-scroll fullscreen var="carousel">
-					<ons-carousel-item style="background: url(img/intro-back.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;color:white !important;">
-						<div class="">
-                          <br><br><br>
-                          <img style="width:40%;" src="img/logo.png">
-                          <h2 style="font-style:italic;">BUURTER<sup style="font-size:0.7em;" >&trade;</sup></h2><br>
-                          Kom in contact met mensen in de buurt!
-                      </div>
-					</ons-carousel-item>
-					<ons-carousel-item style="background-color: #5CBD77;color:white !important;">
-						<div class="">
-                          <br>
-                          <br>
-                          <img src="img/ding_1.png">
-                          Kijk opdeze knop wat er te doen is in de buurt<br>
-                          of kijk met deze knop wat je gedaann hebt
-                      </div>
-					</ons-carousel-item>
-					<ons-carousel-item style="background-color: #5CBD77 ;color:white !important;">
-						<div class="">
-                          <br>
-                          <br>
-                          Klik op deze knop op om een activiteit toe te voegen, en hier kun je een kaartje zien wat er allemaal te doen is.
-                      </div>
-					</ons-carousel-item>
-					<ons-carousel-item style="background-color: rgba(235,94,47,0.84);color:white !important;">
-						<div class="">
-							<br><br>
-							<button class="button" ng-click="login()">Login met Facebook</button>		
-                            <p>of</p>
-							<form class="formarea" ng-submit="LoginSubmit()">
-								<div class="form-row">
-									<input id="login" type="text" class="text-input--underbar width-full" placeholder="Email" value="" name="email" ng-model="email" required>
-				        		</div>
-								<div class="form-row">
-									<input id="login" type="password" class="text-input--underbar width-full" placeholder="Wachtwoord" value="" name="password" ng-model="password" required>
-				        		</div>
-								<!--<div class="lucent">
-									<p class="note">Password - 6 characters or more</p>
-				        		</div>-->
-								<div class="vspc form-row">
-									<button class="button button--large" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Inloggen</button>
-				        		</div>
-				      		</form>
-													
-										
-							<p>Geen Facebook of account?</p>
-							<p style="text-decoration:underline;" ng-click="introNavigator.pushPage('registreer.html', { animation : 'lift' })">Registreer een nieuw account</p>
-						</div>
+					<ons-carousel-item style="background-color: rgba(235,94,47,0.84); color: white !important;">						
+                        <form class="login-form" ng-submit="LoginSubmit()">
+                            Welkom bij
+							<div class="center intro-title">
+								<img class="intro-logo" src="img/logo.png">BUURTER&trade;
+							</div>	
+					    	<input 
+					    		type="text" 
+					    		class="text-input--underbar" 
+					    		placeholder="Email" 
+					    		value=""
+					    		name="email" 
+								ng-model="email" 
+							required>
+					        <input 
+					        	type="password" 
+					        	class="text-input--underbar" 
+					        	placeholder="Password" 
+					        	value=""
+					        	name="password" 
+								ng-model="password" 
+							required>
+					        <br><br>
+					        <button class="button button--large" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Inloggen</button>
+					    </form>						                            
+                        <p>of</p>                         
+                        <button class="button" ng-click="login()">Login met Facebook</button>											
+						<p>Geen Facebook of geregistreerd account?</p>
+						<p 	style="text-decoration: underline; cursor: pointer;" 
+							ng-click="introNavigator.pushPage('registreer.html', { animation : 'lift' })">
+							Registreer een nieuw account
+						</p>
 					</ons-carousel-item>
 					<ons-carousel-cover>
-						<div class="cover-label"><i class="fa fa-circle"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i></div>
+						<div class="cover-label">
+							Swipe naar links en rechts
+						</div>
 					</ons-carousel-cover>
 				</ons-carousel>		
 			</ons-page>
@@ -107,9 +82,6 @@
 				<div class="form-row">
 					<input type="password" class="text-input--underbar width-full" placeholder="Wachtwoord" value="" name="password" ng-model="password" required>
         		</div>
-				<!--<div class="lucent">
-					<p class="note">Password - 6 characters or more</p>
-        		</div>-->
 				<div class="vspc form-row">
 					<button class="button button--large" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Registreer</button>
         		</div>
@@ -125,7 +97,7 @@
     
     
      <!--========================================================================== 
-	HOMEnav
+	HOME
     ==========================================================================--->
 	<ons-template id="home.html">
 		<ons-page ng-controller="HomeController">
@@ -232,37 +204,31 @@
     ==========================================================================--->
 	<ons-template id="menu.html">
 		<ons-page modifier="menu-page">
-		<div class="img-circle center"><img src="images/amy_jones.jpg"/></div>
-          
-
-		<p class="center">Sherry Turkle</p>
-          <br>
-		
-              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
-          Mijn gegevens</ons-list-item>
-              <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('interesses.html', {animation : 'slide'}, menu.close())"><ons-icon icon="fa-search" fixed-width="true"></ons-icon>
-          Mijn interesses</ons-list-item>
-              <ons-list-item class="menu-item"  ng-click="menu.setMainPage('page4.html', {closeMenu: true})"><ons-icon icon="fa-user" fixed-width="true"></ons-icon>
-          Zoek binnen: 3km
-              
-              </ons-list-item>
-              <input type="range" class="range"><br/><br/>
-          <ons-list-item class=" menu-item" modifier="chevron"ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
-          <ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
-          Contacten
-        </ons-list-item>
-      </ons-list>
-      
-
+			<div class="img-circle center"><img src="images/amy_jones.jpg"/></div>
+			<p class="center">Sherry Turkle</p>
+			<br>			
+			<ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())">
+				<ons-icon icon="fa-user" fixed-width="true"></ons-icon>
+				Mijn gegevens
+			</ons-list-item>
+            <ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('interesses.html', {animation : 'slide'}, menu.close())">
+            	<ons-icon icon="fa-search" fixed-width="true"></ons-icon>
+				Mijn interesses
+			</ons-list-item>
+            <ons-list-item class="menu-item"  ng-click="menu.setMainPage('page4.html', {closeMenu: true})">
+            	<ons-icon icon="fa-user" fixed-width="true"></ons-icon>
+				Zoek binnen: 3km
+            </ons-list-item>
+            <input type="range" class="range"><br/><br/>
+			<ons-list-item class=" menu-item" modifier="chevron"ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
+				<ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
+				Contacten
+			</ons-list-item>
 		</ons-page>
     </ons-template>
-    
-    
-  
-  <!--========================================================================== 
+	<!--========================================================================== 
 	SETTINGS
-    ==========================================================================--->    
-    
+    ==========================================================================--->        
     <ons-template id="gegevens.html">
     <ons-page ng-controller="GegevensController">
         <ons-toolbar>
@@ -956,62 +922,138 @@
        </ons-page>
 </ons-template>
 
-<!--========================================================================== 
+
+
+
+
+
+	<!--========================================================================== 
 	Nieuwe activiteit
-    ==========================================================================--->    
-    
+    ==========================================================================--->       
     <ons-template id="nieuweActiviteit.html">
-    <ons-page ng-controller="NieuweActiviteitController">
- <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">Nieuwe activiteit</div>
-        </ons-toolbar>
+    	<ons-page ng-controller="NieuweActiviteitController">
+			<ons-toolbar>
+            	<div class="left"><ons-back-button>Back</ons-back-button></div>
+				<div class="center">Nieuwe activiteit</div>
+			</ons-toolbar>
 
-	<form id="activity_form" ng-submit="submit()">
-        <ons-list modifier="chevron">
-            <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                       <img src="{{item.picture}}" ng-model="imgsrc" class="item-thum">
-                    </ons-col>
-                  <ons-col >
-                    <div class="">
-						<span id="top-right" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Upload foto</span>
-                    </div>
-                  </ons-col>
-                      
-                </ons-row>
-              
-            </ons-list-item>
-      </ons-list>
-            
-      </ons-row>
-      <ons-row class="profile-wrapper">
-        <ons-col>
-          <br>
-           <input type="text" class="text-input" style="width: 90%; margin: 0px 5% 10px 5%;" ng-model="title" placeholder="Naam Evenement" value=""><br>
-           <div id="selectCat">
-    Kies een categorie: <select ng-model="model_selected.id" ng-options="model.id as model.name for model in list"></select>
-           </div>
-        <div id="date">
-	        Datum: <input type="date" class="text-input date" ng-model="inputDate"/mklo><br>
-            Van: <input type="time" class="text-input date"  ng-model="inputTime1"/> Tot: <input type="time" class="text-input" ng-model="inputTime2"/>
-	        
-	        
-        </div>
-                         
-          <textarea style="width: 90%; margin: 0px 5% 10px 5%;" ng-model="description" class="textarea" rows="3" placeholder="Extra info; bv. Neem bier mee G!"></textarea>
-        </ons-col>
+			<!--<form id="activity_form" ng-submit="submit()">
+				<ons-list modifier="chevron">
+					<ons-list-item class="item">
+						<ons-row>
+							<ons-col width="60px">
+								<img src="{{item.picture}}" ng-model="imgsrc" class="item-thum">
+							</ons-col>
+							<ons-col>						
+								<span id="top-right" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Upload foto</span>                    		
+							</ons-col>                     
+						</ons-row>             
+					</ons-list-item>
+				</ons-list>
+   
+				<ons-row class="profile-wrapper">
+					<ons-col>
+						<br>
+						<input type="text" class="text-input" style="width: 90%; margin: 0px 5% 10px 5%;" ng-model="title" placeholder="Naam Evenement" value=""><br>
+						<div id="selectCat">
+							Kies een categorie: 
+							<select ng-model="model_selected.id" ng-options="model.id as model.name for model in list"></select>
+           				</div>
+		   				<div id="date">
+		   					Datum: 
+		   					<input type="date" class="text-input date" ng-model="inputDate"/mklo><br>
+		   					Van: 
+		   					<input type="time" class="text-input date"  ng-model="inputTime1"/> Tot: <input type="time" class="text-input" ng-model="inputTime2"/>        
+        				</div>                        
+						<textarea style="width: 90%; margin: 0px 5% 10px 5%;" ng-model="description" class="textarea" rows="3" placeholder="Extra info; bv. Neem bier mee G!"></textarea>
+					</ons-col>
+				</ons-row>
+				<div id='createActivity'>
+					<span id="" ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Kies vrienden</span>
+					<ons-button type="submit" id="" ng-click="submit()">Maak activiteit</ons-button>
+      			</div>      
+     		</form>-->
+     		
+     		<div id="map_add_activity" data-tap-disabled="true"></div>
+     		
+     		
+     		      
+	 	</ons-page>	
+	</ons-template>
+	<!--===================================
+	ADD ACTIVITY FORM
+	===================================--->
+	<ons-template id="add-activity-form.html">
+		<ons-dialog style="height: auto;" var="naviDialog" cancelable ng-controller="AddActivityFormController">
 
-      </ons-row>
-      <div id='createActivity'>
-        <span id="" ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Kies vrienden</span>
-        <ons-button type="submit" id="" ng-click="submit()">Maak activiteit</ons-button>
-      </div>
-      
-     </form>       
-       </ons-page>
-</ons-template>
+			<form ng-submit="AddActivitySubmit()"
+				<ons-list>
+					<ons-list-header style="padding-top: 12px;">Voer een titel voor de activiteit in:</ons-list-header>
+			        <ons-list-item style="padding-top: 10px;">
+						<input type="text" class="text-input text-input--transparent" placeholder="Titel" ng-model="activity_title" style="width: 100%">
+					</ons-list-item> 					
+			        <ons-list-header style="padding-top: 12px;">Kies een categorie:</ons-list-header>
+			        <ons-list-item>
+						<select ng-model="model_selected.name" ng-options="model.name as model.name for model in list" style="width: 100%"></select>
+					</ons-list-item>
+					<ons-list-header style="padding-top: 12px;">Wanneer is de activiteit:</ons-list-header>
+			        <ons-list-item>
+						<input type="text" class="text-input text-input--transparent" placeholder="Datum" ng-model="activity_date" style="width: 100%">
+					</ons-list-item>
+					<ons-list-header style="padding-top: 12px;">Van tot hoelaat is de activiteit:</ons-list-header>
+			        <ons-list-item>
+						<input type="text" class="text-input text-input--transparent" placeholder="Van" ng-model="activity_time_1" style="width: 50%; float: left;">
+						<input type="text" class="text-input text-input--transparent" placeholder="Tot" ng-model="activity_time_2" style="width: 50%;">
+					</ons-list-item>
+					<ons-list-header style="padding-top: 12px;">Extra informatie over de activiteit:</ons-list-header>
+			        <ons-list-item>
+						<textarea ng-model="activity_description" class="textarea" rows="3" placeholder="Extra informatie" style="width: 100%; margin: 12px 0;"></textarea>
+					</ons-list-item> 
+		        </ons-list>
+		        <div style="padding: 12px 9px;">
+		        	<button type="submit" class="button button--large" id="submit" value="Submit" modifier="large" ng-click="naviDialog.hide()" style="margin: 0 auto;" ng-disabled="!(!!activity_title && !!model_selected.name && !!activity_date && !!activity_time_1 && !!activity_time_2 && !!activity_description)">Maak activiteit aan</button>
+		      	</div>
+			</form>
+
+	  	</ons-dialog>        
+	</ons-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1186,7 +1228,10 @@
 	<script type="text/javascript" src="components/angular/angular.js"></script> 
 	<script type="text/javascript" src="components/angular/angular-local-storage.min.js"></script>    
 	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeyepY1W5MQtdovxCS_6SWYouRGobAfz4&sensor=true&libraries=geometry, places"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/markclusterer.js"></script>
+	<script type="text/javascript" src="js/oms.min.js"></script>
 	<script type="text/javascript" src="js/is.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
 	<script type="text/javascript" src="js/openfb.js"></script>
