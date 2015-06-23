@@ -15,7 +15,10 @@ module.config(function (localStorageServiceProvider, $httpProvider) {
     $httpProvider.defaults.useXDomain = true;
 });
 
+
+
 module.controller('AppController', function($rootScope, $scope, $compile, $http, localStorageService, ngFB, $state, $window) { 
+
 	ons.ready(function() {
 		
 		if(localStorageService.isSupported) {
@@ -23,35 +26,15 @@ module.controller('AppController', function($rootScope, $scope, $compile, $http,
 		}
 		
 		if (sessionStorage.loggedin == 'true') {
-			$scope.data = {
+			loggedin = true;
+			$rootScope.data = {
 				show: true,
 				hide: false
 			};
 			introNavigator.pushPage('home.html', { animation : 'slide' });
 		}
 		
-		//Need to watch on the session storage (FB AUTH KEY)
-	
-		ngFB.getLoginStatus;
-	
-		ngFB.api({path: '/me'}).then(
-		function(user) {
-			console.log(JSON.stringify(user));
-			$scope.user = user;
-			loggedin = true;
-			console.log(loggedin);	
-						
-			if(loggedin == true){ //Check the var and load hide/show data...tum tum
-				console.log("loggedin"); 
-				$scope.data = {
-					show: true,
-					hide: false
-				};
-				introNavigator.pushPage('home.html', { animation : 'slide' });
-			}
-						
-		},
-		errorHandler);
+
 		// Defaults to sessionStorage for storing the Facebook token
 		ngFB.init({appId: '1408768302786339'});
 
@@ -62,9 +45,8 @@ module.controller('AppController', function($rootScope, $scope, $compile, $http,
 			ngFB.login({scope: 'email,read_stream,publish_actions'}).then(
 				function(response) {
 					//alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
-					loggedin = true;
-					//$window.location.reload();
-					introNavigator.pushPage('home.html', { animation : 'slide' });
+					sessionStorage.loggedin = true;	
+					$window.location.reload();
 				},
 				function(error) {
 					//alert('Facebook login failed: ' + error);
@@ -134,7 +116,7 @@ module.controller('AppController', function($rootScope, $scope, $compile, $http,
 	});
 });
 
-module.controller('IntroController', function($rootScope, $scope, $compile, $http, localStorageService, transformRequestAsFormPost) { 
+module.controller('IntroController', function($rootScope, $scope, $compile, $http, localStorageService, transformRequestAsFormPost, $window) { 
 	ons.ready(function() {
 				
 		$scope.LoginSubmit = function() {
@@ -181,10 +163,8 @@ module.controller('IntroController', function($rootScope, $scope, $compile, $htt
 							title: 'Je bent succesvol ingelogd',
 							buttonLabel: 'OK',
 							callback: function() {
-								introNavigator.pushPage('home.html', { animation : 'slide' });
-								
-								
-								sessionStorage.loggedin = true;					
+								sessionStorage.loggedin = true;
+								$window.location.reload();
 							}
 	                	});		
 				  	} else {
@@ -263,10 +243,34 @@ module.controller('RegisterController', function($rootScope, $scope, $compile, $
 	});
 });
 
-module.controller('HomeController', function($rootScope, $scope, $compile, $http, localStorageService) { 
+module.controller('HomeController', function($rootScope, $scope, $compile, $http, localStorageService, ngFB) { 
+
+
 	ons.ready(function() {
-				
+		console.log($rootScope.data);
 	});
+	
+	
+			//Need to watch on the session storage (FB AUTH KEY)
+		if(is.set(sessionStorage.fbAccessToken)){
+			ngFB.api({path: '/me'}).then(
+			function(user) {
+				console.log(JSON.stringify(user));
+				$scope.user = user;
+				loggedin = true;
+				console.log(loggedin);			
+			},
+			errorHandler);
+		}
+		function errorHandler(error) { 
+			$scope.data = {
+				show: false,
+				hide: true
+			};
+			//alert(error.message);
+		}
+
+	
 });
 
 
