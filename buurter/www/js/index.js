@@ -32,6 +32,7 @@ module.controller('AppController', function($rootScope, $scope, $compile, $http,
 				show: true,
 				hide: false
 			};
+			console.log(sessionStorage.loggedin);
 			introNavigator.pushPage('home.html', { animation : 'slide' });
 		}
 		
@@ -546,13 +547,14 @@ module.controller('AddActivityFormController', function($rootScope, $scope, $com
 			   transformRequest: transformRequestAsFormPost,
 				data : eval({ 
 				'slug' : "activities", 
-				imgsrc : ""+$scope.imgsrc+"", 
+				//user_id : ""+$scope.activity_title+"", 
 				title : ""+$scope.activity_title+"",
 				category : ""+$scope.model_selected.name+"",
 				date : ""+$scope.activity_date+"",
 				date : ""+$scope.activity_date+"",
 				from_time : ""+$scope.activity_time_1+"",
 				to_time : ""+$scope.activity_time_2+"",
+				description : ""+$scope.activity_description+"",
 				address : ""+WC_address+"",
 				latitude : ""+WC_latitude+"",
 				longitude : ""+WC_longitude+""
