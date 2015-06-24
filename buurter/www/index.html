@@ -189,7 +189,7 @@
 			IN DE BUURT
 			===================================--->
 			<ons-list ng-controller="MainCtrl" ng-show="fav_bar.name == 'indebuurt'">				    	
-            	<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail(item.id)">
+            	<ons-list-item modifier="chevron" class="item" ng-repeat="item in items">
                 	<ons-row>
                     	<ons-col width="60px">
                         	<img src="{{item.picture}}" class="item-thum">
@@ -201,7 +201,7 @@
                         	</header>
 							<p class="item-desc">{{item.cat}}</p>
 							<p class="item-desc">{{item.name}}</p>
-							<span class="toolbar-button--outline navigation-bar__line-height list-button">Doe mee <i class="fa fa-hand-o-right"></i></span>
+							<span ng-click="showDetail(item.id)"class="toolbar-button--outline navigation-bar__line-height list-button">Doe mee <i class="fa fa-hand-o-right"></i></span>
 						</ons-col>
 					</ons-row>
 				</ons-list-item>
@@ -211,7 +211,7 @@
             MEMORIES
             ===================================--->
 			<ons-list ng-controller="MemorieCtrl" ng-show="fav_bar.name == 'memories'">
-				<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail(id)">
+				<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
                 	<ons-row>
                     	<ons-col width="60px">
 							<img src="{{item.picture}}" class="item-thum">
@@ -569,7 +569,7 @@
 
         <ons-toolbar>
             <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">{{item.cat}}</div>
+            <div class="center">{{item[0].cat}}</div>
         </ons-toolbar>
       
   
@@ -578,14 +578,14 @@
             <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
+                          <img src="{{item[0].picture}}" class="item-thum">
                     </ons-col>
                     <ons-col>
                         <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
+                            <span class="item-title">{{item[0].act}}</span>
+                            <span class="item-label">{{item[0].date}}</span>
                         </header>
-                        <p class="item-desc">{{item.name}}</p>
+                        <p class="item-desc">{{item[0].name}}</p>
                     </ons-col>
                 </ons-row>
             </ons-list-item>

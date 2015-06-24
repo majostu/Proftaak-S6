@@ -1210,8 +1210,48 @@ module.controller('InviteController', function($scope) {
 
 (function(){
  
-module.controller('DetailController', function($scope, $data) {
-        $scope.item = $data.selectedItem;
+module.controller('DetailController', function($scope, $data, $http) {
+        $scope.item = [];
+		var page = introNavigator.getCurrentPage();
+		
+					$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actid='+page.options.id+'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						
+				} else {
+				  // if successful, bind success message to message and fill the list
+									$http({
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data.user_id+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+											 $scope.item.push({
+												id: ''+data.id+'',
+												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
+												act: ''+data.description+'',
+												date: ''+data.from_time+'',
+												cat: ''+data.category+'',
+												picture: 'http://graph.facebook.com/'+user.fbid+'/picture?type=large'
+											 });
+									}
+					console.log($scope.item);
+					});
+				}
+			  });
         
             $scope.showDetail = function(index) {
             var selectedItem = $data.items[index];
@@ -1272,9 +1312,7 @@ module.controller('OverzichtController', function($scope, $data) {
 			  });
 
 			$scope.showDetail = function(index) {
-				var selectedItem = $scope.items[index];
-				$data.selectedItem = selectedItem;
-				$scope.introNavigator.pushPage('details.html', selectedItem);
+				$scope.introNavigator.pushPage('details.html', { id: index});
 			};
     });
     
