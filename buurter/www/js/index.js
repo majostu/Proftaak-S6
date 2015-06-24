@@ -1211,8 +1211,54 @@ module.controller('InviteController', function($scope) {
 (function(){
  
 module.controller('DetailController', function($scope, $data, $http, $rootScope, transformRequestAsFormPost) {
+	
+	
+	
         $scope.item = [];
 		var page = introNavigator.getCurrentPage();
+		
+		
+					$scope.addParticipant = function(activity) {
+							$http({
+							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+page.options.id+'',
+							   method:"POST",
+							   headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							   },
+							   transformRequest: transformRequestAsFormPost,
+								data    : eval({ 
+								'slug' : "actpart", 
+								user_id: userid
+								}),  // pass in data as strings
+								
+								isArray: true,
+								callback: ''
+						  }).success(function(data) {
+
+								if (!data) {
+								  // if not successful, bind errors to error variables
+								  console.log('error');
+								} else {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>U doet mee aan de activiteit!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Deelname',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								}
+								
+							  });
+			}
+		
 		
 					$http({
 			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actid='+page.options.id+'',
@@ -1428,7 +1474,11 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 				  console.log(data);
 				  console.log('error');
 				} else if(data == '') {
-						
+												var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen reacties</ons-row></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
 				} else {
 				  // if successful, bind success message to message and fill the list
 				 
@@ -1481,7 +1531,11 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 				  console.log(data);
 				  console.log('error');
 				} else if(data == '') {
-						
+												var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen deelnemers</ons-row></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
 				} else {
 				  // if successful, bind success message to message and fill the list
 				 
