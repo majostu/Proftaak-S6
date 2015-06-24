@@ -445,6 +445,303 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 
 
 
+
+
+
+
+
+
+module.controller('MapController', function($scope, $compile, localStorageService) {
+	ons.ready(function() {
+			    
+	    var json = (function () {
+			var json = null;
+			$.ajax({
+				'type':'GET',
+				'async': false,
+				'global': false,
+				'url': "http://broekhuizenautomaterialen.nl/directa/data.php",
+				'dataType': "json",
+				'data': $.param({ 
+					activities: "all"
+				}),
+				'success': function (data) {
+					json = data;
+				}
+			});
+			return json;
+		})();
+			    
+	    function geoLocation() {
+	    	
+		    var options = { frequency: 5000, enableHighAccuracy: true};
+			watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+		    
+		    function onSuccess(position) {
+				var lat = position.coords.latitude;
+				var lng = position.coords.longitude;
+				
+				localStorage.setItem("latitude", lat);
+				localStorage.setItem("longitude", lng);
+				
+				$scope.markers = [];
+		        $scope.markerId = 1;
+		        
+		        $scope.mymarker = [];
+		        $scope.mymarkerId = 1;
+		        				
+				var myLatlng = new google.maps.LatLng(lat, lng);
+				
+				var directionsService = new google.maps.DirectionsService();
+				// Create a renderer for directions and bind it to the map.
+				var rendererOptions = {
+					map: map
+				}
+				directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions)
+				
+				var stepDisplay = new google.maps.InfoWindow();				
+	    
+				var mapOptions = {
+					center: myLatlng,
+					zoom: 16,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					disableDefaultUI: true
+		    	};
+		    	
+				var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+						
+				var contentString = "<div><a ng-click='clickTest()'>Mijn locatie</a></div>";
+				var compiled = $compile(contentString)($scope);
+		
+				var infowindow = new google.maps.InfoWindow({
+					content: compiled[0]
+		    	});
+				
+				/*var icon_myPos = {
+				    url: "img/wheelchair.png",
+				};*/
+				
+				var MyMarker = new google.maps.Marker({
+					position: myLatlng,
+					map: map,
+					title: 'Mijn huidige locatie',
+					optimized: false,
+					animation: google.maps.Animation.DROP,
+					//icon: icon_myPos
+		    	});
+		    			    	
+				google.maps.event.addListener(MyMarker, 'click', function() {
+					infowindow.open(map,MyMarker);
+		    	});
+		    	
+		    	MyMarker.id = $scope.mymarkerId;
+				$scope.mymarkerId++;
+				$scope.mymarker.push(MyMarker);
+		    			    	
+		    	var oms = new OverlappingMarkerSpiderfier(map, {markersWontMove: true, markersWontHide: true, keepSpiderfied: true, nearbyDistance: 20, legWeight: 1});
+				var infoWindow = new google.maps.InfoWindow();
+								
+				for (var i = 0; i < json.length; i ++) {
+					var data = json[i];
+					var loc = new google.maps.LatLng(data.latitude, data.longitude);
+										
+
+					
+					/*var icon_added = {
+					    url: "img/markeraddicon.png",
+					};*/
+										
+										
+					var WCMarker = new google.maps.Marker({
+						position: loc,
+						title: data.title,
+						map: map,
+						animation: google.maps.Animation.DROP,
+						//icon: icon_bad
+					});							
+					
+					
+					WCMarker.desc = data.description;
+					oms.addMarker(WCMarker);
+					infoBox(map, WCMarker, data);
+					
+					WCMarker.id = $scope.markerId;
+					$scope.markerId++;
+					$scope.markers.push(WCMarker);
+				}
+		
+				function infoBox(map, WCMarker, data) {
+					oms.addListener('click', function(WCMarker, event) {
+						infoWindow.setContent(WCMarker.desc);
+						infoWindow.open(map, WCMarker);
+					});
+			
+					oms.addListener('spiderfy', function(WCMarker) {
+						infoWindow.close();
+					});
+					
+						
+					(function(WCMarker, data) {
+						
+						google.maps.event.addListener(WCMarker, "click", function(e) {		
+																
+							/*if (data.device_id == device.uuid) {
+								var MarkerBin = '<div class="button-bar" style="border-bottom: 1px solid #ddd;"><div class="button-bar__item" ng-click="getDirection(' + data.id + ')"><button class="button-bar__button"><i class="fa fa-compass" style="color: #25c2aa;"></i></button></div><div class="button-bar__item"><button class="button-bar__button" ng-click="pushPage(' + data.id + ')"><i class="fa fa-info-circle" style="color: #25c2aa;"></i></button></div><div class="button-bar__item"><button class="button-bar__button" ng-click="deleteMarker(' + data.id +')"><i class="fa fa-trash-o" style="color: #25c2aa;"></i></button></div></div>';
+							} else {
+								var MarkerBin = '<div class="button-bar" style="border-bottom: 1px solid #ddd;"><div class="button-bar__item" ng-click="getDirection(' + data.id + ')"><button class="button-bar__button"><i class="fa fa-compass" style="color: #25c2aa;"></i></button></div><div class="button-bar__item"><button class="button-bar__button" ng-click="pushPage(' + data.id + ')"><i class="fa fa-info-circle" style="color: #25c2aa;"></i></button></div></div>';
+							}
+							
+							var markerData = 
+								'<div id="map-info-window">'+
+									'<div id="map-info-window-inner">'+
+										'<p><b>'+ data.name +'</b></p>'+
+										'<p>' + data.address + '</p>' +
+										'<ul>' + rating_star + '</ul>' +
+										'<p>' + MarkerBin + '</p>' +
+									'</div>'+
+								'</div>'									
+							;*/
+							
+							var compiledMarker = $compile(markerData)($scope);
+
+							infoWindow.setContent(compiledMarker[0]);
+							infoWindow.open(map, WCMarker);
+						});
+					})(WCMarker, data);
+																			
+										
+					/*$scope.pushPage = function(id) {
+												
+						var json = (function () {
+							var json = null;
+							$.ajax({
+								'type':'GET',
+								'async': false,
+								'global': false,
+								'url': "http://marijnstuyfzand.nl/mia6/handyfriendly/www/php/get_marker.php",
+								'dataType': "json",
+								'data': $.param({ 
+									get_profile: id
+								}),
+								'success': function (data) {
+									json = data;
+								}
+							});
+							return json;							
+						})();
+												
+						var profile_id = json.variables.id;
+						
+						localStorage.setItem("profile_id", profile_id);
+						
+		  				mapNavigator.pushPage("marker.html", { animation : "slide" });
+		  					  				
+	  				};
+									
+					$scope.deleteMarker = function(id){
+		                ons.notification.confirm({
+			                title: 'Bevestiging',
+		                    message: 'Weet je zeker dat je deze WC wilt verwijderen?',
+		                    callback: function(idx) {
+		                        switch(idx) {
+		                            case 0:
+		                            
+		                                break;
+		                            case 1:
+		                            
+		                                for (var i = 0; i < $scope.markers.length; i++) {
+		                                    if ($scope.markers[i].id == WCMarker.id) {
+		                                        //Remove the marker from Map                  
+		                                        $scope.markers[i].setMap(null);
+		
+		                                        //Remove the marker from array.
+		                                        $scope.markers.splice(i, 1);
+		                                    }
+		                                }
+      		                                
+		                                var json = (function () {
+											var json = null;
+											$.ajax({
+												'type':'GET',
+												'async': false,
+												'global': false,
+												'url': "http://marijnstuyfzand.nl/mia6/handyfriendly/www/php/get_marker.php",
+												'dataType': "json",
+												'data': $.param({ 
+													delete_id: id
+												}),
+												'success': function (data) {
+													json = data;
+												}
+											});
+											return json;
+										})();
+												                               	
+		                                ons.notification.alert({
+			                                messageHTML: '<div><ons-icon icon="fa-ban" style="color:#9d0d38; font-size: 28px;"></ons-icon></div>',
+											title: 'WC verwijderd',
+											buttonLabel: 'OK',
+											callback: function() {
+														
+												localStorage.removeItem("profile_id");
+												location.reload();
+
+											}
+		                                });
+		                                
+		                                break;
+		                        }
+		                    }
+		                });   
+			        };*/					
+					
+  				}
+  				  				  				  				  				  				
+				$scope.map = map;
+																									
+			}
+			
+			function onError(error) {
+				alert("message: " + error.message);
+				localStorage.setItem("message", error.message);
+			}
+		
+		}
+	    	
+	  	google.maps.event.addDomListener(window, 'load', geoLocation());
+	  		  	   
+	  	$scope.centerOnMe = function() {
+        	if(!$scope.map) {
+				return;
+        	}
+
+			navigator.geolocation.getCurrentPosition(function(position) {				
+				$scope.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));				
+        	}, function(error) {
+				alert('Unable to get location: ' + error.message);
+        	});
+      	};
+      		
+	});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.controller('GegevensController', function($scope) { 
 	ons.ready(function() {
 		

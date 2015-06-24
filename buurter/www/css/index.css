@@ -141,8 +141,65 @@ input[type=password] {
   	padding-bottom: 10px;
 }
 /*========================================================================== 
-NIEUWE ACTIVITEIT
+NIEUWE ACTIVITEIT && MAP OVERZICHT
 ==========================================================================*/
+#map_canvas {
+	position: absolute;
+    width:100%; 
+    height: 100%; 
+    margin: 0; 
+    padding: 0;
+    z-index: -1; 
+}
+
+div#map-info-window {
+	width: 250px;
+}
+
+div#map-info-window > div#map-info-window-inner h2 {
+	margin: 0;
+	padding: 0;
+}
+
+div#map-info-window > div#map-info-window-inner p {
+	margin: 0;
+	padding: 0;
+}
+
+div#map-info-window > div#map-info-window-inner ul {
+	margin: 0;
+	padding: 8px 0 8px 0;
+	list-style: none;
+}
+
+div#map-info-window > div#map-info-window-inner ul li {
+	display: inline;
+}
+
+
+div#map-info-window > div#map-info-window-inner ul li i {
+    color: #8d8d8d;
+    font-size: 18px;
+}
+
+div#map-info-window > div#map-info-window-inner ul li i.active {
+    color: #eeee6a;
+}
+
+.info-icon {
+    position: absolute; 
+    text-align: right; 
+    width: 100%; 
+    z-index: 1;
+    font-size: 22px;
+    right: 12px;
+    bottom: 12px;
+}
+
+.info-icon .tab-icon {
+	color: #25c2aa;
+}
+
 #map_add_activity {
 	position: absolute;
     width:100%; 

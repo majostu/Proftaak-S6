@@ -162,13 +162,18 @@
 					</ons-toolbar-button>
 				</div>
 				<div class="center logotitle"><img class="navlogo" src="img/logo.png">BUURTER&trade;</div>
-                <div class="right"><ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="introNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">
-                	<span class="fa-stack nav-plus">
-                    <i style=" position: relative;
+                <div class="right">	
+	                <ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="introNavigator.pushPage('mapOverzicht.html', {animation : 'lift'}, menu.close())">
+						<ons-icon icon="ion-map"></ons-icon>
+	                </ons-toolbar-button>                
+	                <ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="introNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">
+                		<span class="fa-stack nav-plus">
+							<i style=" position: relative;
   top: -1px;" class="fa fa-circle-thin fa-stack-2x"></i>
-                    <i class="fa fa-plus fa-stack-1x"></i>
-                    </span>
-                </div>      
+                   	 		<i class="fa fa-plus fa-stack-1x"></i>
+				   	 	</span>
+	                </ons-toolbar-button>
+                </div>
 			</ons-toolbar>               
             <div class="button-bar" style="width:280px;" ng-show="data.show">
 				<div class="button-bar__item">
@@ -226,7 +231,20 @@
 				
 		</ons-page>
     </ons-template>
-    
+    <!--========================================================================== 
+	MAP OVERZICHT
+    ==========================================================================--->
+	<ons-template id="mapOverzicht.html">
+		<ons-page ng-controller="MapController">
+
+			<div id="map_canvas" data-tap-disabled="true"></div>
+			
+			<ons-col class="info-icon" ng-click="centerOnMe()" modifier="tappable">
+				<ons-icon icon="fa-map-marker" class="tab-icon"></ons-icon>
+			</ons-col>
+			
+		</ons-page>
+    </ons-template>
   
     
     
