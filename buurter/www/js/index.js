@@ -56,8 +56,9 @@ parsefbdata = function(user){
 						
 					}else if (data.naam == null){
 						console.log("bestaat niet > schrijf");
+						console.log(user.email);
 						$http({
-						   url:'http://broekhuizenautomaterialen.nl/directa/data.php?user='+ loggedinmail +'',
+						   url:'http://broekhuizenautomaterialen.nl/directa/data.php?user='+ user.email +'',
 						   method:"POST",
 						   headers: {
 							'X-Requested-With': 'XMLHttpRequest',
@@ -146,8 +147,8 @@ parsefbdata = function(user){
 			ngFB.api({path: '/me'}).then(
 			function(user) {
 				loggedinmail = user.email;
-				
-				parsefbdata(loggedinmail);
+				console.log(user);
+				parsefbdata(user);
 				$scope.user = user;			
 				loggedin = true;
 				//console.log("parse to db? fb data");
@@ -176,6 +177,8 @@ parsefbdata = function(user){
 				function(response) {
 					//alert('Facebook login succeeded, got access token: ' + response.authResponse.accessToken);
 					sessionStorage.loggedin = true;	
+				
+
 					$window.location.reload();
 				},
 				function(error) {
