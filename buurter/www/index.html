@@ -124,6 +124,15 @@
 					<input type="text" class="text-input--underbar width-full" placeholder="Email" value="" name="email" ng-model="email" required>
         		</div>
 				<div class="form-row">
+					<input type="text" class="text-input--underbar width-full" placeholder="Voornaam" value="" name="first_name" ng-model="fb_first_name" required>
+        		</div>
+				<div class="form-row">
+					<input type="text" class="text-input--underbar width-full" placeholder="Achternaam" value="" name="last_name" ng-model="fb_last_name" required>
+        		</div>
+				<div class="form-row">
+					<input type="text" class="text-input--underbar width-full" placeholder="Gender / male /female" value="" name="gender" ng-model="gender" required>
+        		</div>
+				<div class="form-row">
 					<input type="password" class="text-input--underbar width-full" placeholder="Wachtwoord" value="" name="password" ng-model="password" required>
         		</div>
 				<div class="vspc form-row">
@@ -251,7 +260,7 @@
 		<ons-page modifier="menu-page">
 
 			<div class="img-circle center"><img src="{{imgurl}}"/></div>
-			<p class="center">Sherry Turkle</p>
+			<p class="center">{{name}}</p>
 			<br>			
 			<ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())">
 				<ons-icon icon="fa-user" fixed-width="true"></ons-icon>

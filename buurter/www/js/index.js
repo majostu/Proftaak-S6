@@ -1,5 +1,10 @@
 var loggedin;
 var imgurl;
+var userid;
+var fbid;
+var fb_first_name;
+var username;
+var loggedinmail;
 
 var module = angular.module('buurter', ['onsen', 'LocalStorageModule', 'ngOpenFB', 'ui.router']);
 
@@ -16,9 +21,103 @@ module.config(function (localStorageServiceProvider, $httpProvider) {
     $httpProvider.defaults.useXDomain = true;
 });
 
+module.controller('AppController', function($rootScope, $scope, $compile, $http, localStorageService, ngFB, $state, $window, transformRequestAsFormPost) { 
+//Check if logged in or not..
+
+parsefbdata = function(user){
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?user='+ loggedinmail +'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else {
+				  // if successful, check if set and exist
+					if(data.naam != null){
+						console.log("bestaat !< write");
+						
+						//console.log(data);
+						userid = data.id;
+						fbid = data.fbid;
+						username = data.fb_first_name;
+						console.log(userid);
+						console.log(fbid);
+						console.log(username);
+							$scope.name = data.fb_first_name;
+							if(data.fbid == 0){
+								$scope.imgurl = "img/intro-back.jpg";
+							}else{
+								$scope.imgurl = "http://graph.facebook.com/"+fbid+"/picture?type=large";
+							}
+
+						
+					}else if (data.naam == null){
+						console.log("bestaat niet > schrijf");
+						$http({
+						   url:'http://broekhuizenautomaterialen.nl/directa/data.php?user='+ loggedinmail +'',
+						   method:"POST",
+						   headers: {
+							'X-Requested-With': 'XMLHttpRequest',
+							'Content-Type': 'application/x-www-form-urlencoded'
+						   },
+						   transformRequest: transformRequestAsFormPost,
+							data    : eval({ 
+							'slug' : "users", 
+							fb_email: ""+user.email+"", 
+							password: ""+user.id+"",
+							fb_first_name: ""+user.first_name+"",
+							fb_last_name: ""+user.last_name+"",
+							gender: ""+user.gender+"",
+							fb_co_id: ""+user.id+""
+							
+							}),  // pass in data as strings
+							
+							isArray: true,
+							callback: ''
+						}).success(function(data) {
+							if (!data) {
+								// if not successful, bind errors to error variables
+								console.log(data);
+								console.log('error');
+								
+								ons.notification.alert({
+									messageHTML: '<div><ons-icon icon="fa-ban" style="color:#9d0d38; font-size: 28px;"></ons-icon></div>',
+									title: 'Oeps... er is iets fout gegaan',
+									buttonLabel: 'OK',
+									callback: function() {
+																		
+									}
+								});
+								
+							} else {
+								// if successful, bind success message to message
+								console.log(data);
+								console.log('success');
+							  
+								ons.notification.alert({
+									messageHTML: '<div><ons-icon icon="fa-check" style="color:#61b76b; font-size: 28px;"></ons-icon></div>',
+									title: 'Je bent succesvol geregistreerd',
+									buttonLabel: 'OK',
+									callback: function() {
+										introNavigator.pushPage('home.html', { animation : 'slide' });										
+									}
+								});			                              	                                	
+							}
+						});
+
+												
+
+					}
+			}
+			});
+			console.log(user);
+}
 
 
-module.controller('AppController', function($rootScope, $scope, $compile, $http, localStorageService, ngFB, $state, $window) { 
+
 
 	ons.ready(function() {
 		
@@ -32,21 +131,27 @@ module.controller('AppController', function($rootScope, $scope, $compile, $http,
 				show: true,
 				hide: false
 			};
-			console.log(sessionStorage.loggedin);
+			loggedinmail = sessionStorage.email;
+			parsefbdata(loggedinmail);
+			//console.log(sessionStorage.loggedin);
 			introNavigator.pushPage('home.html', { animation : 'slide' });
 		}
 		
 
 					//Need to watch on the session storage (FB AUTH KEY)
 		if(is.set(sessionStorage.fbAccessToken)){
+			
 			ngFB.api({path: '/me'}).then(
 			function(user) {
-				//console.log(JSON.stringify(user));
-				$scope.user = user;
-				$scope.imgurl = "http://graph.facebook.com/"+user.id+"/picture?type=large";
-				$scope.name = user.name;
+				loggedinmail = user.email;
+				
+				parsefbdata(loggedinmail);
+				$scope.user = user;			
 				loggedin = true;
-				console.log(loggedin);			
+				//console.log("parse to db? fb data");
+				
+					
+
 			},
 			errorHandler);
 		}
@@ -79,7 +184,8 @@ module.controller('AppController', function($rootScope, $scope, $compile, $http,
 		$scope.getInfo = function() {
 			ngFB.api({path: '/me'}).then(
 				function(user) {
-					console.log(JSON.stringify(user));
+					//console.log(JSON.stringify(user));
+					
 					$scope.user = user;
 				},
 				errorHandler);
@@ -187,6 +293,8 @@ module.controller('IntroController', function($rootScope, $scope, $compile, $htt
 							buttonLabel: 'OK',
 							callback: function() {
 								sessionStorage.loggedin = true;
+								sessionStorage.email = $scope.email;
+								loggedinmail = $scope.email;
 								$window.location.reload();
 							}
 	                	});		
@@ -225,7 +333,12 @@ module.controller('RegisterController', function($rootScope, $scope, $compile, $
 				data    : eval({ 
 				'slug' : "users", 
 				fb_email: ""+$scope.email+"", 
-				password: ""+$scope.password+""
+				password: ""+$scope.password+"",
+				fb_first_name: ""+$scope.fb_first_name+"",
+				fb_last_name: ""+$scope.fb_last_name+"",
+				gender: ""+$scope.gender+"",
+				fb_co_id: "0"
+				
 				}),  // pass in data as strings
 				
 				isArray: true,
@@ -282,10 +395,10 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 	if(is.set(sessionStorage.fbAccessToken)){
 		ngFB.api({path: '/me'}).then(
 		function(user) {
-			console.log(JSON.stringify(user));
+			//console.log(JSON.stringify(user));
 			$scope.user = user;
 			loggedin = true;
-			console.log(loggedin);			
+			//console.log(loggedin);			
 		},
 		errorHandler);
 	}
@@ -547,7 +660,7 @@ module.controller('AddActivityFormController', function($rootScope, $scope, $com
 			   transformRequest: transformRequestAsFormPost,
 				data : eval({ 
 				'slug' : "activities", 
-				//user_id : ""+$scope.activity_title+"", 
+				user_id : ""+userid+"", 
 				title : ""+$scope.activity_title+"",
 				category : ""+$scope.model_selected.name+"",
 				date : ""+$scope.activity_date+"",
