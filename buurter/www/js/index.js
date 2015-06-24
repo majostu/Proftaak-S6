@@ -98,6 +98,20 @@ parsefbdata = function(user){
 								console.log(data);
 								console.log('success');
 							  
+							  		userid = data.id;
+									fbid = data.fbid;
+									username = data.fb_first_name;
+									console.log(userid);
+									console.log(fbid);
+									console.log(username);
+										$scope.name = data.fb_first_name;
+										if(data.fbid == 0){
+											$scope.imgurl = "img/intro-back.jpg";
+										}else{
+											$scope.imgurl = "http://graph.facebook.com/"+fbid+"/picture?type=large";
+										}
+								console.log("is de user id set?"+userid);
+							  
 								ons.notification.alert({
 									messageHTML: '<div><ons-icon icon="fa-check" style="color:#61b76b; font-size: 28px;"></ons-icon></div>',
 									title: 'Je bent succesvol geregistreerd',
