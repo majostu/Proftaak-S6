@@ -486,6 +486,12 @@ margin-bottom: 10px;
 	  height: 175px;
 	 border-radius: 50%;
 }
+.img-circle-small {
+    overflow: hidden;
+	  width: 20px;
+	  height: 20px;
+	 border-radius: 50%;
+}
 .img-circle img {
     margin-top: 10px;
     border-radius: 50%;

@@ -578,7 +578,7 @@
             <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="{{item[0].picture}}" class="item-thum">
+                          <img ng-src="{{item[0].picture}}" class="item-thum">
                     </ons-col>
                     <ons-col>
                         <header>
@@ -593,51 +593,13 @@
 	        
             </div>
             <ons-list>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/amy_jones.jpg" class="item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
+             <div list-participants-details="{{participantsdetailsAantal}}"></div>
         </ons-list>
         
         
         <p class="center button1">
-            <ons-button ng-click="introNavigator.pushPage('overzicht.html', { animation : 'slide' }, menu.close())">
-               Ik kom eraan! (alert)       
+            <ons-button ng-click="showDetail(item[0].id)">
+               Ik doe mee!       
             </ons-button>
         </p>   
 
@@ -652,7 +614,7 @@
     <ons-page ng-controller="OverzichtController">
  <ons-toolbar>
             <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">{{item.cat}}</div>
+            <div class="center">{{item[0].cat}}</div>
         </ons-toolbar>
 
 
@@ -660,14 +622,14 @@
             <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
+                          <img ng-src="{{item[0].picture}}" class="item-thum">
                     </ons-col>
                     <ons-col>
                         <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
+                            <span class="item-title">{{item[0].act}}</span>
+                            <span class="item-label">{{item[0].date}}</span>
                         </header>
-                        <p class="item-desc">{{item.name}}</p>
+                        <p class="item-desc">{{item[0].name}}</p>
                     </ons-col>
                 </ons-row>
             </ons-list-item>
@@ -681,94 +643,20 @@
             
             <ons-list>
              <ons-list-header>Deelnemers</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/amy_jones.jpg" class="item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
+             <div list-participants="{{participantsAantal}}"></div>
             <p class="center">
               <span id="" ng-click="introNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Nodig vrienden uit</span>
             </p>   
+			
+
             <ons-list-header>Reacties</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/amy_jones.jpg" class="item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
+			<div list-comments="{{commentAantal}}"></div>
               
               <section style="padding: 0 8px 8px">
-                <textarea class="textarea" ng-model="text2" placeholder="Schrijf een bericht..." style="width: 100%; height: 100px; margin-top:10px;"></textarea>
+                <textarea class="textarea" id="text2" ng-model="comment" placeholder="Schrijf een bericht..." style="width: 100%; height: 100px; margin-top:10px;"></textarea>
               </section>
               <section style="padding: 0 8px 8px">
-                <span id="" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Verstuur</span>
+                <ons-button ng-click="addComment(item[0].id, item[0].cat)" class="toolbar-button--outline navigation-bar__line-height">Verstuur</ons-button>
                 <ons-button modifier="quiet">Upload foto/ video</ons-button>
               </section>
 
@@ -1298,11 +1186,13 @@
 	SCRIPTS
     ==========================================================================--->
 	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="components/angular/angular.js"></script> 
-	<script type="text/javascript" src="components/angular/angular-local-storage.min.js"></script>    
+
+	<script type="text/javascript" src="https://code.angularjs.org/1.4.0/angular.min.js"></script>  
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
 	<script type="text/javascript" src="components/onsenui/js/onsenui.js"></script>
+	<script type="text/javascript" src="components/angular/angular-local-storage.min.js"></script>   
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeyepY1W5MQtdovxCS_6SWYouRGobAfz4&sensor=true&libraries=geometry, places"></script>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
+
 	<script type="text/javascript" src="js/markclusterer.js"></script>
 	<script type="text/javascript" src="js/oms.min.js"></script>
 	<script type="text/javascript" src="js/is.js"></script>

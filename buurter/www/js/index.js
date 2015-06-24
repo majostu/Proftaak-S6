@@ -1210,7 +1210,7 @@ module.controller('InviteController', function($scope) {
 
 (function(){
  
-module.controller('DetailController', function($scope, $data, $http) {
+module.controller('DetailController', function($scope, $data, $http, $rootScope, transformRequestAsFormPost) {
         $scope.item = [];
 		var page = introNavigator.getCurrentPage();
 		
@@ -1248,24 +1248,274 @@ module.controller('DetailController', function($scope, $data, $http) {
 												picture: 'http://graph.facebook.com/'+user.fbid+'/picture?type=large'
 											 });
 									}
-					console.log($scope.item);
+					//console.log($scope.item);
 					});
 				}
 			  });
         
-            $scope.showDetail = function(index) {
-            var selectedItem = $data.items[index];
-            $data.selectedItem = selectedItem;
-            $scope.introNavigator.pushPage('overzicht.html', selectedItem);
-        };
-        
-        
-    });
+			$scope.showDetail = function(index) {
+				$scope.introNavigator.pushPage('overzicht.html', { id: index});
+			};
+			
+}).directive('listParticipantsDetails', function ($http, $rootScope, $compile) {
+    return {
+        restrict: 'A',
+        // NB: no isolated scope!!
+        link: function (scope, element, attrs) {
+            // observe changes in attribute - could also be scope.$watch
+        //    attrs.$observe('listComments', function (value) {
+			//scope.$watch('listComments', function (value) {
+		var page = introNavigator.getCurrentPage();
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+page.options.id+'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen deelnemers</ons-row></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
+				} else {
+				  // if successful, bind success message to message and fill the list
+					
+					angular.forEach(data, function(data) {
+						
+															$http({
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+						
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="http://graph.facebook.com/'+user.fbid+'/picture" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
+						
+										}
+									});
+					});
+				 
+				}
+			  });
+			//});
+		}
+	}
+}); 
     
-   
-module.controller('OverzichtController', function($scope, $data) {
-        $scope.item = $data.selectedItem;
-    });    
+	
+
+
+module.controller('OverzichtController', function($scope, $data, $http, transformRequestAsFormPost) {
+
+			$scope.addComment = function(activity, cat) {
+							$http({
+							   url:'http://broekhuizenautomaterialen.nl/directa/data.php',
+							   method:"POST",
+							   headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							   },
+							   transformRequest: transformRequestAsFormPost,
+								data    : eval({ 
+								'slug' : "comments", 
+								user_id: userid,
+								activity_id : activity, 
+								comment : ""+$scope.comment+"", 
+								img : "0"
+								}),  // pass in data as strings
+								
+								isArray: true,
+								callback: ''
+						  }).success(function(data) {
+
+								if (!data) {
+								  // if not successful, bind errors to error variables
+								  console.log('error');
+								} else {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>Reactie toegevoegd</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: cat,
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								}
+								
+							  });
+			}
+			
+        $scope.item = [];
+		var page = introNavigator.getCurrentPage();
+		
+					$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actid='+page.options.id+'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  //console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						
+				} else {
+				  // if successful, bind success message to message and fill the list
+									$http({
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data.user_id+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+											 $scope.item.push({
+												id: ''+data.id+'',
+												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
+												act: ''+data.description+'',
+												date: ''+data.from_time+'',
+												cat: ''+data.category+'',
+												picture: 'http://graph.facebook.com/'+user.fbid+'/picture?type=large'
+											 });
+									}
+					//console.log($scope.item);
+					});
+				}
+			  });
+
+
+
+}).directive('listComments', function ($http, $rootScope, $compile) { //Comments weergeven
+    return {
+        restrict: 'A',
+        // NB: no isolated scope!!
+        link: function (scope, element, attrs) {
+            // observe changes in attribute - could also be scope.$watch
+        //    attrs.$observe('listComments', function (value) {
+			//scope.$watch('listComments', function (value) {
+		var page = introNavigator.getCurrentPage();
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?comments='+page.options.id+'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						
+				} else {
+				  // if successful, bind success message to message and fill the list
+				 
+					angular.forEach(data, function(data) {
+						
+															$http({
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data.user_id+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+						
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="http://graph.facebook.com/'+user.fbid+'/picture" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span> - <span class="item-desc">'+data.comment+'</span></header></ons-col></ons-row></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
+						
+										}
+									});
+					});
+				 
+				}
+			  });
+			//});
+		}
+	}
+}).directive('listParticipants', function ($http, $rootScope, $compile) {//Deelnemers weergeven in overzicht
+    return {
+        restrict: 'A',
+        // NB: no isolated scope!!
+        link: function (scope, element, attrs) {
+            // observe changes in attribute - could also be scope.$watch
+        //    attrs.$observe('listComments', function (value) {
+			//scope.$watch('listComments', function (value) {
+		var page = introNavigator.getCurrentPage();
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+page.options.id+'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						
+				} else {
+				  // if successful, bind success message to message and fill the list
+				 
+					angular.forEach(data, function(data) {
+						
+															$http({
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+						
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="http://graph.facebook.com/'+user.fbid+'/picture" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
+						
+										}
+									});
+					});
+				 
+				}
+			  });
+			//});
+		}
+	}
+});    
 
     module.controller('MainCtrl', function($scope, $data, $http) {
 			$scope.items = [];
