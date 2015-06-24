@@ -1239,6 +1239,21 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 								if (!data) {
 								  // if not successful, bind errors to error variables
 								  console.log('error');
+								} else if (data == 'exist') {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>U doet al mee aan de activiteit!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Deelname',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
 								} else {
 								  // if successful, bind success message to message
 											console.log(data);
