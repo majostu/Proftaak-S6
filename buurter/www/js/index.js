@@ -52,7 +52,7 @@ parsefbdata = function(user){
 							}else{
 								$scope.imgurl = "http://graph.facebook.com/"+fbid+"/picture?type=large";
 							}
-
+					console.log("is de user id set?"+userid);
 						
 					}else if (data.naam == null){
 						console.log("bestaat niet > schrijf");
@@ -114,13 +114,14 @@ parsefbdata = function(user){
 			}
 			});
 			console.log(user);
+			
 }
 
 
 
 
 	ons.ready(function() {
-		
+
 		if(localStorageService.isSupported) {
 			console.log('storage supported: yes; type: local storage');
 		}
@@ -133,6 +134,7 @@ parsefbdata = function(user){
 			};
 			loggedinmail = sessionStorage.email;
 			parsefbdata(loggedinmail);
+					
 			//console.log(sessionStorage.loggedin);
 			introNavigator.pushPage('home.html', { animation : 'slide' });
 		}
@@ -471,7 +473,7 @@ module.controller('ContactenController', function($scope) {
 
 module.controller('NieuweActiviteitController', function($rootScope, $scope, $compile, $http, localStorageService, transformRequestAsFormPost) { 
 	ons.ready(function() {
-			
+			console.log("IS HIJ IN DE ADD ACTIVITEIT SET? =="+userid);
 		$scope.dialogs = {};
    
 		$scope.AddActivityShow = function(dlg) {
