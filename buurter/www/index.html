@@ -189,7 +189,7 @@
 			IN DE BUURT
 			===================================--->
 			<ons-list ng-controller="MainCtrl" ng-show="fav_bar.name == 'indebuurt'">				    	
-            	<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
+            	<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail(item.id)">
                 	<ons-row>
                     	<ons-col width="60px">
                         	<img src="{{item.picture}}" class="item-thum">
@@ -211,7 +211,7 @@
             MEMORIES
             ===================================--->
 			<ons-list ng-controller="MemorieCtrl" ng-show="fav_bar.name == 'memories'">
-				<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
+				<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail(id)">
                 	<ons-row>
                     	<ons-col width="60px">
 							<img src="{{item.picture}}" class="item-thum">
