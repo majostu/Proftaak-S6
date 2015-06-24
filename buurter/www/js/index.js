@@ -133,8 +133,12 @@ parsefbdata = function(user){
 				show: true,
 				hide: false
 			};
+			
+			if(is.set(sessionStorage.fbAccessToken)){
+			}else{
 			loggedinmail = sessionStorage.email;
 			parsefbdata(loggedinmail);
+			}
 					
 			//console.log(sessionStorage.loggedin);
 			introNavigator.pushPage('home.html', { animation : 'slide' });
@@ -147,7 +151,6 @@ parsefbdata = function(user){
 			ngFB.api({path: '/me'}).then(
 			function(user) {
 				loggedinmail = user.email;
-				console.log(user);
 				parsefbdata(user);
 				$scope.user = user;			
 				loggedin = true;
