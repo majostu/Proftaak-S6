@@ -345,6 +345,11 @@ NIEUWE ACTIVITEIT
       height: 20px;
     }
 
+	.range{
+	width: 100%;
+	margin-top: 15px;
+	}
+	
 .contact-image {
       background-color: #ccc;
       width: 20px;
