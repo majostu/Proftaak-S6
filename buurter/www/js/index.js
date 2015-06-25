@@ -1032,10 +1032,205 @@ module.controller('InviteController', function($scope) {
 
 (function(){
  
-module.controller('DetailController', function($scope, $data, $http, $rootScope, transformRequestAsFormPost) {
-	
-	
-	
+module.controller('DetailController', function($scope, $data, $http, $rootScope, transformRequestAsFormPost, $compile) {
+		
+		
+		
+		
+		
+		
+		
+			var act_id = localStorage.getItem("act_id");
+			
+			var json = (function () {
+				var json = null;
+				$.ajax({
+					'type':'GET',
+					'async': false,
+					'global': false,
+					'url': "http://broekhuizenautomaterialen.nl/directa/data.php",
+					'dataType': "json",
+					'data': $.param({ 
+						actid: act_id
+					}),
+					'success': function (data) {
+						json = data;
+					}
+				});
+				return json;
+			})();
+			
+			console.log(json);
+		
+		
+		
+
+		
+		function geoActMap() {
+	    	
+		    var options = { frequency: 5000, enableHighAccuracy: true};
+			watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+		    
+		    function onSuccess(position) {
+				var lat = position.coords.latitude;
+				var lng = position.coords.longitude;
+				
+				localStorage.setItem("latitude", lat);
+				localStorage.setItem("longitude", lng);
+				
+				$scope.markers = [];
+		        $scope.markerId = 1;
+		        
+		        $scope.mymarker = [];
+		        $scope.mymarkerId = 1;
+		        				
+				var myLatlng = new google.maps.LatLng(json.latitude, json.longitude);
+				
+				var directionsService = new google.maps.DirectionsService();
+				// Create a renderer for directions and bind it to the map.
+				var rendererOptions = {
+					map: map
+				}
+				directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions)
+				
+				var stepDisplay = new google.maps.InfoWindow();				
+	    
+				var mapOptions = {
+					center: myLatlng,
+					zoom: 16,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					disableDefaultUI: true
+		    	};
+		    	
+				var map = new google.maps.Map(document.getElementById("map_activity_canvas"), mapOptions);
+						
+				var contentString = "<div><a ng-click='clickTest()'>Mijn locatie</a></div>";
+				var compiled = $compile(contentString)($scope);
+		
+				var infowindow = new google.maps.InfoWindow({
+					content: compiled[0]
+		    	});
+				
+				var icon_myPos = {
+				    url: "img/marker.png",
+				};
+				
+				var MyMarker = new google.maps.Marker({
+					position: myLatlng,
+					map: map,
+					title: json.title,
+					optimized: false,
+					animation: google.maps.Animation.DROP,
+					icon: icon_myPos
+		    	});
+		    		    		    	
+		    	var oms = new OverlappingMarkerSpiderfier(map, {markersWontMove: true, markersWontHide: true, keepSpiderfied: true, nearbyDistance: 20, legWeight: 1});
+				var infoWindow = new google.maps.InfoWindow();
+							
+				MyMarker.desc = json.description;
+				oms.addMarker(MyMarker);
+				infoBox(map, MyMarker, json);
+				
+				MyMarker.id = $scope.markerId;
+				$scope.markerId++;
+				$scope.markers.push(MyMarker);
+			
+		
+				function infoBox(map, MyMarker, data) {
+					oms.addListener('click', function(MyMarker, event) {
+						infoWindow.setContent(MyMarker.desc);
+						infoWindow.open(map, MyMarker);
+					});
+			
+					oms.addListener('spiderfy', function(MyMarker) {
+						infoWindow.close();
+					});
+					
+						
+					(function(MyMarker, data) {
+						
+						google.maps.event.addListener(MyMarker, "click", function(e) {		
+																							
+							var markerData = 
+								'<div id="map-info-window">'+
+									'<div id="map-info-window-inner">'+
+										'<p><b>'+ data.title +'</b></p>'+
+										'<p>' + data.address + '</p>' +
+									'</div>'+
+								'</div>'									
+							;
+							
+							var compiledMarker = $compile(markerData)($scope);
+
+							infoWindow.setContent(compiledMarker[0]);
+							infoWindow.open(map, MyMarker);
+						});
+					})(MyMarker, data);
+												
+  				}
+												
+				var loc = new google.maps.LatLng(lat, lng);					
+				
+				var icon_added = {
+				    url: "img/dudemarker.png",
+				};
+									
+				var WCMarker = new google.maps.Marker({
+					position: loc,
+					title: "Mijn locatie",
+					map: map,
+					animation: google.maps.Animation.DROP,
+					icon: icon_added
+				});	
+				
+				google.maps.event.addListener(WCMarker, 'click', function() {
+					infowindow.open(map,WCMarker);
+		    	});
+		    	
+		    	WCMarker.id = $scope.mymarkerId;
+				$scope.mymarkerId++;
+				$scope.mymarker.push(WCMarker);						
+				  				  				  				  				  				
+				$scope.map = map;
+																									
+			}
+			
+			function onError(error) {
+				alert("message: " + error.message);
+				localStorage.setItem("message", error.message);
+			}
+		
+		}
+	    	
+	  	google.maps.event.addDomListener(window, 'load', geoActMap());
+		
+		$scope.centerOnMe = function() {
+        	if(!$scope.map) {
+				return;
+        	}
+
+			navigator.geolocation.getCurrentPosition(function(position) {				
+				$scope.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));				
+        	}, function(error) {
+				alert('Unable to get location: ' + error.message);
+        	});
+      	};
+		
+		$scope.remove_act_id = function() {
+			localStorage.removeItem("act_id");
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
         $scope.item = [];
 		var page = introNavigator.getCurrentPage();
 		
@@ -1134,7 +1329,9 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
 												date: ''+data.from_time+'',
+												date2: ''+data.to_time+'',
 												cat: ''+data.category+'',
+												head: ''+data.title+'',
 												picture: avatar
 											 });
 									}
@@ -1215,8 +1412,190 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 	
 
 
-module.controller('OverzichtController', function($scope, $data, $http, transformRequestAsFormPost) {
+module.controller('OverzichtController', function($scope, $data, $http, transformRequestAsFormPost, $compile) {
+		
+		
+			var act_id = localStorage.getItem("act_id");
+			
+			var json = (function () {
+				var json = null;
+				$.ajax({
+					'type':'GET',
+					'async': false,
+					'global': false,
+					'url': "http://broekhuizenautomaterialen.nl/directa/data.php",
+					'dataType': "json",
+					'data': $.param({ 
+						actid: act_id
+					}),
+					'success': function (data) {
+						json = data;
+					}
+				});
+				return json;
+			})();
+			
+			console.log(json);
+		
+		
+		
 
+		
+		function geoActMap() {
+	    	
+		    var options = { frequency: 5000, enableHighAccuracy: true};
+			watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+		    
+		    function onSuccess(position) {
+				var lat = position.coords.latitude;
+				var lng = position.coords.longitude;
+				
+				localStorage.setItem("latitude", lat);
+				localStorage.setItem("longitude", lng);
+				
+				$scope.markers = [];
+		        $scope.markerId = 1;
+		        
+		        $scope.mymarker = [];
+		        $scope.mymarkerId = 1;
+		        				
+				var myLatlng = new google.maps.LatLng(json.latitude, json.longitude);
+				
+				var directionsService = new google.maps.DirectionsService();
+				// Create a renderer for directions and bind it to the map.
+				var rendererOptions = {
+					map: map
+				}
+				directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions)
+				
+				var stepDisplay = new google.maps.InfoWindow();				
+	    
+				var mapOptions = {
+					center: myLatlng,
+					zoom: 16,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					disableDefaultUI: true
+		    	};
+		    	
+				var map = new google.maps.Map(document.getElementById("map_activity_canvas"), mapOptions);
+						
+				var contentString = "<div><a ng-click='clickTest()'>Mijn locatie</a></div>";
+				var compiled = $compile(contentString)($scope);
+		
+				var infowindow = new google.maps.InfoWindow({
+					content: compiled[0]
+		    	});
+				
+				var icon_myPos = {
+				    url: "img/marker.png",
+				};
+				
+				var MyMarker = new google.maps.Marker({
+					position: myLatlng,
+					map: map,
+					title: json.title,
+					optimized: false,
+					animation: google.maps.Animation.DROP,
+					icon: icon_myPos
+		    	});
+		    		    		    	
+		    	var oms = new OverlappingMarkerSpiderfier(map, {markersWontMove: true, markersWontHide: true, keepSpiderfied: true, nearbyDistance: 20, legWeight: 1});
+				var infoWindow = new google.maps.InfoWindow();
+							
+				MyMarker.desc = json.description;
+				oms.addMarker(MyMarker);
+				infoBox(map, MyMarker, json);
+				
+				MyMarker.id = $scope.markerId;
+				$scope.markerId++;
+				$scope.markers.push(MyMarker);
+			
+		
+				function infoBox(map, MyMarker, data) {
+					oms.addListener('click', function(MyMarker, event) {
+						infoWindow.setContent(MyMarker.desc);
+						infoWindow.open(map, MyMarker);
+					});
+			
+					oms.addListener('spiderfy', function(MyMarker) {
+						infoWindow.close();
+					});
+					
+						
+					(function(MyMarker, data) {
+						
+						google.maps.event.addListener(MyMarker, "click", function(e) {		
+																							
+							var markerData = 
+								'<div id="map-info-window">'+
+									'<div id="map-info-window-inner">'+
+										'<p><b>'+ data.title +'</b></p>'+
+										'<p>' + data.address + '</p>' +
+									'</div>'+
+								'</div>'									
+							;
+							
+							var compiledMarker = $compile(markerData)($scope);
+
+							infoWindow.setContent(compiledMarker[0]);
+							infoWindow.open(map, MyMarker);
+						});
+					})(MyMarker, data);
+												
+  				}
+												
+				var loc = new google.maps.LatLng(lat, lng);					
+				
+				var icon_added = {
+				    url: "img/dudemarker.png",
+				};
+									
+				var WCMarker = new google.maps.Marker({
+					position: loc,
+					title: "Mijn locatie",
+					map: map,
+					animation: google.maps.Animation.DROP,
+					icon: icon_added
+				});	
+				
+				google.maps.event.addListener(WCMarker, 'click', function() {
+					infowindow.open(map,WCMarker);
+		    	});
+		    	
+		    	WCMarker.id = $scope.mymarkerId;
+				$scope.mymarkerId++;
+				$scope.mymarker.push(WCMarker);						
+				  				  				  				  				  				
+				$scope.map = map;
+																									
+			}
+			
+			function onError(error) {
+				alert("message: " + error.message);
+				localStorage.setItem("message", error.message);
+			}
+		
+		}
+	    	
+	  	google.maps.event.addDomListener(window, 'load', geoActMap());
+		
+		$scope.centerOnMe = function() {
+        	if(!$scope.map) {
+				return;
+        	}
+
+			navigator.geolocation.getCurrentPosition(function(position) {				
+				$scope.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));				
+        	}, function(error) {
+				alert('Unable to get location: ' + error.message);
+        	});
+      	};
+		
+		$scope.remove_act_id = function() {
+			localStorage.removeItem("act_id");
+		}
+		
+		
 			$scope.addComment = function(activity, cat) {
 							$http({
 							   url:'http://broekhuizenautomaterialen.nl/directa/data.php',
@@ -1301,7 +1680,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
 												date: ''+data.from_time+'',
+												date2: ''+data.to_time+'',
 												cat: ''+data.category+'',
+												head: ''+data.title+'',
 												picture: avatar
 											 });
 									}
@@ -1482,10 +1863,11 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
 												date: ''+data.from_time+'',
+												date2: ''+data.to_time+'',
 												cat: ''+data.category+'',
+												head: ''+data.title+'',
 												picture: avatar
 											 });
-								
 
 									}
 									});
@@ -1517,8 +1899,10 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								  console.log('error');
 								} else if (part == 'exist') {
 								  // user doet mee
-						 
-									
+								  		
+								  		
+								  		localStorage.setItem("act_id", index);
+								  										  		
 										$scope.introNavigator.pushPage('overzicht.html', { id: index});
 			  
 								} else {
@@ -1581,7 +1965,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
 												date: ''+data.from_time+'',
+												date2: ''+data.to_time+'',
 												cat: ''+data.category+'',
+												head: ''+data.title+'',
 												picture: avatar
 											 });
 								
@@ -1616,7 +2002,8 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								  console.log('error');
 								} else if (part == 'exist') {
 								  // user doet mee
-						 
+								  		
+								  		localStorage.setItem("act_id", index);
 									
 										$scope.introNavigator.pushPage('overzicht.html', { id: index});
 			  
