@@ -23,6 +23,17 @@
   <link rel="icon" type="image/png" href="/img/faffie/favicon-16x16.png?v=gUnit" sizes="16x16">
   <link rel="manifest" href="/img/faffie/manifest.json?v=gUnit">
   <link rel="shortcut icon" href="/img/faffie/favicon.ico?v=gUnit">
+  <!-- Important Owl stylesheet -->
+<link rel="stylesheet" href="owl-carousel/owl.carousel.css">
+ 
+<!-- Default Theme -->
+<link rel="stylesheet" href="owl-carousel/owl.theme.css">
+ 
+<!--  jQuery 1.7+  -->
+<script src="jquery-1.9.1.min.js"></script>
+ 
+<!-- Include js plugin -->
+<script src="assets/owl-carousel/owl.carousel.js"></script>
   <meta name="apple-mobile-web-app-title" content="Buurter">
   <meta name="application-name" content="Buurter">
   <meta name="msapplication-TileColor" content="#5cbd77">
@@ -53,18 +64,37 @@
                           <h2 style="font-style:italic;">BUURTER<sup style="font-size:0.7em;" >&trade;</sup></h2><br>
                           Kom in contact met mensen in de buurt!
                       </div>
+                      	<div class="cover-label"><i class="fa fa-arrow-circle-right fa-4x" ></i><br>Swipe!</div>
+
 					</ons-carousel-item>
-					<ons-carousel-item class="background-intro" style="background-color: rgba(235,94,47,0.84);color:white !important;">          
-		
-					<img class="stretch"  src="img/intro02.jpg">  					                      
-					                  <p style="margin-top: -150px;"> Doe mee of maak activiteiten bij jou in de buurt en leer nieuwe mensen kennen</p>  
-                      
+				<ons-carousel-item style="background: url(img/intro02.jpg) center center no-repeat; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; color:white !important;">
+						<div class="intro-text">
+                          <br>
+                          <br>
+                        
+                        </div>
+                        	<div class="cover-label"><p class="intro-text">Doe mee of maak activiteiten bij jou in de buurt en leer nieuwe mensen kennen</p><i class="fa fa-arrow-circle-right fa-4x" ></i><br>Swipe!</div>
+                        	
+
 					</ons-carousel-item>
-					<ons-carousel-item style="background-color: rgba(235,94,47,0.84);color:white !important;">
-						<img class="stretch"  src="img/intro03.jpg">
-						        <p style="margin-top: -150px;"> Bekijk je oude activiteiten terug voor leuke herinneringen of nodig dezelfde mensen uit om deze "memorie" her te beleven</p>  
-                                             
+					<ons-carousel-item style="background: url(img/intro04.jpg) center center no-repeat; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; color:white !important;">
+						<div class="intro-text">
+                          <br>
+                          <br>
+                                       
+                        </div>
+                        	<div class="cover-label"><p class="intro-text">Bekijk je oude activiteiten terug voor leuke herinneringen of nodig dezelfde mensen uit om deze "memorie" her te beleven</p><i class="fa fa-arrow-circle-right fa-4x" ></i><br>Swipe!</div>
+
 					</ons-carousel-item>
+
 					<ons-carousel-item style="background-color: rgba(235,94,47,0.84); color: white !important;">						
                         <form class="login-form" ng-submit="LoginSubmit()">
                             Welkom bij
@@ -100,8 +130,7 @@
 					</ons-carousel-item>
 
 					<ons-carousel-cover>
-						<div class="cover-label"><i class="fa fa-circle"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i> <i class="fa fa-circle-o"></i></div>
-					</ons-carousel-cover>
+										</ons-carousel-cover>
 				</ons-carousel>		
 			</ons-page>
 	    </ons-navigator>
@@ -558,7 +587,6 @@
         <ons-toolbar>
             <div class="left"><ons-back-button>Back</ons-back-button></div>
             <div class="center">Contacten</div>
-        </ons-toolbar>
       
           <div class="right">
             <ons-toolbar-button>
@@ -567,26 +595,10 @@
           </div>
         </ons-toolbar>
 
-        <div class="navigation-bar">
-          <div class="navigation-bar__center">
+        <ons-list class="person-list">
+		  <ons-list-header class="person-list-header">Vrienden</ons-list-header>
+		<div list-contact="{{contactAantal}}"></div>
 
-            <input type="search" class="search-input" style="width: 96%; margin: 6px auto 6px auto;" placeholder="Search">
-
-          </div>
-        </div>
-
-        <ons-list class="person-list" ng-repeat="char in ['A', 'B', 'C', 'D', 'E']">
-          <ons-list-header class="person-list-header">{{char}}</ons-list-header>
-          <ons-list-item class="person" modifier="tappable" ng-repeat="i in [1,2,3,4,5]">
-            <ons-row>
-              <ons-col width="40px">
-              <img src="images/profile-image-0{{i}}.png" class="person-image">
-              </ons-col>
-              <ons-col class="person-name">
-                Ann Taylor
-              </ons-col>
-            </ons-row>
-          </ons-list-item>
         </ons-list>
 
       </ons-page>
@@ -941,7 +953,7 @@
 <!--========================================================================== 
 	Contacten
     ==========================================================================--->    
-      <ons-template id="contacten.html">
+      <ons-template id="vriendenuitnodigen.html">
 	    	<ons-page>
 	    	
 	    		<ons-toolbar>

@@ -754,6 +754,70 @@ module.controller('ContactenController', function($scope) {
 	ons.ready(function() {
 		
 	});
+}).directive('listContact', function ($http, $rootScope, $compile) { //Comments weergeven
+    return {
+        restrict: 'A',
+        // NB: no isolated scope!!
+        link: function (scope, element, attrs) {
+            // observe changes in attribute - could also be scope.$watch
+        //    attrs.$observe('listComments', function (value) {
+			//scope.$watch('listComments', function (value) {
+		var page = introNavigator.getCurrentPage();
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen vrienden</ons-row></ons-list-item>');
+
+						// Append input to div
+						$compile(input)(scope);
+						element.append(input);
+				} else {
+				  // if successful, bind success message to message and fill the list
+				 
+					angular.forEach(data, function(data) {
+						
+								$http({
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+						
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+
+											
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
+						
+										}
+									});
+					});
+				 
+				}
+			  });
+			//});
+		}
+	}
 });
 
 module.controller('NieuweActiviteitController', function($rootScope, $scope, $compile, $http, localStorageService, transformRequestAsFormPost) { 
@@ -1235,6 +1299,63 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 		var page = introNavigator.getCurrentPage();
 		
 		
+							$scope.addFriend = function(activity, friend) {
+							$http({
+							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
+							   method:"POST",
+							   headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							   },
+							   transformRequest: transformRequestAsFormPost,
+								data    : eval({ 
+								'slug' : "friends", 
+								friend_id: friend
+								}),  // pass in data as strings
+								
+								isArray: true,
+								callback: ''
+						  }).success(function(data) {
+
+								if (!data) {
+								  // if not successful, bind errors to error variables
+								  console.log('error');
+								} else if (data == 'exist') {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>U heeft deze persoon al als vriend!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Vrienden',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								} else {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>U heeft een vriend toegevoegd!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Vrienden',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								}
+								
+							  });
+			}
+		
+		
 					$scope.addParticipant = function(activity) {
 							$http({
 							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+page.options.id+'',
@@ -1392,7 +1513,12 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
 											}
 											
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																						
+											if(userid != user.id){
+												var friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></ons-button>';
+											}
+											
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -1584,6 +1710,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 				return;
         	}
 
+<<<<<<< HEAD
 			navigator.geolocation.getCurrentPosition(function(position) {				
 				$scope.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));				
         	}, function(error) {
@@ -1596,6 +1723,64 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 		}
 		
 		
+=======
+							$scope.addFriend = function(activity, friend) {
+							$http({
+							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
+							   method:"POST",
+							   headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							   },
+							   transformRequest: transformRequestAsFormPost,
+								data    : eval({ 
+								'slug' : "friends", 
+								friend_id: friend
+								}),  // pass in data as strings
+								
+								isArray: true,
+								callback: ''
+						  }).success(function(data) {
+
+								if (!data) {
+								  // if not successful, bind errors to error variables
+								  console.log('error');
+								} else if (data == 'exist') {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>U heeft deze persoon al als vriend!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Vrienden',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								} else {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>U heeft een vriend toegevoegd!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Vrienden',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								}
+								
+							  });
+			}
+
+>>>>>>> origin/design
 			$scope.addComment = function(activity, cat) {
 							$http({
 							   url:'http://broekhuizenautomaterialen.nl/directa/data.php',
@@ -1740,6 +1925,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 											}else{
 												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
 											}
+
 											
 											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span> - <span class="item-desc">'+data.comment+'</span></header></ons-col></ons-row></ons-list-item>');
 
@@ -1757,6 +1943,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 		}
 	}
 }).directive('listParticipants', function ($http, $rootScope, $compile) {//Deelnemers weergeven in overzicht
+
     return {
         restrict: 'A',
         // NB: no isolated scope!!
@@ -1775,17 +1962,17 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 				  console.log(data);
 				  console.log('error');
 				} else if(data == '') {
-												var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen deelnemers</ons-row></ons-list-item>');
+											var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen deelnemers</ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
 											element.append(input);
 				} else {
 				  // if successful, bind success message to message and fill the list
-				 
+
 					angular.forEach(data, function(data) {
-						
-															$http({
+
+									$http({
 									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data+'',
 									   method:"GET"
 									}).success(function(user) {
@@ -1803,20 +1990,119 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 											}else{
 												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
 											}
-						
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+											
+											
+											
+											$http({ //Get friends info
+											   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
+											   method:"GET"
+											}).success(function(friends) {
 
-												// Append input to div
-											$compile(input)(scope);
-											element.append(input);
-						
+												if(!friends){
+													//console.log(friends);
+													if (friends == '') {
+													  // if not successful, bind errors to error variables
+													  
+													var input;
+													var friendadd;
+													
+														//console.log('nodata');
+														if(userid == data){
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+														} else {
+															friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+														}
+																	
+														$compile(input)(scope);
+														element.append(input);
+														
+													} 
+												}else {
+													
+													if (friends == '') {
+													  // if not successful, bind errors to error variables
+													  
+													var input;
+													var friendadd;
+													
+														//console.log('nodata');
+														if(userid == data){
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+														} else {
+															friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+														}
+																	
+														$compile(input)(scope);
+														element.append(input);
+														
+													} else {
+												
+												
+
+
+													var input;
+													var friendadd;
+
+															if(friends == user.id){
+																
+																		input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																		$compile(input)(scope);
+																		element.append(input);
+															}else{
+															
+																
+																	if(user.id == userid){
+																			input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																			$compile(input)(scope);
+																			element.append(input);
+																	} else {
+																		
+																		angular.forEach(friends, function(friends) {
+																		
+																			if(friends == user.id){
+																				input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																				
+																			} else {
+																				friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
+																				input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+																			}
+																		});
+																		
+																		$compile(input)(scope);
+																		element.append(input);
+																				
+																	}
+																	
+																
+																
+																
+															}
+
+												//});
+
+												
+												
+													}
+
+												
+													}
+
+
+												
+															
+
+											});					
+
 										}
 									});
+													
 					});
 				 
 				}
-			  });
-			//});
+
+			});
 		}
 	}
 });    
