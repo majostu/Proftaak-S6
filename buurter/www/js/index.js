@@ -1091,6 +1091,70 @@ module.controller('InviteController', function($scope) {
 	ons.ready(function() {
 		
 	});
+}).directive('listFriends', function ($http, $rootScope, $compile) { //Comments weergeven
+    return {
+        restrict: 'A',
+        // NB: no isolated scope!!
+        link: function (scope, element, attrs) {
+            // observe changes in attribute - could also be scope.$watch
+        //    attrs.$observe('listComments', function (value) {
+			//scope.$watch('listComments', function (value) {
+		var page = introNavigator.getCurrentPage();
+			$http({
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
+			   method:"GET"
+			}).success(function(data) {
+
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen vrienden</ons-row></ons-list-item>');
+
+						// Append input to div
+						$compile(input)(scope);
+						element.append(input);
+				} else {
+				  // if successful, bind success message to message and fill the list
+				 
+					angular.forEach(data, function(data) {
+						
+								$http({
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+						
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+
+											
+											var input = angular.element('<ons-list-item class="item"><label class="checkbox checkbox--list-item"><input type="checkbox"><div class="checkbox__checkmark checkbox--list-item__checkmark"></div><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></label></ons-list-item>');
+
+												// Append input to div
+											$compile(input)(scope);
+											element.append(input);
+						
+										}
+									});
+					});
+				 
+				}
+			  });
+			//});
+		}
+	}
 });
 
 
@@ -1711,6 +1775,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
         	}
 
 <<<<<<< HEAD
+=======
+
+>>>>>>> origin/design
 			navigator.geolocation.getCurrentPosition(function(position) {				
 				$scope.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));				
         	}, function(error) {
@@ -1722,8 +1789,11 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 			localStorage.removeItem("act_id");
 		}
 		
-		
+<<<<<<< HEAD
 =======
+		
+
+>>>>>>> origin/design
 							$scope.addFriend = function(activity, friend) {
 							$http({
 							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
@@ -1780,7 +1850,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 							  });
 			}
 
->>>>>>> origin/design
+
 			$scope.addComment = function(activity, cat) {
 							$http({
 							   url:'http://broekhuizenautomaterialen.nl/directa/data.php',
@@ -2286,17 +2356,19 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								if (!part) {
 								  // if not successful, bind errors to error variables
 								  console.log('error');
-								} else if (part == 'exist') {
-								  // user doet mee
-								  		
-								  		localStorage.setItem("act_id", index);
-									
-										$scope.introNavigator.pushPage('overzicht.html', { id: index});
-			  
 								} else {
 								  // if successful, bind success message to message
+									if (part == 'exist') {
+								  // user doet mee
 
+						 
+										localStorage.setItem("act_id", index);
+
+										$scope.introNavigator.pushPage('overzicht.html', { id: index});
+			  
+										}else{
 										$scope.introNavigator.pushPage('details.html', { id: index});
+										}
 
 								}
 								
