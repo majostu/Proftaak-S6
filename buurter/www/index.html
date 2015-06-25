@@ -780,8 +780,7 @@
             <ons-list>
              <ons-list-header>Deelnemers</ons-list-header>
              <div list-participants="{{participantsAantal}}"></div>
-            <p class="center">
-              <span id="" ng-click="introNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height">Nodig vrienden uit</span>
+            <p class="center" ng-bind-html="pagepush">
             </p>   
 			
 
@@ -964,10 +963,7 @@
 		<div list-friends="{{friendsAantal}}"></div>
 
         </ons-list>
-      
-      <p style="text-align: center">
-            <ons-button id="show-modal">Verstuur uitnodiging</ons-button>
-          </p>
+     
       <!--<ons-list-item ng-click="alert()" modifier="tappable">ALEERT</ons-list-item>-->
 
 

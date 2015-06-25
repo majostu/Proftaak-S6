@@ -1109,10 +1109,64 @@ module.controller('AddActivityFormController', function($rootScope, $scope, $com
 
 
 
-module.controller('InviteController', function($scope) { 
-	ons.ready(function() {
-		
-	});
+module.controller('InviteController', function($scope, $http, transformRequestAsFormPost) { 
+		var page = introNavigator.getCurrentPage();
+			$scope.addParticipant = function(activity, user) {
+							$http({
+							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+activity+'&user='+user+'',
+							   method:"POST",
+							   headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							   },
+							   transformRequest: transformRequestAsFormPost,
+								data    : eval({ 
+								'slug' : "actpart", 
+								user_id : user,
+								invite : user
+								}),  // pass in data as strings
+								
+								isArray: true,
+								callback: ''
+						  }).success(function(data) {
+
+								if (!data) {
+								  // if not successful, bind errors to error variables
+								  console.log('error');
+								} else if (data == 'exist') {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>Vriend is al uitgenodigd!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Deelname',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								} else {
+								  // if successful, bind success message to message
+											console.log(data);
+											ons.notification.alert({
+												messageHTML: '<div>Vriend uitgenodigd voor de activiteit!</div>',
+												// or messageHTML: '<div>Message in HTML</div>',
+												title: 'Deelname',
+												buttonLabel: 'OK',
+												cancelable: true,
+												animation: 'default', // or 'none'
+												// modifier: 'optional-modifier'
+												callback: function() {
+													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+												}
+											});
+								}
+								
+							  });
+			}
 }).directive('listFriends', function ($http, $rootScope, $compile) { //Comments weergeven
     return {
         restrict: 'A',
@@ -1162,7 +1216,7 @@ module.controller('InviteController', function($scope) {
 											}
 
 											
-											var input = angular.element('<ons-list-item class="item"><label class="checkbox checkbox--list-item"><input type="checkbox"><div class="checkbox__checkmark checkbox--list-item__checkmark"></div><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></label></ons-list-item>');
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span>            <ons-button ng-click="addParticipant(\''+page.options.id+'\',\''+user.id+'\')" class="show-modal btn-xs">Verstuur uitnodiging</ons-button></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -1624,7 +1678,7 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 	
 
 
-module.controller('OverzichtController', function($scope, $data, $http, transformRequestAsFormPost, $compile) {
+module.controller('OverzichtController', function($scope, $data, $http, transformRequestAsFormPost, $compile, $sce) {
 		
 		
 			var act_id = localStorage.getItem("act_id");
@@ -1908,10 +1962,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								
 							  });
 			}
-			
         $scope.item = [];
 		var page = introNavigator.getCurrentPage();
-		
+		$scope.pagepush = $sce.trustAsHtml('<ons-button  id="" onclick="introNavigator.pushPage(\'invite.html\', { id: \''+page.options.id+'\' }, menu.close())" class="btn btn-xs btn-primary">Nodig vrienden uit</ons-button>');	
 					$http({
 			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actid='+page.options.id+'',
 			   method:"GET"
@@ -1954,6 +2007,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												head: ''+data.title+'',
 												picture: avatar
 											 });
+											 
 									}
 					//console.log($scope.item);
 					});
@@ -2040,7 +2094,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+page.options.id+'',
 			   method:"GET"
 			}).success(function(data) {
-
+					
 				if (!data) {
 				  // if not successful, bind errors to error variables
 				  console.log(data);
