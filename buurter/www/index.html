@@ -192,7 +192,7 @@
             	<ons-list-item modifier="chevron" class="item" ng-repeat="item in items">
                 	<ons-row>
                     	<ons-col width="60px">
-                        	<img src="{{item.picture}}" class="item-thum">
+                        	<img ng-src="{{item.picture}}" class="item-thum">
 						</ons-col>
 						<ons-col>
                         	<header>
@@ -214,7 +214,7 @@
 				<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
                 	<ons-row>
                     	<ons-col width="60px">
-							<img src="{{item.picture}}" class="item-thum">
+							<img ng-src="{{item.picture}}" class="item-thum">
 						</ons-col>
 						<ons-col>
                         	<header>

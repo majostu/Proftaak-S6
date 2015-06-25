@@ -1300,13 +1300,20 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 										} else if(user == '') {
 												
 										} else {
+											
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+											
 											 $scope.item.push({
 												id: ''+data.id+'',
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
 												date: ''+data.from_time+'',
 												cat: ''+data.category+'',
-												picture: 'http://graph.facebook.com/'+user.fbid+'/picture?type=large'
+												picture: avatar
 											 });
 									}
 					//console.log($scope.item);
@@ -1360,7 +1367,13 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 												
 										} else {
 						
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="http://graph.facebook.com/'+user.fbid+'/picture" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+											
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -1454,13 +1467,20 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 										} else if(user == '') {
 												
 										} else {
+											
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+											
 											 $scope.item.push({
 												id: ''+data.id+'',
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
 												date: ''+data.from_time+'',
 												cat: ''+data.category+'',
-												picture: 'http://graph.facebook.com/'+user.fbid+'/picture?type=large'
+												picture: avatar
 											 });
 									}
 					//console.log($scope.item);
@@ -1512,7 +1532,13 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												
 										} else {
 						
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="http://graph.facebook.com/'+user.fbid+'/picture" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span> - <span class="item-desc">'+data.comment+'</span></header></ons-col></ons-row></ons-list-item>');
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+											
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span> - <span class="item-desc">'+data.comment+'</span></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -1569,7 +1595,13 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												
 										} else {
 						
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="http://graph.facebook.com/'+user.fbid+'/picture" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+						
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -1617,14 +1649,19 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												
 										} else {
 											
-
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+											
 								  			 $scope.items.push({
 												id: ''+data.id+'',
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
 												date: ''+data.from_time+'',
 												cat: ''+data.category+'',
-												picture: 'http://graph.facebook.com/'+user.fbid+'/picture?type=large'
+												picture: avatar
 											 });
 								
 
