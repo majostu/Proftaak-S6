@@ -987,7 +987,7 @@ module.controller('AddActivityFormController', function($rootScope, $scope, $com
 						title: 'De activiteit is succesvol toegevoegd',
 						buttonLabel: 'OK',
 						callback: function() {
-							introNavigator.popPage('home.html');										
+							location.reload();										
 						}
                 	});			                              	                                	
 				}	
