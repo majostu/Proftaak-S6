@@ -1586,10 +1586,10 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 	}
 });    
 
-    module.controller('MainCtrl', function($scope, $data, $http) {
+    module.controller('MainCtrl', function($scope, $data, $http, transformRequestAsFormPost) {
 			$scope.items = [];
 			
-			$http({
+			$http({//Get activities
 			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?activities=all',
 			   method:"GET"
 			}).success(function(data) {
@@ -1602,9 +1602,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 						
 				} else {
 				  // if successful, bind success message to message and fill the list
-					angular.forEach(data, function(data) {
+					angular.forEach(data, function(data) { //Each for the activities
 
-									$http({
+									$http({ //Get user info
 									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data.user_id+'',
 									   method:"GET"
 									}).success(function(user) {
@@ -1616,7 +1616,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 										} else if(user == '') {
 												
 										} else {
-											 $scope.items.push({
+											
+
+								  			 $scope.items.push({
 												id: ''+data.id+'',
 												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
 												act: ''+data.description+'',
@@ -1624,15 +1626,52 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 												cat: ''+data.category+'',
 												picture: 'http://graph.facebook.com/'+user.fbid+'/picture?type=large'
 											 });
+								
+
 									}
 									});
 					});
 				}
 			  });
 
-			$scope.showDetail = function(index) {
-				$scope.introNavigator.pushPage('details.html', { id: index});
-			};
+
+		$scope.showDetail = function(index) {	  
+			  $http({
+							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+index+'',
+							   method:"POST",
+							   headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							   },
+							   transformRequest: transformRequestAsFormPost,
+								data    : eval({ 
+								'slug' : "actpart", 
+								user_id: userid
+								}),  // pass in data as strings
+								
+								isArray: true,
+								callback: ''
+						  }).success(function(part) {
+								console.log(part);
+								if (!part) {
+								  // if not successful, bind errors to error variables
+								  console.log('error');
+								} else if (part == 'exist') {
+								  // user doet mee
+						 
+									
+										$scope.introNavigator.pushPage('overzicht.html', { id: index});
+			  
+								} else {
+								  // if successful, bind success message to message
+
+										$scope.introNavigator.pushPage('details.html', { id: index});
+
+								}
+								
+							  });
+				};
+			  
     });
     
      module.controller('MemorieCtrl', function($scope, $data2) {
