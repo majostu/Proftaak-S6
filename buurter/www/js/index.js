@@ -1966,7 +1966,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 									if (part == 'exist') {
 								  // user doet mee
 						 
-									
+										localStorage.setItem("act_id", index);
 										$scope.introNavigator.pushPage('overzicht.html', { id: index});
 			  
 										}else{
