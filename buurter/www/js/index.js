@@ -1961,16 +1961,17 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								if (!part) {
 								  // if not successful, bind errors to error variables
 								  console.log('error');
-								} else if (part == 'exist') {
+								} else {
+								  // if successful, bind success message to message
+									if (part == 'exist') {
 								  // user doet mee
 						 
 									
 										$scope.introNavigator.pushPage('overzicht.html', { id: index});
 			  
-								} else {
-								  // if successful, bind success message to message
-
+										}else{
 										$scope.introNavigator.pushPage('details.html', { id: index});
+										}
 
 								}
 								
