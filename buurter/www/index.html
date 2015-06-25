@@ -57,11 +57,13 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover; color:white !important;">
-						<div class="">
+						<div style="margin-top:50%">
                           <br>
                           <br>
-                         <img style="width:40%;"  margin-top: 40px; src="img/logo.png">
-                          <h2 style="font-style:italic;">BUURTER<sup style="font-size:0.7em;" >&trade;</sup></h2><br>
+                         <br>
+                          <br>
+                         
+                          <h2 style="font-style:italic; ">BUURTER<sup style="font-size:0.7em;" >&trade;</sup></h2><br>
                           Kom in contact met mensen in de buurt!
                       </div>
                       	<div class="cover-label"><i class="fa fa-arrow-circle-right fa-4x" ></i><br>Swipe!</div>
@@ -118,7 +120,7 @@
 								ng-model="password" 
 							required>
 					        <br><br>
-					        <button class="button button--large" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Inloggen</button>
+					        <button class="button button--large" style="margin-top: -24px;" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Inloggen</button>
 					    </form>						                            
                         <p>of</p>                         
                         <button class="button" ng-click="login()">Login met Facebook</button>											
@@ -225,12 +227,12 @@
 						</ons-col>
 						<ons-col>
                         	<header>
-                            	<span class="item-title">{{item.act}}</span>
+                            	<span class="item-title">{{item.head}}</span>
 								<span class="item-label">{{item.date}}</span>
                         	</header>
 							<p class="item-desc">{{item.cat}}</p>
 							<p class="item-desc">{{item.name}}</p>
-							<span ng-click="showDetail(item.id)"class="toolbar-button--outline navigation-bar__line-height list-button">Doe mee <i class="fa fa-hand-o-right"></i></span>
+							<span ng-click="showDetail(item.id)"class="toolbar-button--outline navigation-bar__line-height list-button">Bekijk activiteit <i class="fa fa-angle-right"></i></span>
 						</ons-col>
 					</ons-row>
 				</ons-list-item>
@@ -282,12 +284,12 @@
 						</ons-col>
 						<ons-col>
                         	<header>
-                            	<span class="item-title">{{item.act}}</span>
+                            	<span class="item-title">{{item.head}}</span>
 								<span class="item-label">{{item.date}}</span>
                         	</header>
 							<p class="item-desc">{{item.cat}}</p>
 							<p class="item-desc">{{item.name}}</p>
-							<span ng-click="showDetail(item.id)"class="toolbar-button--outline navigation-bar__line-height list-button">Bekijk activiteit <i class="fa fa-hand-o-right"></i></span>
+							<span ng-click="showDetail(item.id)"class="toolbar-button--outline navigation-bar__line-height list-button">Bekijk activiteit <i class="fa fa-angle-right"></i></span>
 						</ons-col>
 					</ons-row>
 				</ons-list-item> 
@@ -620,30 +622,38 @@
     <ons-page ng-controller="DetailController">
 
         <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">{{item[0].cat}}</div>
+            <div class="left"><ons-back-button ng-click="remove_act_id()">Back</ons-back-button></div>
+            <div class="center">Activiteit</div>
+            <div class="right">
+	        	<ons-toolbar-button>
+	        		<ons-icon icon="fa-map-marker" ng-click="centerOnMe()"></ons-icon>
+	        	</ons-toolbar-button>
+            </div>
         </ons-toolbar>
-      
-  
-      
+           
         <ons-list modifier="chevron">
             <ons-list-item class="item">
                 <ons-row>
                     <ons-col width="60px">
                           <img ng-src="{{item[0].picture}}" class="item-thum">
-                    </ons-col>
+                    </ons-col>                    
                     <ons-col>
                         <header>
-                            <span class="item-title">{{item[0].act}}</span>
-                            <span class="item-label">{{item[0].date}}</span>
+                            <span class="item-title">{{item[0].head}}</span>
+                            
                         </header>
                         <p class="item-desc">{{item[0].name}}</p>
                     </ons-col>
-                </ons-row>
+                    <ons-col>
+                    	<span class="item-label" style="font-size: 14px;"><b>Aanvang:</b> {{item[0].date}}<br /><br /><b>Einde:</b> {{item[0].date2}}</span>
+                    </ons-col>
+                </ons-row>                
             </ons-list-item>
-            <div id="map_canvas">
-	        
-            </div>
+        </ons-list>
+        
+        <div id="map_activity_canvas"></div>
+
+
             <ons-list>
              <div list-participants-details="{{participantsdetailsAantal}}"></div>
         </ons-list>
@@ -665,8 +675,13 @@
     <ons-template id="overzicht.html">
     <ons-page ng-controller="OverzichtController">
  <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">{{item[0].cat}}</div>
+            <div class="left"><ons-back-button ng-click="remove_act_id()">Back</ons-back-button></div>
+            <div class="center">Activiteit</div>
+            <div class="right">
+	        	<ons-toolbar-button>
+	        		<ons-icon icon="fa-map-marker" ng-click="centerOnMe()"></ons-icon>
+	        	</ons-toolbar-button>
+            </div>
         </ons-toolbar>
 
 
@@ -676,15 +691,25 @@
                     <ons-col width="60px">
                           <img ng-src="{{item[0].picture}}" class="item-thum">
                     </ons-col>
+                    
                     <ons-col>
                         <header>
-                            <span class="item-title">{{item[0].act}}</span>
-                            <span class="item-label">{{item[0].date}}</span>
+                            <span class="item-title">{{item[0].head}}</span>
+                            
                         </header>
                         <p class="item-desc">{{item[0].name}}</p>
                     </ons-col>
+                    <ons-col>
+                    	<span class="item-label" style="font-size: 14px;"><b>Aanvang:</b> {{item[0].date}}<br /><br /><b>Einde:</b> {{item[0].date2}}</span>
+                    </ons-col>
                 </ons-row>
             </ons-list-item>
+        </ons-list>
+            
+      
+    	<div id="map_activity_canvas"></div>
+          
+
              <p style="margin-left:10px;">Foto's en video's</p>
             <ons-carousel swipeable style="margin-top: 5px; margin-left:6px; height: 120px;" overscrollable auto-scroll item-width="120px">
           
