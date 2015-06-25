@@ -1775,6 +1775,10 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
         	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/design
 =======
 
 >>>>>>> origin/design
@@ -1790,6 +1794,11 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 		}
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		
+
+>>>>>>> origin/design
 =======
 		
 
@@ -2360,10 +2369,17 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								  // if successful, bind success message to message
 									if (part == 'exist') {
 								  // user doet mee
+<<<<<<< HEAD
 
 						 
 										localStorage.setItem("act_id", index);
 
+=======
+
+						 
+										localStorage.setItem("act_id", index);
+
+>>>>>>> origin/design
 										$scope.introNavigator.pushPage('overzicht.html', { id: index});
 			  
 										}else{
