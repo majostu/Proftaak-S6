@@ -123,8 +123,6 @@ parsefbdata = function(user){
 							}
 						});
 
-												
-
 					}
 			}
 			});
@@ -517,9 +515,9 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 					content: compiled[0]
 		    	});
 				
-				/*var icon_myPos = {
-				    url: "img/wheelchair.png",
-				};*/
+				var icon_myPos = {
+				    url: "img/dudemarker.png",
+				};
 				
 				var MyMarker = new google.maps.Marker({
 					position: myLatlng,
@@ -527,7 +525,7 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 					title: 'Mijn huidige locatie',
 					optimized: false,
 					animation: google.maps.Animation.DROP,
-					//icon: icon_myPos
+					icon: icon_myPos
 		    	});
 		    			    	
 				google.maps.event.addListener(MyMarker, 'click', function() {
@@ -543,21 +541,18 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 								
 				for (var i = 0; i < json.length; i ++) {
 					var data = json[i];
-					var loc = new google.maps.LatLng(data.latitude, data.longitude);
-										
-
+					var loc = new google.maps.LatLng(data.latitude, data.longitude);					
 					
-					/*var icon_added = {
-					    url: "img/markeraddicon.png",
-					};*/
-										
+					var icon_added = {
+					    url: "img/marker.png",
+					};
 										
 					var WCMarker = new google.maps.Marker({
 						position: loc,
 						title: data.title,
 						map: map,
 						animation: google.maps.Animation.DROP,
-						//icon: icon_bad
+						icon: icon_added
 					});							
 					
 					
@@ -585,22 +580,21 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 						
 						google.maps.event.addListener(WCMarker, "click", function(e) {		
 																
-							/*if (data.device_id == device.uuid) {
-								var MarkerBin = '<div class="button-bar" style="border-bottom: 1px solid #ddd;"><div class="button-bar__item" ng-click="getDirection(' + data.id + ')"><button class="button-bar__button"><i class="fa fa-compass" style="color: #25c2aa;"></i></button></div><div class="button-bar__item"><button class="button-bar__button" ng-click="pushPage(' + data.id + ')"><i class="fa fa-info-circle" style="color: #25c2aa;"></i></button></div><div class="button-bar__item"><button class="button-bar__button" ng-click="deleteMarker(' + data.id +')"><i class="fa fa-trash-o" style="color: #25c2aa;"></i></button></div></div>';
+							if (data.user_id == userid) {
+								var MarkerBin = '<div class="button-bar" style="border-bottom: 1px solid #ddd; width: 100%;"><div class="button-bar__item"><button class="button-bar__button" ng-click="showDetail(' + data.id + ')">Doe mee <i class="fa fa-hand-o-right"></i></button></div><div class="button-bar__item"><button class="button-bar__button" ng-click="deleteActivity(' + data.id +')"><i class="fa fa-trash-o"></i></button></div></div>';
 							} else {
-								var MarkerBin = '<div class="button-bar" style="border-bottom: 1px solid #ddd;"><div class="button-bar__item" ng-click="getDirection(' + data.id + ')"><button class="button-bar__button"><i class="fa fa-compass" style="color: #25c2aa;"></i></button></div><div class="button-bar__item"><button class="button-bar__button" ng-click="pushPage(' + data.id + ')"><i class="fa fa-info-circle" style="color: #25c2aa;"></i></button></div></div>';
+								var MarkerBin = '<div class="button-bar" style="border-bottom: 1px solid #ddd; width: 100%;"><div class="button-bar__item"><button class="button-bar__button" ng-click="showDetail(' + data.id + ')">Doe mee <i class="fa fa-hand-o-right"></i></button></div></div>';
 							}
 							
 							var markerData = 
 								'<div id="map-info-window">'+
 									'<div id="map-info-window-inner">'+
-										'<p><b>'+ data.name +'</b></p>'+
+										'<p><b>'+ data.title +'</b></p>'+
 										'<p>' + data.address + '</p>' +
-										'<ul>' + rating_star + '</ul>' +
 										'<p>' + MarkerBin + '</p>' +
 									'</div>'+
 								'</div>'									
-							;*/
+							;
 							
 							var compiledMarker = $compile(markerData)($scope);
 
@@ -608,40 +602,15 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 							infoWindow.open(map, WCMarker);
 						});
 					})(WCMarker, data);
-																			
-										
-					/*$scope.pushPage = function(id) {
-												
-						var json = (function () {
-							var json = null;
-							$.ajax({
-								'type':'GET',
-								'async': false,
-								'global': false,
-								'url': "http://marijnstuyfzand.nl/mia6/handyfriendly/www/php/get_marker.php",
-								'dataType': "json",
-								'data': $.param({ 
-									get_profile: id
-								}),
-								'success': function (data) {
-									json = data;
-								}
-							});
-							return json;							
-						})();
-												
-						var profile_id = json.variables.id;
-						
-						localStorage.setItem("profile_id", profile_id);
-						
-		  				mapNavigator.pushPage("marker.html", { animation : "slide" });
-		  					  				
-	  				};
 									
-					$scope.deleteMarker = function(id){
+					$scope.showDetail = function(index) {
+						$scope.introNavigator.pushPage('details.html', { id: index});
+					};
+									
+					$scope.deleteActivity = function(id){
 		                ons.notification.confirm({
 			                title: 'Bevestiging',
-		                    message: 'Weet je zeker dat je deze WC wilt verwijderen?',
+		                    message: 'Weet je zeker dat je deze activiteit wilt verwijderen?',
 		                    callback: function(idx) {
 		                        switch(idx) {
 		                            case 0:
@@ -665,10 +634,10 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 												'type':'GET',
 												'async': false,
 												'global': false,
-												'url': "http://marijnstuyfzand.nl/mia6/handyfriendly/www/php/get_marker.php",
+												'url': "http://broekhuizenautomaterialen.nl/directa/data.php",
 												'dataType': "json",
 												'data': $.param({ 
-													delete_id: id
+													removeactivity: id
 												}),
 												'success': function (data) {
 													json = data;
@@ -679,11 +648,10 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 												                               	
 		                                ons.notification.alert({
 			                                messageHTML: '<div><ons-icon icon="fa-ban" style="color:#9d0d38; font-size: 28px;"></ons-icon></div>',
-											title: 'WC verwijderd',
+											title: 'Activiteit verwijderd',
 											buttonLabel: 'OK',
-											callback: function() {
-														
-												localStorage.removeItem("profile_id");
+											callback: function() {														
+
 												location.reload();
 
 											}
@@ -693,7 +661,7 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 		                        }
 		                    }
 		                });   
-			        };*/					
+			        };					
 					
   				}
   				  				  				  				  				  				
@@ -839,10 +807,7 @@ module.controller('NieuweActiviteitController', function($rootScope, $scope, $co
 		    	});
 		    			    	
 		    	var icon_myPos = {
-				    url: "img/wheelchair.png",
-				    /*scaledSize: new google.maps.Size(50, 50), // scaled size
-				    origin: new google.maps.Point(0,0), // origin
-				    anchor: new google.maps.Point(0, 0) // anchor*/
+				    url: "img/dudemarker.png",
 				};
 								
 				var marker = new google.maps.Marker({
@@ -850,8 +815,8 @@ module.controller('NieuweActiviteitController', function($rootScope, $scope, $co
 					map: map,
 					title: 'Mijn locatie',
 					optimized: false,
-					animation: google.maps.Animation.DROP
-					//icon: icon_myPos
+					animation: google.maps.Animation.DROP,
+					icon: icon_myPos
 		    	});
 		
 				google.maps.event.addListener(marker, 'click', function() {
@@ -875,12 +840,15 @@ module.controller('NieuweActiviteitController', function($rootScope, $scope, $co
 		            var point = new google.maps.Point(x, y);
 		            var coordinates = $scope.overlay.getProjection().fromContainerPixelToLatLng(point);
 					
-					var iconBase = 'img/';
+					var icon_marker = {
+				    	url: "img/marker.png",
+					};
+					
 		            var marker = new google.maps.Marker({
 		                position: coordinates,
 		                map: map,
 		                optimized: false,
-		                //icon: iconBase + 'markerunrated.png'
+		                icon: icon_marker
 		            });
 		           		            
 		            marker.id = $scope.markerId;
@@ -1024,153 +992,7 @@ module.controller('AddActivityFormController', function($rootScope, $scope, $com
                 	});			                              	                                	
 				}	
 			 });
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			/*$http({
-				url:'http://marijnstuyfzand.nl/mia6/handyfriendly/www/php/insert_marker.php',
-				method:"POST",
-				headers: {
-					'X-Requested-With': 'XMLHttpRequest',
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-			    data: $.param({ 
-					slug: "toilets",
-					device_id: $scope.data[0],  
-					name: $scope.data[1],
-					address: $scope.data[2],
-					latitude: $scope.data[3], 
-					longitude: $scope.data[4],
-					rating: $scope.data[5],
-				}),  // pass in data as strings
-				isArray: true,
-				callback: ''
-		  	}).success(function(data) {
-				if (!data) {
-					// if not successful, bind errors to error variables
-					console.log(data);
-					console.log('error');
-					
-					ons.notification.alert({
-                        messageHTML: '<div><ons-icon icon="fa-ban" style="color:#9d0d38; font-size: 28px;"></ons-icon></div>',
-						title: 'Oeps... er is iets fout gegaan',
-						buttonLabel: 'OK',
-						callback: function() {
-							
-							localStorage.removeItem("profile_id");
-							location.reload();
-						
-						}
-                    });
-					
-				} else {
-				  	// if successful, bind success message to message
-				  	console.log(data);
-				  	console.log('success');
-				  	
-				  	var json = (function () {
-						var json = null;
-						$.ajax({
-							'type':'GET',
-							'async': false,
-							'global': false,
-							'url': "http://marijnstuyfzand.nl/mia6/handyfriendly/www/php/get_marker.php",
-							'dataType': "json",
-							'data': $.param({ 
-								get_toilets: "all"
-							}),
-							'success': function (data) {
-								json = data;
-							}
-						});
-						return json;
-					})();
-					
-					var profile_data_id = $(json).last()[0].id;
-					//var added_id = $(json).last()[0].id;
-									  	
-				  	$scope.data = [];
-			
-				  	$scope.data.push(profile_data_id );
-					$scope.data.push(Device_id);			
-					$scope.data.push($scope.rating2);
-					$scope.data.push($scope.marker_comment);
-					$scope.data.push(Device_name);
-					
-					//$scope.data.push(added_id);
-											
-					console.log($scope.data);
-					
-					$http({
-						url:'http://marijnstuyfzand.nl/mia6/handyfriendly/www/php/insert_marker.php',
-						method:"POST",
-						headers: {
-							'X-Requested-With': 'XMLHttpRequest',
-							'Content-Type': 'application/x-www-form-urlencoded'
-						},
-					    data: $.param({ 
-							slug: "saveRateComment",
-							toilet_id: $scope.data[0], 
-							device_id: $scope.data[1],  
-							rating: $scope.data[2],
-							comment: $scope.data[3],
-							device_name: $scope.data[4],
-							//added_id: $scope.data[5]
-						}),  // pass in data as strings
-						isArray: true,
-						callback: ''
-				  	}).success(function(data) {
-						if (!data) {
-							// if not successful, bind errors to error variables
-							console.log(data);
-							console.log('error');
-							
-							ons.notification.alert({
-		                        messageHTML: '<div><ons-icon icon="fa-ban" style="color:#9d0d38; font-size: 28px;"></ons-icon></div>',
-								title: 'Oeps... er is iets fout gegaan',
-								buttonLabel: 'OK',
-								callback: function() {
-									
-									localStorage.removeItem("profile_id");
-									location.reload();
-								
-								}
-		                    });
-							
-						} else {
-						  	// if successful, bind success message to message
-						  	console.log(data);
-						  	console.log('success');
-						  
-						  	ons.notification.alert({
-		                    	messageHTML: '<div><ons-icon icon="fa-check" style="color:#25c2aa; font-size: 28px;"></ons-icon></div>',
-								title: 'WC toegevoegd',
-								buttonLabel: 'OK',
-								callback: function() {
-															
-									localStorage.removeItem("profile_id");
-									location.reload();
-																			
-								}
-		                	});			                              	                                	
-						}
-					});
-							                              	                                	
-				}
-			});*/
-						  				  								  				
+							  				  								  				
 		};
 		
 	});

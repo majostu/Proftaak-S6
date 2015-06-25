@@ -236,7 +236,10 @@
     ==========================================================================--->
 	<ons-template id="mapOverzicht.html">
 		<ons-page ng-controller="MapController">
-
+			<ons-toolbar>
+	    		<div class="left"><ons-back-button>Back</ons-back-button></div>
+				<div class="center logotitle"><img class="navlogo" src="img/logo.png">BUURTER&trade;</div>
+			</ons-toolbar>
 			<div id="map_canvas" data-tap-disabled="true"></div>
 			
 			<ons-col class="info-icon" ng-click="centerOnMe()" modifier="tappable">
@@ -288,15 +291,16 @@
             	<ons-icon icon="fa-search" fixed-width="true"></ons-icon>
 				Mijn interesses
 			</ons-list-item>
-            <ons-list-item class="menu-item"  ng-click="menu.setMainPage('page4.html', {closeMenu: true})">
+			<ons-list-item class=" menu-item" modifier="chevron"ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
+				<ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
+				Buurtgenoten
+			</ons-list-item>
+            <!--<ons-list-item class="menu-item"  ng-click="menu.setMainPage('page4.html', {closeMenu: true})" style="border-bottom: 0;">
             	<ons-icon icon="fa-user" fixed-width="true"></ons-icon>
 				Zoek binnen: 3km
             </ons-list-item>
-            <input type="range" class="range"><br/><br/>
-			<ons-list-item class=" menu-item" modifier="chevron"ng-click="introNavigator.pushPage('contacten.html', {animation : 'slide'}, menu.close())">
-				<ons-icon icon="fa-heart" fixed-width="true"></ons-icon>
-				Contacten
-			</ons-list-item>
+            <input type="range" class="range" style="width: 90%; margin: 0 5%; margin-top: 12px;"><br/><br/>-->
+			
 
 		</ons-page>
     </ons-template>
