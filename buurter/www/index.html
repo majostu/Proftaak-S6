@@ -7,6 +7,7 @@
   <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsenui.css">  
   <link rel="stylesheet" type="text/css" href="components/onsenui/css/onsen-css-components.css">
   <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="css/swipebox.min.css">
   <title>Buurter</title>
   <link rel="apple-touch-icon" sizes="57x57" href="/img/faffie/apple-touch-icon-57x57.png?v=gUnit">
   <link rel="apple-touch-icon" sizes="60x60" href="/img/faffie/apple-touch-icon-60x60.png?v=gUnit">
@@ -23,17 +24,7 @@
   <link rel="icon" type="image/png" href="/img/faffie/favicon-16x16.png?v=gUnit" sizes="16x16">
   <link rel="manifest" href="/img/faffie/manifest.json?v=gUnit">
   <link rel="shortcut icon" href="/img/faffie/favicon.ico?v=gUnit">
-  <!-- Important Owl stylesheet -->
-<link rel="stylesheet" href="owl-carousel/owl.carousel.css">
- 
-<!-- Default Theme -->
-<link rel="stylesheet" href="owl-carousel/owl.theme.css">
- 
-<!--  jQuery 1.7+  -->
-<script src="jquery-1.9.1.min.js"></script>
- 
-<!-- Include js plugin -->
-<script src="assets/owl-carousel/owl.carousel.js"></script>
+
   <meta name="apple-mobile-web-app-title" content="Buurter">
   <meta name="application-name" content="Buurter">
   <meta name="msapplication-TileColor" content="#5cbd77">
@@ -752,29 +743,36 @@
 
              <p style="margin-left:10px;">Foto's en video's</p>
             <ons-carousel swipeable style="margin-top: 5px; margin-left:6px; height: 120px;" overscrollable auto-scroll item-width="120px">
+              <!-- Gallery 1 -->              
               <ons-carousel-item>
-                <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;">
-                <img src="img/Screenshot_1.png"> </div>
+                <a href="img/Screenshot_1.png" class="swipebox">
+<img style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;" src="img/Screenshot_1.png" alt="image">
+</a>
               </ons-carousel-item>
               <ons-carousel-item>
-                <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;">
-                <img src="img/Screenshot_2.png"> </div>
+                <a href="img/Screenshot_2.png" class="swipebox">
+<img style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;" src="img/Screenshot_2.png" alt="image">
+</a>
               </ons-carousel-item>
               <ons-carousel-item>
-                <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;">
-                <img src="img/Screenshot_3.png"> </div>
+                <a href="img/Screenshot_3.png" class="swipebox">
+<img style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;" src="img/Screenshot_3.png" alt="image">
+</a>
               </ons-carousel-item>
               <ons-carousel-item>
-                <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;">
-                <img src="img/Screenshot_4.png"> </div>
+                <a href="img/Screenshot_4.png" class="swipebox">
+<img style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;" src="img/Screenshot_4.png" alt="image">
+</a>
               </ons-carousel-item>
               <ons-carousel-item>
-                <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;">
-                <img src="img/Screenshot_5.png"> </div>
+                <a href="img/Screenshot_5.png" class="swipebox">
+<img style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;" src="img/Screenshot_5.png" alt="image">
+</a>
               </ons-carousel-item>
               <ons-carousel-item>
-                <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;">
-                <img src="img/Screenshot_6.png"> </div>
+                <a href="img/Screenshot_6.png" class="swipebox">
+<img style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;" src="img/Screenshot_6.png" alt="image">
+</a>
               </ons-carousel-item>
               
             </ons-carousel>
@@ -1010,6 +1008,8 @@
 	<script type="text/javascript" src="components/angular/angular-local-storage.min.js"></script>   
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeyepY1W5MQtdovxCS_6SWYouRGobAfz4&sensor=true&libraries=geometry, places"></script>
 
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.swipebox.min.js"></script>
 	<script type="text/javascript" src="js/markerclusterer.js"></script>
 	<script type="text/javascript" src="js/oms.min.js"></script>
 	<script type="text/javascript" src="js/is.js"></script>

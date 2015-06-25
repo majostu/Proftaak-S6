@@ -8,6 +8,12 @@ var loggedinmail;
 
 var module = angular.module('buurter', ['onsen', 'LocalStorageModule', 'ngOpenFB', 'ui.router']);
 
+;( function( $ ) {
+
+	$( '.swipebox' ).swipebox();
+
+} )( jQuery );
+
 module.config(function (localStorageServiceProvider, $httpProvider) {
   	localStorageServiceProvider
     .setPrefix('buurter');
