@@ -123,12 +123,15 @@
 					        <button class="button button--large" style="margin-top: -24px;" type="submit" modifier="large" ng-disabled="!(!!email && !!password)">Inloggen</button>
 					    </form>						                            
                         <p>of</p>                         
-                        <button class="button" ng-click="login()">Login met Facebook</button>											
-						<p>Geen Facebook of geregistreerd account?</p>
-						<p 	style="text-decoration: underline; cursor: pointer;" 
-							ng-click="introNavigator.pushPage('registreer.html', { animation : 'lift' })">
-							Registreer een nieuw account
-						</p>
+                        <button class="button" ng-click="login()">Login met Facebook</button>											<span style="
+  font-size: 0.7em;
+  margin-top: 33px;" >
+                          <p>Geen Facebook of geregistreerd account?</p>
+                          <p 	style="text-decoration: underline; cursor: pointer;" 
+                              ng-click="introNavigator.pushPage('registreer.html', { animation : 'lift' })">
+                              Registreer een nieuw account
+                          </p>
+                        </span>
 					</ons-carousel-item>
 
 					<ons-carousel-cover>
