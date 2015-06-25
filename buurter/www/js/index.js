@@ -2054,26 +2054,27 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 				} else {
 				  // if successful, bind success message to message and fill the list
 
+					
 					angular.forEach(data, function(data) {
 
-									$http({
-									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data+'',
-									   method:"GET"
-									}).success(function(user) {
+					$http({
+					   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data+'',
+					   method:"GET"
+					}).success(function(user) {
 
-										if (!user) {
-										  // if not successful, bind errors to error variables
-										  console.log(user);
-										  console.log('error');
-										} else if(user == '') {
+						if (!user) {
+						  // if not successful, bind errors to error variables
+						  console.log(user);
+						  console.log('error');
+						} else if(user == '') {
 												
-										} else {
+						} else {
 						
-											if(user.fbid == 0){
-												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
-											}else{
-												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
-											}
+							if(user.fbid == 0){
+								var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+							}else{
+								var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+							}
 											
 											
 											
@@ -2104,74 +2105,30 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 													} 
 												}else {
 													
-													if (friends == '') {
-													  // if not successful, bind errors to error variables
-													  
+													
 													var input;
 													var friendadd;
 													
-														//console.log('nodata');
-														if(userid == data){
+														console.log(data);
+														
+														
+														if(friends.indexOf(""+user.id+"") > -1){
 															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
 														} else {
-															friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
-															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+															if(data == userid){
+																input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+															}else {
+																friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
+																input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+															}
 														}
-																	
+														
+	
 														$compile(input)(scope);
 														element.append(input);
-														
-													} else {
+													
 												
-												
-
-
-													var input;
-													var friendadd;
-
-															if(friends == user.id){
-																
-																		input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
-																		$compile(input)(scope);
-																		element.append(input);
-															}else{
-															
-																
-																	if(user.id == userid){
-																			input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
-																			$compile(input)(scope);
-																			element.append(input);
-																	} else {
-																		
-																		angular.forEach(friends, function(friends) {
-																		
-																			if(friends == user.id){
-																				input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
-																				
-																			} else {
-																				friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
-																				input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
-																			}
-																		});
-																		
-																		$compile(input)(scope);
-																		element.append(input);
-																				
-																	}
-																	
-																
-																
-																
-															}
-
-												//});
-
-												
-												
-													}
-
-												
-													}
+												}
 
 
 												
