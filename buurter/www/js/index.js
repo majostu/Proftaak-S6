@@ -48,10 +48,12 @@ parsefbdata = function(user){
 						console.log(username);
 							$scope.name = data.fb_first_name;
 							if(data.fbid == 0){
-								$scope.imgurl = "img/intro-back.jpg";
+								$scope.imgurl = "https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg";
 							}else{
 								$scope.imgurl = "http://graph.facebook.com/"+fbid+"/picture?type=large";
 							}
+										
+							
 					console.log("is de user id set?"+userid);
 						
 					}else if (data.naam == null){
@@ -965,6 +967,20 @@ module.controller('NieuweActiviteitController', function($rootScope, $scope, $co
 		}
 	    	
 	  	google.maps.event.addDomListener(window, 'load', geoAddActivity());
+	  	
+	  	$scope.alert = function() {
+	    	ons.notification.alert({
+				//message: 'Message',
+				message: 'Dubbel tap op een locatie om een activiteit toe te voegen.',
+				title: 'Info',
+				buttonLabel: 'OK',
+				animation: 'default', // or 'none'
+				// modifier: 'optional-modifier'
+				callback: function() {
+			    // Alert button is closed!
+			  	}
+			});
+	  	}
 				
 	});
 });
@@ -1774,14 +1790,6 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 				return;
         	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/design
-=======
-
->>>>>>> origin/design
 			navigator.geolocation.getCurrentPosition(function(position) {				
 				$scope.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));				
         	}, function(error) {
@@ -1793,70 +1801,61 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 			localStorage.removeItem("act_id");
 		}
 		
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-		
 
->>>>>>> origin/design
-=======
-		
+		$scope.addFriend = function(activity, friend) {
+		$http({
+		   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
+		   method:"POST",
+		   headers: {
+			'X-Requested-With': 'XMLHttpRequest',
+			'Content-Type': 'application/x-www-form-urlencoded'
+		   },
+		   transformRequest: transformRequestAsFormPost,
+			data    : eval({ 
+			'slug' : "friends", 
+			friend_id: friend
+			}),  // pass in data as strings
+			
+			isArray: true,
+			callback: ''
+	  }).success(function(data) {
 
->>>>>>> origin/design
-							$scope.addFriend = function(activity, friend) {
-							$http({
-							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?friends='+userid+'',
-							   method:"POST",
-							   headers: {
-								'X-Requested-With': 'XMLHttpRequest',
-								'Content-Type': 'application/x-www-form-urlencoded'
-							   },
-							   transformRequest: transformRequestAsFormPost,
-								data    : eval({ 
-								'slug' : "friends", 
-								friend_id: friend
-								}),  // pass in data as strings
-								
-								isArray: true,
-								callback: ''
-						  }).success(function(data) {
-
-								if (!data) {
-								  // if not successful, bind errors to error variables
-								  console.log('error');
-								} else if (data == 'exist') {
-								  // if successful, bind success message to message
-											console.log(data);
-											ons.notification.alert({
-												messageHTML: '<div>U heeft deze persoon al als vriend!</div>',
-												// or messageHTML: '<div>Message in HTML</div>',
-												title: 'Vrienden',
-												buttonLabel: 'OK',
-												cancelable: true,
-												animation: 'default', // or 'none'
-												// modifier: 'optional-modifier'
-												callback: function() {
-													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
-												}
-											});
-								} else {
-								  // if successful, bind success message to message
-											console.log(data);
-											ons.notification.alert({
-												messageHTML: '<div>U heeft een vriend toegevoegd!</div>',
-												// or messageHTML: '<div>Message in HTML</div>',
-												title: 'Vrienden',
-												buttonLabel: 'OK',
-												cancelable: true,
-												animation: 'default', // or 'none'
-												// modifier: 'optional-modifier'
-												callback: function() {
-													$scope.introNavigator.pushPage('overzicht.html', { id: activity});
-												}
-											});
-								}
-								
-							  });
+			if (!data) {
+			  // if not successful, bind errors to error variables
+			  console.log('error');
+			} else if (data == 'exist') {
+			  // if successful, bind success message to message
+						console.log(data);
+						ons.notification.alert({
+							messageHTML: '<div>U heeft deze persoon al als vriend!</div>',
+							// or messageHTML: '<div>Message in HTML</div>',
+							title: 'Vrienden',
+							buttonLabel: 'OK',
+							cancelable: true,
+							animation: 'default', // or 'none'
+							// modifier: 'optional-modifier'
+							callback: function() {
+								$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+							}
+						});
+			} else {
+			  // if successful, bind success message to message
+						console.log(data);
+						ons.notification.alert({
+							messageHTML: '<div>U heeft een vriend toegevoegd!</div>',
+							// or messageHTML: '<div>Message in HTML</div>',
+							title: 'Vrienden',
+							buttonLabel: 'OK',
+							cancelable: true,
+							animation: 'default', // or 'none'
+							// modifier: 'optional-modifier'
+							callback: function() {
+								$scope.introNavigator.pushPage('overzicht.html', { id: activity});
+							}
+						});
+			}
+			
+		  });
 			}
 
 
@@ -2278,7 +2277,10 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								}
 								
 							  });
+							  
 				};
+				
+				
 			  
     });
     
@@ -2369,17 +2371,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								  // if successful, bind success message to message
 									if (part == 'exist') {
 								  // user doet mee
-<<<<<<< HEAD
-
 						 
 										localStorage.setItem("act_id", index);
 
-=======
-
-						 
-										localStorage.setItem("act_id", index);
-
->>>>>>> origin/design
 										$scope.introNavigator.pushPage('overzicht.html', { id: index});
 			  
 										}else{
@@ -2389,7 +2383,11 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 								}
 								
 							  });
+							  
+					
 				};
+				
+				
 			  
     });
     
