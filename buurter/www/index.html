@@ -176,12 +176,12 @@
                 </div>
 			</ons-toolbar>               
             <div class="button-bar" style="width:280px;" ng-show="data.show">
-				<div class="button-bar__item">
-					<input type="radio" name="fav_bar" ng-model="fav_bar.name" checked value="indebuurt">
+				<div class="button-bar__item" ng-click="introNavigator.pushPage('home.html', { animation: 'lift' });">
+					<input type="radio" name="fav_bar" ng-model="fav_bar.name" value="indebuurt">
 					<button class="button-bar__button">In de buurt</button>
 				</div>
-				<div class="button-bar__item">
-				   	<input type="radio" name="fav_bar" ng-model="fav_bar.name" value="memories">
+				<div class="button-bar__item" ng-click="introNavigator.pushPage('memories.html', { animation: 'lift' });">
+				   	<input type="radio" name="fav_bar" ng-model="fav_bar.name" checked value="memories">
 				    <button class="button-bar__button">Memories</button>
 				</div>
 			</div>
@@ -207,34 +207,70 @@
 				</ons-list-item>
 				
             </ons-list>
+
+    </ons-template>
+
+	<ons-template id="memories.html">
+		<ons-page ng-controller="MemorieCtrl">
+			<ons-toolbar>
+	    		<div class="left">
+					<ons-toolbar-button ng-click="menu.toggle()" ng-show="data.show">
+						<ons-icon icon="bars"></ons-icon>
+					</ons-toolbar-button>
+				</div>
+				<div class="center logotitle"><img class="navlogo" src="img/logo.png">BUURTER&trade;</div>
+                <div class="right">	
+	                <ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="introNavigator.pushPage('mapOverzicht.html', {animation : 'lift'}, menu.close())">
+						<ons-icon icon="ion-map"></ons-icon>
+	                </ons-toolbar-button>                
+	                <ons-toolbar-button modifier="chevron" ng-show="data.show" ng-click="introNavigator.pushPage('nieuweActiviteit.html', {animation : 'lift'}, menu.close())">
+                		<span class="fa-stack nav-plus">
+							<i style=" position: relative;
+  top: -1px;" class="fa fa-circle-thin fa-stack-2x"></i>
+                   	 		<i class="fa fa-plus fa-stack-1x"></i>
+				   	 	</span>
+	                </ons-toolbar-button>
+                </div>
+			</ons-toolbar>               
+            <div class="button-bar" style="width:280px;" ng-show="data.show">
+				<div class="button-bar__item" ng-click="introNavigator.pushPage('home.html', { animation: 'lift' });">
+					<input type="radio" name="fav_bar" ng-model="fav_bar.name" value="indebuurt">
+					<button class="button-bar__button">In de buurt</button>
+				</div>
+				<div class="button-bar__item" ng-click="introNavigator.pushPage('memories.html', { animation: 'lift' });">
+				   	<input type="radio" name="fav_bar" ng-model="fav_bar.name" checked value="memories">
+				    <button class="button-bar__button">Memories</button>
+				</div>
+			</div>
             <!--===================================
             MEMORIES
             ===================================--->
-			<ons-list ng-controller="MemorieCtrl" ng-show="fav_bar.name == 'memories'">
-				<ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
+			<ons-list ng-show="fav_bar.name == 'memories'">
+	            	<ons-list-item modifier="chevron" class="item" ng-repeat="item in items">
                 	<ons-row>
                     	<ons-col width="60px">
-							<img ng-src="{{item.picture}}" class="item-thum">
+                        	<img ng-src="{{item.picture}}" class="item-thum">
 						</ons-col>
 						<ons-col>
                         	<header>
-                           		<span class="item-title">{{item.act}}</span>
-						   		<span class="item-label">{{item.date}}</span>
+                            	<span class="item-title">{{item.act}}</span>
+								<span class="item-label">{{item.date}}</span>
                         	</header>
 							<p class="item-desc">{{item.cat}}</p>
 							<p class="item-desc">{{item.name}}</p>
-							<span class="toolbar-button--outline navigation-bar__line-height list-button">Bekijk <i class="fa fa-hand-o-right"></i></span>
+							<span ng-click="showDetail(item.id)"class="toolbar-button--outline navigation-bar__line-height list-button">Bekijk activiteit <i class="fa fa-hand-o-right"></i></span>
 						</ons-col>
 					</ons-row>
-				</ons-list-item>        
+				</ons-list-item> 
             </ons-list>
 				
 		</ons-page>
-    </ons-template>
+	</ons-template>
+
     <!--========================================================================== 
 	MAP OVERZICHT
     ==========================================================================--->
-	<ons-template id="mapOverzicht.html">
+		<ons-template id="mapOverzicht.html">
 		<ons-page ng-controller="MapController">
 			<ons-toolbar>
 	    		<div class="left"><ons-back-button>Back</ons-back-button></div>
@@ -280,7 +316,7 @@
 	<ons-template id="menu.html">
 		<ons-page modifier="menu-page">
 
-			<div class="img-circle center"><img src="{{imgurl}}"/></div>
+			<div class="img-circle center"><img ng-src="{{imgurl}}"/></div>
 			<p class="center">{{name}}</p>
 			<br>			
 			<ons-list-item class=" menu-item" modifier="chevron" ng-click="introNavigator.pushPage('gegevens.html', {animation : 'slide'}, menu.close())">
@@ -670,223 +706,6 @@
 </ons-template>
       
       
-      <!--========================================================================== 
-	Memorie details
-    ==========================================================================--->    
-    
-    <ons-template id="memorieDetails.html">
-    <ons-page ng-controller="MemorieDetailsCtrl">
-
-        <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">{{item.cat}}</div>
-        </ons-toolbar>
-      
-  
-      
-        <ons-list modifier="chevron">
-            <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-            <div id="map_canvas">
-	        
-            </div>
-            <ons-list>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/amy_jones.jpg" class="item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
-        
-        
-        <p class="center button1">
-            <ons-button ng-click="introNavigator.pushPage('memorieOverzicht.html', { animation : 'slide' }, menu.close())">
-               Bekijk Memorie        
-            </ons-button>
-        </p>   
-
-</ons-page>
-</ons-template>
-
-<!--========================================================================== 
-	Memorie overzicht
-    ==========================================================================--->    
-    
-    <ons-template id="memorieOverzicht.html">
-    <ons-page ng-controller="MemorieOverzichtController">
- <ons-toolbar>
-            <div class="left"><ons-back-button>Back</ons-back-button></div>
-            <div class="center">{{item.cat}}</div>
-        </ons-toolbar>
-
-
-        <ons-list modifier="chevron">
-            <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="60px">
-                          <img src="{{item.picture}}" class="item-thum">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.act}}</span>
-                            <span class="item-label">{{item.date}}</span>
-                        </header>
-                        <p class="item-desc">{{item.name}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-             <p style="margin-left:10px;">Foto's en video's</p>
-            <ons-carousel swipeable style="margin-top: 5px; margin-left:6px; height: 120px;" overscrollable auto-scroll item-width="120px">
-          
-            <ons-carousel-item ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]">
-            <div style="background-color: #ccc; width: 100px; height: 100px; margin: 5px; border-radius: 6px;"></div>
-            </ons-carousel-item>
-            </ons-carousel>
-            
-            <ons-list>
-             <ons-list-header>Deelnemers</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/amy_jones.jpg" class="item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-            <p class="center">
-              <span id="" ng-click="introNavigator.pushPage('invite.html', { animation: 'lift' }, menu.close())" class="toolbar-button--outline navigation-bar__line-height"><i class="fa fa-history"></i> Redo activiteit</span>
-            </p>   
-            <ons-list-header>Reacties</ons-list-header>
-              <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/eugene_lee.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Eugene Lee</span> - <span class="item-desc">Het is super leuk hier</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/amy_jones.jpg" class="item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Amy Jones</span> - <span class="item-desc">Super gezellig!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-                </ons-list-item>
-                <ons-list-item class="item">
-                <ons-row>
-                    <ons-col width="40px">
-                          <img src="images/paul_jones.jpg" class="img-circle item-xs">
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">Paul Jones</span> - <span class="item-desc">Het bier is bijna op!! kom snel!</span>
-                        </header>
-                        
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-              
-              <section style="padding: 0 8px 8px">
-                <textarea class="textarea" ng-model="text2" placeholder="Schrijf een bericht..." style="width: 100%; height: 100px; margin-top:10px;"></textarea>
-              </section>
-              <section style="padding: 0 8px 8px">
-                <span id="" ng-click="" class="toolbar-button--outline navigation-bar__line-height">Verstuur</span>
-                <ons-button modifier="quiet">Upload foto/ video</ons-button>
-              </section>
-
-            
-        </ons-list>
-       </ons-page>
-</ons-template>
-
 
 
 
@@ -1197,7 +1016,7 @@
 	<script type="text/javascript" src="components/angular/angular-local-storage.min.js"></script>   
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeyepY1W5MQtdovxCS_6SWYouRGobAfz4&sensor=true&libraries=geometry, places"></script>
 
-	<script type="text/javascript" src="js/markclusterer.js"></script>
+	<script type="text/javascript" src="js/markerclusterer.js"></script>
 	<script type="text/javascript" src="js/oms.min.js"></script>
 	<script type="text/javascript" src="js/is.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>

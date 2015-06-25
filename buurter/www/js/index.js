@@ -1533,166 +1533,113 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 			  
     });
     
-     module.controller('MemorieCtrl', function($scope, $data2) {
-        $scope.items = $data2.items;
-        
+   module.controller('MemorieCtrl', function($scope, $data, $http, transformRequestAsFormPost) {
+	   
+	   		$scope.fav_bar = {
+			name: "memories"	
+		};
+		
+		
+			$scope.items = [];
+			
+			$http({//Get activities
+			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?memories='+userid+'',
+			   method:"GET"
+			}).success(function(data) {
 
-        $scope.showDetail = function(index) {
-            var selectedItem = $data2.items[index];
-            $data2.selectedItem = selectedItem;
-            $scope.introNavigator.pushPage('memorieOverzicht.html', selectedItem);
-        };
-        
+				if (!data) {
+				  // if not successful, bind errors to error variables
+				  console.log(data);
+				  console.log('error');
+				} else if(data == '') {
+						
+				} else {
+				  // if successful, bind success message to message and fill the list
+					angular.forEach(data, function(data) { //Each for the activities
+
+									$http({ //Get user info
+									   url:'http://broekhuizenautomaterialen.nl/directa/data.php?userid='+data.user_id+'',
+									   method:"GET"
+									}).success(function(user) {
+
+										if (!user) {
+										  // if not successful, bind errors to error variables
+										  console.log(user);
+										  console.log('error');
+										} else if(user == '') {
+												
+										} else {
+											
+											if(user.fbid == 0){
+												var avatar = 'https://s-media-cache-ak0.pinimg.com/736x/d4/45/20/d4452035f501e05adf90c63af107bb1a.jpg';
+											}else{
+												var avatar = 'http://graph.facebook.com/'+user.fbid+'/picture?type=large';
+											}
+											
+								  			 $scope.items.push({
+												id: ''+data.id+'',
+												name: ''+user.fb_first_name+'  '+user.fb_last_name+'',
+												act: ''+data.description+'',
+												date: ''+data.from_time+'',
+												cat: ''+data.category+'',
+												picture: avatar
+											 });
+								
+
+									}
+									});
+					});
+				}
+			  });
+
+
+		$scope.showDetail = function(index) {	  
+			  $http({
+							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+index+'',
+							   method:"POST",
+							   headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							   },
+							   transformRequest: transformRequestAsFormPost,
+								data    : eval({ 
+								'slug' : "actpart", 
+								user_id: userid
+								}),  // pass in data as strings
+								
+								isArray: true,
+								callback: ''
+						  }).success(function(part) {
+								console.log(part);
+								if (!part) {
+								  // if not successful, bind errors to error variables
+								  console.log('error');
+								} else if (part == 'exist') {
+								  // user doet mee
+						 
+									
+										$scope.introNavigator.pushPage('overzicht.html', { id: index});
+			  
+								} else {
+								  // if successful, bind success message to message
+
+										$scope.introNavigator.pushPage('details.html', { id: index});
+
+								}
+								
+							  });
+				};
+			  
     });
     
-    module.controller('MemorieDetailsCtrl', function($scope, $data2) {
-        $scope.item = $data2.selectedItem;
-        
-         $scope.showDetail = function(index) {
-            var selectedItem = $data2.items[index];
-            $data2.selectedItem = selectedItem;
-            $scope.introNavigator.pushPage('memorieOverzicht.html.html', selectedItem);
-        };
-
-        
-    }); 
-    
-      module.controller('MemorieOverzichtController', function($scope, $data2) {
-        $scope.item = $data2.selectedItem;
-    });    
-
-    
-
-
 
 module.factory('$data', function($http) {
         var data = {};
 		items = [];
-
-
-		/*
-        data.items = [
-            {
-                name: 'Amy Jones',
-                act: 'Lekker shoppen in Tilburg',
-                date: '13:45',
-                cat: 'Shoppen',
-                picture: 'images/amy_jones.jpg'
-            },
-            {
-                name: 'Eugene Lee',
-                act: 'World of warcraft spelen',
-                date: '16:00',
-                cat: 'Video games',
-                picture: 'images/eugene_lee.jpg'
-            },
-            {
-                name: 'Gary Donovan',
-                act: 'Lunchen bij de Febo',
-                date: '16:00',
-                cat: 'Eten',
-                picture: 'images/gary_donovan.jpg'
-            },
-            {
-                name: 'James King',
-                act: 'Barbequen',
-                date: '17:30',
-                cat: 'Eten',
-                picture: 'images/james_king.jpg'
-            },
-            {
-                name: 'john_williams',
-                act: 'Lekker shoppen in Tilburg',
-                date: '20:00',
-                cat: 'Shoppen',
-                picture: 'images/john_williams.jpg'
-            },
-            {
-                name: 'julie_taylor',
-                act: 'World of warcraft spelen',
-                date: '20:00',
-                cat: 'Video games',
-                picture: 'images/julie_taylor.jpg'
-            },
-            {
-                name: 'kathleen_byrne',
-                act: 'Lunchen bij de Febo',
-                date: '20:00',
-                cat: 'Eten',
-                picture: 'images/kathleen_byrne.jpg'
-            },
-            {
-                name: 'lisa_wong',
-                act: 'Barbequen',
-                date: '20:00',
-                cat: 'Eten',
-                picture: 'images/lisa_wong.jpg'
-            },
-            {
-                name: 'paul_jones',
-                act: 'Lekker shoppen in Tilburg',
-                date: '4h',
-                cat: 'Shoppen',
-                picture: 'images/paul_jones.jpg'
-            },
-            {
-                name: 'paula_gates',
-                act: 'World of warcraft spelen',
-                date: '6h',
-                cat: 'Video games',
-                picture: 'images/paula_gates.jpg'
-            },
-
-            
-
-        ];*/
-
-
         return JSON.stringify(items);
-    });
+});
   
-  module.factory('$data2', function() {
-        var data2 = {};
-
-        data2.items = [
-            {
-                name: 'Gary Donovan',
-                act: 'Lunchen bij de Febo',
-                date: '1 day ago',
-                cat: 'Eten',
-                picture: 'images/gary_donovan.jpg'
-            },
-            {
-                name: 'julie_taylor',
-                act: 'Keiharde apenmuziek luisteren',
-                date: '1 day ago',
-                cat: 'Video games',
-                picture: 'images/julie_taylor.jpg'
-            },
-            {
-                name: 'ray_moore',
-                act: 'Lunchen bij de Febo',
-                date: '1 day ago',
-                cat: 'Eten',
-                picture: 'images/ray_moore.jpg'
-            },
-            {
-                name: 'steven_wells',
-                act: 'Barbequen',
-                date: '1 week ago',
-                cat: 'Eten',
-                picture: 'images/steven_wells.jpg'
-            },
-
-            
-
-        ];
-
-        return data2;
-    });
-
-
-    })();
+})();
 
 
 
