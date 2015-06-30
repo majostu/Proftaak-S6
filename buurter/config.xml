@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="edu.fontys.media.handyfriendly" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Handy Friendly</name>
+    <name>Buurter</name>
     <description>
-        A wheelchair user friendly toilet finder app.
+       An Awesome way to meet new people.
     </description>
     <author email="info@marijnstuyfzand.nl" href="http://marijnstuyfzand.nl">
         Marijn Stuyfzand
