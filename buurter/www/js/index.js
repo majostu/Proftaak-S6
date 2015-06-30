@@ -457,7 +457,7 @@ module.controller('HomeController', function($rootScope, $scope, $compile, $http
 
 
 
-module.controller('MapController', function($scope, $compile, localStorageService) {
+module.controller('MapController', function($scope, $compile, localStorageService, $http, transformRequestAsFormPost) {
 	ons.ready(function() {
 			    
 	    var json = (function () {
@@ -599,7 +599,8 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 									'<div id="map-info-window-inner">'+
 										'<p><b>'+ data.title +'</b></p>'+
 										'<p>' + data.address + '</p>' +
-										'<p>' + MarkerBin + '</p>' +
+										'<br /><p><b>Aanvang:</b> ' + data.from_time + '<br /><b>Einde:</b> ' + data.to_time + '</p>' +
+										'<p>' + MarkerBin + '</p>' +										
 									'</div>'+
 								'</div>'									
 							;
@@ -612,7 +613,54 @@ module.controller('MapController', function($scope, $compile, localStorageServic
 					})(WCMarker, data);
 									
 					$scope.showDetail = function(index) {
-						$scope.introNavigator.pushPage('details.html', { id: index});
+						
+						
+						
+						$http({
+				   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+index+'',
+				   method:"POST",
+				   headers: {
+					'X-Requested-With': 'XMLHttpRequest',
+					'Content-Type': 'application/x-www-form-urlencoded'
+				   },
+				   transformRequest: transformRequestAsFormPost,
+					data    : eval({ 
+					'slug' : "actpart", 
+					user_id: userid
+					}),  // pass in data as strings
+					
+					isArray: true,
+					callback: ''
+			  }).success(function(part) {
+					console.log(part);
+					if (!part) {
+					  // if not successful, bind errors to error variables
+					  console.log('error');
+					} else if (part == 'exist') {
+					  // user doet mee
+					  		
+					  		
+					  		localStorage.setItem("act_id", index);
+					  										  		
+							$scope.introNavigator.pushPage('overzicht.html', { id: index});
+  
+					} else {
+					  // if successful, bind success message to message
+					  		
+					  		localStorage.setItem("act_id", index);
+					  		
+							$scope.introNavigator.pushPage('details.html', { id: index});
+
+					}
+					
+				  });
+						
+						
+						
+						
+						
+						
+						
 					};
 									
 					$scope.deleteActivity = function(id){
@@ -811,7 +859,7 @@ module.controller('ContactenController', function($scope) {
 											}
 
 											
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -1216,8 +1264,7 @@ module.controller('InviteController', function($scope, $http, transformRequestAs
 											}
 
 											
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span>            <ons-button ng-click="addParticipant(\''+page.options.id+'\',\''+user.id+'\')" class="show-modal btn-xs">Verstuur uitnodiging</ons-button></header></ons-col></ons-row></ons-list-item>');
-
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span><label class="switch"><ons-button ng-click="addParticipant(\''+page.options.id+'\',\''+user.id+'\')" class="btn btn-xs" style="border-radius: 50%; line-height: 26px;"><i class="fa fa-plus-circle"></i></onsbutton></label></header></ons-col></ons-row></ons-list-item>');
 												// Append input to div
 											$compile(input)(scope);
 											element.append(input);
@@ -1238,12 +1285,7 @@ module.controller('InviteController', function($scope, $http, transformRequestAs
  
 module.controller('DetailController', function($scope, $data, $http, $rootScope, transformRequestAsFormPost, $compile) {
 		
-		
-		
-		
-		
-		
-		
+				
 			var act_id = localStorage.getItem("act_id");
 			
 			var json = (function () {
@@ -1360,6 +1402,7 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 									'<div id="map-info-window-inner">'+
 										'<p><b>'+ data.title +'</b></p>'+
 										'<p>' + data.address + '</p>' +
+										'<br /><p><b>Aanvang:</b> ' + data.from_time + '<br /><b>Einde:</b> ' + data.to_time + '</p>' +
 									'</div>'+
 								'</div>'									
 							;
@@ -1423,16 +1466,6 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 		$scope.remove_act_id = function() {
 			localStorage.removeItem("act_id");
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
         $scope.item = [];
@@ -1564,6 +1597,12 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 				  console.log('error');
 				} else if(data == '') {
 						
+					var input = angular.element('<ons-list-item class="item"><ons-row>Nog geen deelnemers</ons-row></ons-list-item>');
+	
+						// Append input to div
+					$compile(input)(scope);
+					element.append(input);
+						
 				} else {
 				  // if successful, bind success message to message and fill the list
 									$http({
@@ -1655,10 +1694,10 @@ module.controller('DetailController', function($scope, $data, $http, $rootScope,
 											
 																						
 											if(userid != user.id){
-												var friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></ons-button>';
+												var friendadd = '<label class="switch"><ons-button ng-click="addFriend('+page.options.id+', '+user.id+')" class="btn btn-xs" style="border-radius: 50%; line-height: 26px;"><i class="fa fa-plus-circle"></i></onsbutton></label>';
 											}
 											
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -1797,6 +1836,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 									'<div id="map-info-window-inner">'+
 										'<p><b>'+ data.title +'</b></p>'+
 										'<p>' + data.address + '</p>' +
+										'<br /><p><b>Aanvang:</b> ' + data.from_time + '<br /><b>Einde:</b> ' + data.to_time + '</p>' +
 									'</div>'+
 								'</div>'									
 							;
@@ -1949,7 +1989,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 											ons.notification.alert({
 												messageHTML: '<div>Reactie toegevoegd</div>',
 												// or messageHTML: '<div>Message in HTML</div>',
-												title: cat,
+												title: Bevestiging,
 												buttonLabel: 'OK',
 												cancelable: true,
 												animation: 'default', // or 'none'
@@ -1964,7 +2004,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 			}
         $scope.item = [];
 		var page = introNavigator.getCurrentPage();
-		$scope.pagepush = $sce.trustAsHtml('<ons-button  id="" onclick="introNavigator.pushPage(\'invite.html\', { id: \''+page.options.id+'\' }, menu.close())" class="btn btn-xs btn-primary">Nodig vrienden uit</ons-button>');	
+		$scope.pagepush = $sce.trustAsHtml('<ons-button onclick="introNavigator.pushPage(\'invite.html\', { id: \''+page.options.id+'\' }, menu.close())" class="button" style="margin-bottom: 20px;">Nodig vrienden uit</ons-button>');	
 					$http({
 			   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actid='+page.options.id+'',
 			   method:"GET"
@@ -2065,7 +2105,7 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 											}
 
 											
-											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span> - <span class="item-desc">'+data.comment+'</span></header></ons-col></ons-row></ons-list-item>');
+											var input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span> - <span class="item-desc">'+data.comment+'</span></header></ons-col></ons-row></ons-list-item>');
 
 												// Append input to div
 											$compile(input)(scope);
@@ -2147,17 +2187,17 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 													
 														//console.log('nodata');
 														if(userid == data){
-															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
 														} else {
-															friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
-															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+															friendadd = '<label class="switch"><ons-button ng-click="addFriend('+page.options.id+', '+user.id+')" class="btn btn-xs" style="border-radius: 50%; line-height: 26px;"><i class="fa fa-plus-circle"></i></onsbutton></label>';
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
 														}
 																	
 														$compile(input)(scope);
 														element.append(input);
 														
 													} 
-												}else {
+												} else {
 													
 													
 													var input;
@@ -2167,27 +2207,66 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 														
 														
 														if(friends.indexOf(""+user.id+"") > -1){
-															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
 														} else {
+
 															if(data == userid){
-																input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
 															}else {
 																friendadd = '<ons-button ng-click="addFriend('+page.options.id+', '+user.id+')"class="btn-xs btn" style="margin-left: 10px;">Voeg toe als vriend<i class="fa fa-hand-o-right"></i></onsbutton>';
-																input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+																input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
 															}
+
+															
+															friendadd = '<label class="switch"><ons-button ng-click="addFriend('+page.options.id+', '+user.id+')" class="btn btn-xs" style="border-radius: 50%; line-height: 26px;"><i class="fa fa-plus-circle"></i></onsbutton></label>';
+															
+															input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="60px"><img ng-src="'+avatar+'" class="item-thum"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+
 														}
 														
 	
 														$compile(input)(scope);
 														element.append(input);
-													
+														
+												} /*else {
 												
-												}
+													var input;
+													var friendadd;
 
-
-												
+															if(friends == user.id){
+																
+																		input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																		$compile(input)(scope);
+																		element.append(input);
+															}else{
 															
+																
+																	if(user.id == userid){
+																			input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																			$compile(input)(scope);
+																			element.append(input);
+																	} else {
+																		
+																		angular.forEach(friends, function(friends) {
+																		
+																			if(friends == user.id){
+																				input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+'</span></header></ons-col></ons-row></ons-list-item>');
+																				
+																			} else {
+																				friendadd = '<label class="switch"><ons-button ng-click="addFriend('+page.options.id+', '+user.id+')" class="btn btn-xs" style="border-radius: 50%; line-height: 26px;"><i class="fa fa-plus-circle"></i></onsbutton></label>';
+																				input = angular.element('<ons-list-item class="item"><ons-row><ons-col width="40px"><img ng-src="'+avatar+'" class="img-circle-small item-xs"></ons-col><ons-col><header><span class="item-title">'+user.fb_first_name+'  '+user.fb_last_name+' '+friendadd+'</span></header></ons-col></ons-row></ons-list-item>');
+																			}
+																		});
+																		
+																		$compile(input)(scope);
+																		element.append(input);
+																				
+																	}
+																
+															}
 
+												}*/
+																							
 											});					
 
 										}
@@ -2259,43 +2338,45 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 
 		$scope.showDetail = function(index) {	  
 			  $http({
-							   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+index+'',
-							   method:"POST",
-							   headers: {
-								'X-Requested-With': 'XMLHttpRequest',
-								'Content-Type': 'application/x-www-form-urlencoded'
-							   },
-							   transformRequest: transformRequestAsFormPost,
-								data    : eval({ 
-								'slug' : "actpart", 
-								user_id: userid
-								}),  // pass in data as strings
-								
-								isArray: true,
-								callback: ''
-						  }).success(function(part) {
-								console.log(part);
-								if (!part) {
-								  // if not successful, bind errors to error variables
-								  console.log('error');
-								} else if (part == 'exist') {
-								  // user doet mee
-								  		
-								  		
-								  		localStorage.setItem("act_id", index);
-								  										  		
-										$scope.introNavigator.pushPage('overzicht.html', { id: index});
-			  
-								} else {
-								  // if successful, bind success message to message
+				   url:'http://broekhuizenautomaterialen.nl/directa/data.php?actidpart='+index+'',
+				   method:"POST",
+				   headers: {
+					'X-Requested-With': 'XMLHttpRequest',
+					'Content-Type': 'application/x-www-form-urlencoded'
+				   },
+				   transformRequest: transformRequestAsFormPost,
+					data    : eval({ 
+					'slug' : "actpart", 
+					user_id: userid
+					}),  // pass in data as strings
+					
+					isArray: true,
+					callback: ''
+			  }).success(function(part) {
+					console.log(part);
+					if (!part) {
+					  // if not successful, bind errors to error variables
+					  console.log('error');
+					} else if (part == 'exist') {
+					  // user doet mee
+					  		
+					  		
+					  		localStorage.setItem("act_id", index);
+					  										  		
+							$scope.introNavigator.pushPage('overzicht.html', { id: index});
+  
+					} else {
+					  // if successful, bind success message to message
+					  		
+					  		localStorage.setItem("act_id", index);
+					  		
+							$scope.introNavigator.pushPage('details.html', { id: index});
 
-										$scope.introNavigator.pushPage('details.html', { id: index});
-
-								}
-								
-							  });
+					}
+					
+				  });
 							  
-				};
+		};
 				
 				
 			  
@@ -2394,6 +2475,9 @@ module.controller('OverzichtController', function($scope, $data, $http, transfor
 										$scope.introNavigator.pushPage('overzicht.html', { id: index});
 			  
 										}else{
+											
+											localStorage.setItem("act_id", index);
+											
 										$scope.introNavigator.pushPage('details.html', { id: index});
 										}
 
