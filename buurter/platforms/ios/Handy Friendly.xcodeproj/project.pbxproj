@@ -28,6 +28,7 @@
 		30B4F30219D5E07200D9F7D8 /* Default-Landscape-736h.png in Resources */ = {isa = PBXBuildFile; fileRef = 30B4F2FF19D5E07200D9F7D8 /* Default-Landscape-736h.png */; };
 		30C1856619D5FC0A00212699 /* icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30C1856519D5FC0A00212699 /* icon-60@3x.png */; };
 		30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FC414816E50CA1004E6F35 /* icon-72@2x.png */; };
+		3D38DCDE1B4562FE000CEDC8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D38DCDD1B4562FE000CEDC8 /* Images.xcassets */; };
 		3DC05B8A1B42F4DC009E4D9D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DC05B891B42F4DC009E4D9D /* Images.xcassets */; };
 		3DC05B8C1B42F53A009E4D9D /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DC05B8B1B42F53A009E4D9D /* Images-2.xcassets */; };
 		3DC05B8E1B42F5C7009E4D9D /* Images-3.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DC05B8D1B42F5C7009E4D9D /* Images-3.xcassets */; };
@@ -94,6 +95,7 @@
 		30C1856519D5FC0A00212699 /* icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60@3x.png"; sourceTree = "<group>"; };
 		30FC414816E50CA1004E6F35 /* icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72@2x.png"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Handy Friendly-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Handy Friendly-Prefix.pch"; sourceTree = "<group>"; };
+		3D38DCDD1B4562FE000CEDC8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Handy Friendly/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		3DC05B891B42F4DC009E4D9D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Handy Friendly/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		3DC05B8B1B42F53A009E4D9D /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "Handy Friendly/Images-2.xcassets"; sourceTree = SOURCE_ROOT; };
 		3DC05B8D1B42F5C7009E4D9D /* Images-3.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-3.xcassets"; path = "Handy Friendly/Images-3.xcassets"; sourceTree = SOURCE_ROOT; };
@@ -193,6 +195,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3D38DCDD1B4562FE000CEDC8 /* Images.xcassets */,
 				3DC05B8D1B42F5C7009E4D9D /* Images-3.xcassets */,
 				3DC05B8B1B42F53A009E4D9D /* Images-2.xcassets */,
 				3DC05B891B42F4DC009E4D9D /* Images.xcassets */,
@@ -381,6 +384,7 @@
 				30B4F30019D5E07200D9F7D8 /* Default-667h.png in Resources */,
 				7E7966DE1810823500FA85AD /* icon-40.png in Resources */,
 				3088BBC1154F3926009F9C59 /* Default@2x~iphone.png in Resources */,
+				3D38DCDE1B4562FE000CEDC8 /* Images.xcassets in Resources */,
 				7E7966E21810823500FA85AD /* icon-60.png in Resources */,
 				3088BBC2154F3926009F9C59 /* Default~iphone.png in Resources */,
 				D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */,
@@ -451,7 +455,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "Handy Friendly/Handy Friendly-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					CoreFoundation,
@@ -481,7 +485,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "Handy Friendly/Handy Friendly-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					CoreFoundation,
