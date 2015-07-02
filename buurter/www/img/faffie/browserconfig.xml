@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="/img/faffie/mstile-70x70.png?v=gUnit"/>
+      <square150x150logo src="/img/faffie/mstile-150x150.png?v=gUnit"/>
+      <square310x310logo src="/img/faffie/mstile-310x310.png?v=gUnit"/>
+      <wide310x150logo src="/img/faffie/mstile-310x150.png?v=gUnit"/>
+      <TileColor>#5cbd77</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>
